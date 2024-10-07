@@ -6,15 +6,11 @@ class Enemy:
     spd = 1.0
     type = "fish"
     position = [0, 0]
+    ID = 0
 
-    def __init__(self, hp, points, spd, type):
+    def __init__(self, hp, points, spd, type, ID):
         self.hp = hp
         self.points = points
         self.spd = spd
         self.type = type
-
-    def checkLocation(self):
-        return self.position
-
-    def updatePosition(self):
-        pass
+        self.ID = ID
