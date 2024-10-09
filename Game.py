@@ -17,7 +17,7 @@ class Balloon(arcade.Sprite):
         #something about the image for the sprite
         super().__init__(image, scale)
         #path
-        self.path = position_list
+        self.position_list = position_list
         self.cur_position = 0
         #speed TODO change based on balloon type? 
         self.speed = BALLOON_SPEED
