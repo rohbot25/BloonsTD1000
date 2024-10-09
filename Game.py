@@ -142,6 +142,7 @@ class Game(arcade.Window):
             [300,75],
             [300,0]
         ]
+        
         balloon = Balloon("images/balloon.png",0.5,position_list)
 
         balloon.center_x = position_list[0][0]
