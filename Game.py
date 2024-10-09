@@ -11,39 +11,39 @@ SPRITE_SCALING = 1.0
 BALLOON_SPEED = 2.0
 
 class Balloon(arcade.Sprite):
-    """
-    This class represents the Enemy on our screen.
-    """
+    #BALOOOOONS
 
     def __init__(self, image, scale, position_list):
+        #something about the image for the sprite
         super().__init__(image, scale)
-        self.position_list = position_list
+        #path
+        self.path = position_list
         self.cur_position = 0
+        #speed TODO change based on balloon type? 
         self.speed = BALLOON_SPEED
 
     def update(self):
-        """ Have a sprite follow a path """
+        #path follow update
 
-        # Where are we
+        #
         start_x = self.center_x
         start_y = self.center_y
 
-        # Where are we going
+        #end
         dest_x = self.position_list[self.cur_position][0]
         dest_y = self.position_list[self.cur_position][1]
 
-        # X and Y diff between the two
+        # difference
         x_diff = dest_x - start_x
         y_diff = dest_y - start_y
 
-        # Calculate angle to get there
+        # alingment
         angle = math.atan2(y_diff, x_diff)
 
-        # How far are we?
+        #actual distance
         distance = math.sqrt((self.center_x - dest_x) ** 2 + (self.center_y - dest_y) ** 2)
 
-        # How fast should we go? If we are close to our destination,
-        # lower our speed so we don't overshoot.
+        # if close lower speed so doesn't break
         speed = min(self.speed, distance)
 
         # Calculate vector to travel
@@ -88,40 +88,6 @@ class Game(arcade.Window):
 
     def setup(self):
         """ Set up the game here. Call this function to restart the game. """
-        #GRID OPTION
-        """self.path_list = arcade.SpriteList()
-        self.free_list = arcade.SpriteList()
-        
-        #self.hazardsList
-        map_end_horiz = int(SCREEN_WIDTH*(3/4))
-        square_size = int(map_end_horiz / self.current_map.get_size())
-
-        map_start = square_size
-
-        map_end_vert = int(SCREEN_HEIGHT - square_size)
-        
-        coord = [0,0]
-        for x in range(map_start,map_end_horiz,square_size):
-            for y in range(map_start,map_end_vert,square_size):
-                if(coord in self.current_map.get_path()):
-                    path = arcade.Sprite("images/Path.png",SPRITE_SCALING)
-                    path.center_x = x
-                    path.center_y = y
-                    self.path_list.append(path)
-                elif(coord in self.current_map.get_hazards()):
-                    pass
-                else:
-                    free = arcade.Sprite("images/Grass.png",SPRITE_SCALING)
-                    free.center_x = x
-                    free.center_y = y
-                    self.free_list.append(free)
-                print(coord)
-                coord[1] = coord[1] % 6 + 1
-            print(coord)
-            coord[0] += 1
-        """
-
-        #IMAGE OPTION
 
         self.texture = arcade.load_texture("images/map.png")
             
@@ -142,7 +108,7 @@ class Game(arcade.Window):
             [300,75],
             [300,0]
         ]
-        
+
         balloon = Balloon("images/balloon.png",0.5,position_list)
 
         balloon.center_x = position_list[0][0]
@@ -170,16 +136,12 @@ class Game(arcade.Window):
 
         # This command has to happen before we start drawing
         self.clear()
-        
-        # Draw all the sprites.
-        #self.path_list.draw()
-        #self.free_list.draw()
-        #self.hazards_list.draw()
 
         #draw the map
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 3, 750,375,self.texture)
 
         self.balloons.draw()
+
         # Draw grid overlay
         self.draw_grid()
 
@@ -196,6 +158,7 @@ class Game(arcade.Window):
         for y in range(0, SCREEN_HEIGHT, grid_size):
             arcade.draw_line(0, y, SCREEN_WIDTH, y, line_color, 2)
     
+    #update the position of the sprites
     def on_update(self,delta_time):
         self.balloons.update()
 def main():
