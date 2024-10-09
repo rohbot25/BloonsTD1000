@@ -161,6 +161,7 @@ class Game(arcade.Window):
     #update the position of the sprites
     def on_update(self,delta_time):
         self.balloons.update()
+        
 def main():
     """ Main function """
     window = Game()
