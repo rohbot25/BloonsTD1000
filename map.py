@@ -3,7 +3,7 @@
 class MAP:
     #list of coordinate points for path and hazards
     def __init__(self,path,hazards):
-        self.size = 64
+        self.size = 8
         self.path = path
         self.hazards = hazards
 
