@@ -1,5 +1,5 @@
 import arcade
-from Map import MAP
+from map import MAP
 import math
 
 # Screen title and size
@@ -101,6 +101,8 @@ class Game(arcade.Window):
         """ Set up the game here. Call this function to restart the game. """
 
         self.texture = arcade.load_texture("images/map.png")
+
+        self.sidebar = arcade.load_texture("images/sidebar.png")
             
         self.balloons = arcade.SpriteList()
         self.towers = arcade.SpriteList()
@@ -129,7 +131,7 @@ class Game(arcade.Window):
             [300,0]
         ]
 
-        balloon = Balloon("images/balloon.png",0.25,position_list)
+        balloon = Balloon("art/base_level_fish.png",3,position_list)
 
         balloon.center_x = position_list[0][0]
         balloon.center_y = position_list[0][1]
@@ -159,6 +161,8 @@ class Game(arcade.Window):
 
         #draw the map
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 3, 750,375,self.texture)
+
+        arcade.draw_texture_rectangle(SCREEN_WIDTH - 100, SCREEN_HEIGHT // 2, 250,SCREEN_HEIGHT, self.sidebar)
 
         self.balloons.draw()
         self.towers.draw()
