@@ -1,5 +1,5 @@
 import arcade
-from Map import MAP
+
 import math
 
 # Screen title and size
@@ -10,6 +10,16 @@ SCREEN_TITLE = "Fish Tower Defense"
 SPRITE_SCALING = 1.0 
 BALLOON_SPEED = 2.0
 BULLET_SPEED = 10.0
+
+class User:
+    round = 1
+    money = 650
+    health = 150
+
+    def __init__(self, round, money, health):
+        self.round = round
+        self.money = money
+        self.health = health
 
 class Balloon(arcade.Sprite):
     #BALOOOOONS
@@ -101,10 +111,13 @@ class Game(arcade.Window):
         """ Set up the game here. Call this function to restart the game. """
 
         self.texture = arcade.load_texture("images/map.png")
-            
         self.balloons = arcade.SpriteList()
         self.towers = arcade.SpriteList()
         self.harpoons = arcade.SpriteList()
+
+
+        #test for top bar
+
 
         # Add a tower
         tower = arcade.Sprite("images/sungod.png", 0.5)
@@ -153,9 +166,41 @@ class Game(arcade.Window):
         """
         Render the screen.
         """
+        # create top bar texture
+        bar = arcade.load_texture("images/white.jpg")
 
         # This command has to happen before we start drawing
         self.clear()
+
+        # draw the top bar
+        arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 1.15, 1400, 160, bar)
+
+        arcade.draw_text(f"Health: {User.health}",
+                         start_x=30,
+                         start_y=SCREEN_HEIGHT - 35,
+                         color=arcade.color.BLACK,
+                         font_size=24,
+                         font_name="Comic Sans MS")
+
+        arcade.draw_text(f"Round: {User.round}",
+                         start_x=SCREEN_WIDTH - 350,
+                         start_y=SCREEN_HEIGHT - 35,
+                         color=arcade.color.BLACK,
+                         font_size=24,
+                         align="right",
+                         width=300,
+                         font_name="Comic Sans MS")
+
+        arcade.draw_text(f"Money: {User.money}",
+                         start_x=SCREEN_WIDTH - 875,
+                         start_y=SCREEN_HEIGHT - 35,
+                         color=arcade.color.BLACK,
+                         font_size=24,
+                         align="right",
+                         width=300,
+                         font_name="Comic Sans MS")
+
+
 
         #draw the map
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 3, 750,375,self.texture)
@@ -165,7 +210,7 @@ class Game(arcade.Window):
         self.harpoons.draw()
 
         # Draw grid overlay
-        self.draw_grid()
+        #self.draw_grid()
 
     def draw_grid(self):
         # Draw a grid on top of the map for easier pixel locating

@@ -25,7 +25,7 @@ class Tower:
         self.atk = atk
         self.rate = rate
 
-    def upgrade():
+    def upgrade(upg, radius, atk, rate):
         upg += 1
         radius += .5
         atk += 25
