@@ -169,7 +169,7 @@ class Game(arcade.Window):
         Render the screen.
         """
         # create top bar texture
-        bar = arcade.load_texture("images/white.jpg")
+        bar = arcade.load_texture("images/bar2.webp")
         coin = arcade.load_texture("images/coins.png")
         heart = arcade.load_texture("images/health.png")
         # This command has to happen before we start drawing
