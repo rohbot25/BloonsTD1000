@@ -170,15 +170,18 @@ class Game(arcade.Window):
         """
         # create top bar texture
         bar = arcade.load_texture("images/white.jpg")
-
+        coin = arcade.load_texture("images/coins.png")
+        heart = arcade.load_texture("images/health.png")
         # This command has to happen before we start drawing
         self.clear()
 
         # draw the top bar
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 1.05, 1400, 44, bar)
+        arcade.draw_texture_rectangle(SCREEN_WIDTH // 5, SCREEN_HEIGHT // 1.05, 40, 40, coin)
+        arcade.draw_texture_rectangle(SCREEN_WIDTH // 30, SCREEN_HEIGHT // 1.05, 40, 40, heart)
 
-        arcade.draw_text(f"Health: {User.health}",
-                         start_x=30,
+        arcade.draw_text(f": {User.health}",
+                         start_x=50,
                          start_y=SCREEN_HEIGHT - 35,
                          color=arcade.color.BLACK,
                          font_size=24,
@@ -193,8 +196,8 @@ class Game(arcade.Window):
                          width=300,
                          font_name="Comic Sans MS")
 
-        arcade.draw_text(f"Money: {User.money}",
-                         start_x=SCREEN_WIDTH - 875,
+        arcade.draw_text(f": {User.money}",
+                         start_x=SCREEN_WIDTH - 1000,
                          start_y=SCREEN_HEIGHT - 35,
                          color=arcade.color.BLACK,
                          font_size=24,
@@ -277,6 +280,8 @@ class Game(arcade.Window):
         for bullet in self.harpoons:
             if bullet.top < 0:
                 bullet.remove_from_sprite_lists()
+            elif bullet.top == Balloon.top:
+                User.money +=50
 
         self.harpoons.update()
 
