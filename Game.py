@@ -9,7 +9,7 @@ SCREEN_TITLE = "Fish Tower Defense"
 
 SPRITE_SCALING = 1.0 
 BALLOON_SPEED = 2.0
-BULLET_SPEED = 10.0
+BULLET_SPEED = 50.0
 
 class User:
     round = 1
@@ -75,6 +75,8 @@ class Balloon(arcade.Sprite):
             # Reached the end of the list, start over.
             if self.cur_position >= len(self.path):
                 self.cur_position = 0
+                User.health -=10
+                User.round += 1
 
 class Tower(arcade.Sprite):
     def __init__(self, image, scale):
@@ -173,7 +175,7 @@ class Game(arcade.Window):
         self.clear()
 
         # draw the top bar
-        arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 1.15, 1400, 160, bar)
+        arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 1.05, 1400, 44, bar)
 
         arcade.draw_text(f"Health: {User.health}",
                          start_x=30,
@@ -203,7 +205,7 @@ class Game(arcade.Window):
 
 
         #draw the map
-        arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 3, 750,375,self.texture)
+        arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2.45, 825,500,self.texture)
 
         self.balloons.draw()
         self.towers.draw()
