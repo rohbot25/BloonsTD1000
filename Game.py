@@ -215,20 +215,20 @@ class Game(arcade.Window):
         self.harpoons.draw()
 
         # Draw grid overlay
-        #self.draw_grid()
+        self.draw_grid()
 
     def draw_grid(self):
         # Draw a grid on top of the map for easier pixel locating
         grid_size = 25  # Size of each grid cell in pixels
-        line_color = arcade.color.GRAY
+        line_color = arcade.color.LIGHT_GRAY
 
         # Draw vertical lines
         for x in range(0, SCREEN_WIDTH, grid_size):
-            arcade.draw_line(x, 0, x, SCREEN_HEIGHT, line_color, 2)
+            arcade.draw_line(x, 0, x, SCREEN_HEIGHT, line_color,1 )
 
         # Draw horizontal lines
         for y in range(0, SCREEN_HEIGHT, grid_size):
-            arcade.draw_line(0, y, SCREEN_WIDTH, y, line_color, 2)
+            arcade.draw_line(0, y, SCREEN_WIDTH, y, line_color, 1)
     
     #update the position of the sprites
     def on_update(self,delta_time):
@@ -276,12 +276,14 @@ class Game(arcade.Window):
 
                 self.harpoons.append(bullet)
 
-        # Get rid of the bullet when it flies off-screen
+        # Get rid of the bullet when it flies off-screen78\]=
         for bullet in self.harpoons:
             if bullet.top < 0:
                 bullet.remove_from_sprite_lists()
-            elif bullet.top == Balloon.top:
-                User.money +=50
+            elif arcade.check_for_collision(bullet, self.balloons[0]):
+                bullet.remove_from_sprite_lists()
+                User.money += 50
+
 
         self.harpoons.update()
 
