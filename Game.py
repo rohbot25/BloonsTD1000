@@ -11,6 +11,17 @@ SPRITE_SCALING = 1.0
 BALLOON_SPEED = 2.0
 BULLET_SPEED = 10.0
 
+class User:
+    round = 1
+    money = 650
+    health = 150
+
+    def __init__(self, round, money, health):
+        self.round = round
+        self.money = money
+        self.health = health
+
+
 class Balloon(arcade.Sprite):
     #BALOOOOONS
 
@@ -71,10 +82,8 @@ class Tower(arcade.Sprite):
         #something about the image for the sprite
         super().__init__(image, scale)
 
-    def update(self,balloon):
+    def update(self, balloon):
        pass 
-
-
 
 class Game(arcade.Window):
     """ Main application class. """
@@ -155,14 +164,57 @@ class Game(arcade.Window):
         """
         Render the screen.
         """
-
+        # create top bar texture
+        bar = arcade.load_texture("images/bar2.webp")
+        coin = arcade.load_texture("images/coins.png")
+        heart = arcade.load_texture("images/health.png")
         # This command has to happen before we start drawing
         self.clear()
 
-        #draw the map
-        arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 3, 750,375,self.texture)
-
+        #Sidebar for buying towers
         arcade.draw_texture_rectangle(SCREEN_WIDTH - 100, SCREEN_HEIGHT // 2, 250,SCREEN_HEIGHT, self.sidebar)
+        arcade.draw_rectangle_filled(838, 388, 75, 75, (0, 0, 0, 128))
+        arcade.draw_rectangle_filled(938, 388, 75, 75, (0, 0, 0, 128))
+        arcade.draw_rectangle_filled(838, 288, 75, 75, (0, 0, 0, 128))
+        arcade.draw_rectangle_filled(938, 288, 75, 75, (0, 0, 0, 128))
+        arcade.draw_rectangle_filled(838, 188, 75, 75, (0, 0, 0, 128))
+        arcade.draw_rectangle_filled(938, 188, 75, 75, (0, 0, 0, 128))
+        arcade.draw_rectangle_filled(838, 88, 75, 75, (0, 0, 0, 128))
+        arcade.draw_rectangle_filled(938, 88, 75, 75, (0, 0, 0, 128))
+
+
+        # draw the top bar
+        arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 1.05, 1400, 44, bar)
+        arcade.draw_texture_rectangle(SCREEN_WIDTH // 5, SCREEN_HEIGHT // 1.05, 40, 40, coin)
+        arcade.draw_texture_rectangle(SCREEN_WIDTH // 30, SCREEN_HEIGHT // 1.05, 40, 40, heart)
+
+        arcade.draw_text(f": {User.health}",
+                         start_x=50,
+                         start_y=SCREEN_HEIGHT - 35,
+                         color=arcade.color.BLACK,
+                         font_size=24,
+                         font_name="Comic Sans MS")
+
+        arcade.draw_text(f"Round: {User.round}",
+                         start_x=SCREEN_WIDTH - 350,
+                         start_y=SCREEN_HEIGHT - 35,
+                         color=arcade.color.BLACK,
+                         font_size=24,
+                         align="right",
+                         width=300,
+                         font_name="Comic Sans MS")
+
+        arcade.draw_text(f": {User.money}",
+                         start_x=SCREEN_WIDTH - 1000,
+                         start_y=SCREEN_HEIGHT - 35,
+                         color=arcade.color.BLACK,
+                         font_size=24,
+                         align="right",
+                         width=300,
+                         font_name="Comic Sans MS")
+
+        #draw the map
+        arcade.draw_texture_rectangle(SCREEN_WIDTH // 2.75, SCREEN_HEIGHT // 2.45, 825,500,self.texture)
 
         self.balloons.draw()
         self.towers.draw()
