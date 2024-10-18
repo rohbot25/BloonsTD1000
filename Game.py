@@ -84,17 +84,15 @@ class Tower(arcade.Sprite):
         super().__init__(image, scale)
 
     def update(self,balloon):
-       pass 
+       pass
 
 
 
-class Game(arcade.Window):
+class GameView(arcade.View):
     """ Main application class. """
 
     def __init__(self):
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-
-        arcade.set_background_color(arcade.color.AMAZON)
+        super().__init__()
         
         #map
         self.texture = None
@@ -168,6 +166,8 @@ class Game(arcade.Window):
         """
         Render the screen.
         """
+        self.clear()
+        
         # create top bar texture
         bar = arcade.load_texture("images/bar2.webp")
         coin = arcade.load_texture("images/coins.png")
@@ -306,12 +306,42 @@ class Game(arcade.Window):
                 User.money +=50
 
         self.harpoons.update()
-
         
+
+class StartView(arcade.View):
+    # View for the start screen
+
+    def on_show(self):
+        # Set background color when view is shown
+        arcade.set_background_color(arcade.color.AMAZON)
+
+    def on_draw(self):
+        # Draw the start screen
+        self.clear()
+        arcade.draw_text("Fish Tower Defense", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+                         arcade.color.WHITE, font_size=50, anchor_x="center")
+        arcade.draw_text("Click to start", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 75,
+                         arcade.color.WHITE, font_size=20, anchor_x="center")
+
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        # Start the game when the mouse is pressed
+        game_view = GameView()
+        game_view.setup()
+        self.window.show_view(game_view)
+
+
+class Game(arcade.Window):
+    # Main application class
+
+    def __init__(self):
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+        self.start_view = StartView()
+        self.show_view(self.start_view)
+
+
 def main():
     """ Main function """
     window = Game()
-    window.setup()
     arcade.run()
 
 
