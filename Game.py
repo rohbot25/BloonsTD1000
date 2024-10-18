@@ -172,6 +172,8 @@ class Game(arcade.Window):
         bar = arcade.load_texture("images/bar2.webp")
         coin = arcade.load_texture("images/coins.png")
         heart = arcade.load_texture("images/health.png")
+        sidebar = arcade.load_texture("images/sidebar.jpg")
+        paper_banner = arcade.load_texture("images/paper_banner.png")
         # This command has to happen before we start drawing
         self.clear()
 
@@ -205,7 +207,27 @@ class Game(arcade.Window):
                          width=300,
                          font_name="Comic Sans MS")
 
+        # draw sidebar
+        arcade.draw_texture_rectangle(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1, sidebar)
+        arcade.draw_rectangle_filled(825, 350, 75, 75, (0, 0, 0, 128))
+        arcade.draw_rectangle_filled(925, 350, 75, 75, (0, 0, 0, 128))
+        arcade.draw_rectangle_filled(825, 250, 75, 75, (0, 0, 0, 128))
+        arcade.draw_rectangle_filled(925, 250, 75, 75, (0, 0, 0, 128))
+        arcade.draw_rectangle_filled(825, 150, 75, 75, (0, 0, 0, 128))
+        arcade.draw_rectangle_filled(925, 150, 75, 75, (0, 0, 0, 128))
+        arcade.draw_rectangle_filled(825, 50, 75, 75, (0, 0, 0, 128))
+        arcade.draw_rectangle_filled(925, 50, 75, 75, (0, 0, 0, 128))
 
+        arcade.draw_texture_rectangle(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 1.17, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 9, paper_banner)
+
+        arcade.draw_text(f"Fishermen",
+                         start_x= SCREEN_WIDTH // 1.53,
+                         start_y= SCREEN_HEIGHT // 1.2,
+                         color=arcade.color.BLACK,
+                         font_size=24,
+                         align="right",
+                         width=300,
+                         font_name="Comic Sans MS")
 
         #draw the map
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2.45, 825,500,self.texture)
