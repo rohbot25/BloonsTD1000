@@ -1,7 +1,6 @@
 import arcade
-
 import math
-
+from User import User
 # Screen title and size
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 500
@@ -11,15 +10,7 @@ SPRITE_SCALING = 1.0
 BALLOON_SPEED = 2.0
 BULLET_SPEED = 50.0
 
-class User:
-    round = 1
-    money = 650
-    health = 150
 
-    def __init__(self, round, money, health):
-        self.round = round
-        self.money = money
-        self.health = health
 
 class Balloon(arcade.Sprite):
     #BALOOOOONS
@@ -28,6 +19,7 @@ class Balloon(arcade.Sprite):
         #something about the image for the sprite
         super().__init__(image, scale)
         #path
+
         self.path = path
         self.cur_position = 0
         #speed TODO change based on balloon type? 
@@ -215,7 +207,7 @@ class Game(arcade.Window):
         self.harpoons.draw()
 
         # Draw grid overlay
-        self.draw_grid()
+        #self.draw_grid()
 
     def draw_grid(self):
         # Draw a grid on top of the map for easier pixel locating
@@ -283,6 +275,8 @@ class Game(arcade.Window):
             elif arcade.check_for_collision(bullet, self.balloons[0]):
                 bullet.remove_from_sprite_lists()
                 User.money += 50
+
+
 
 
         self.harpoons.update()
