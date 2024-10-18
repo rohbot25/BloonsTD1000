@@ -11,6 +11,8 @@ SPRITE_SCALING = 1.0
 BALLOON_SPEED = 2.0
 BULLET_SPEED = 50.0
 
+BUY_BOX_SIZE = 75
+
 class User:
     round = 1
     money = 650
@@ -104,7 +106,24 @@ class GameView(arcade.View):
         self.towers = None
         self.harpoons = None
 
+        # Initialize mouse position
+        self.mouse_x = 0
+        self.mouse_y = 0
+
+        # Creating the location for all the boxes
+        self.box_list = [
+            [825, 350],
+            [925, 350],
+            [825, 250],
+            [925, 250],
+            [825, 150],
+            [925, 150],
+            [825, 50],
+            [925, 50]
+        ]
+
         self.frame_count = 0
+
 
 
     def setup(self):
@@ -160,7 +179,8 @@ class GameView(arcade.View):
 
     def on_mouse_motion(self, x: float, y: float, dx: float, dy: float):
         """ User moves mouse """
-        pass
+        self.mouse_x = x
+        self.mouse_y = y
 
     def on_draw(self):
         """
@@ -168,12 +188,13 @@ class GameView(arcade.View):
         """
         self.clear()
         
-        # create top bar texture
+        # create all texture
         bar = arcade.load_texture("images/bar2.webp")
         coin = arcade.load_texture("images/coins.png")
         heart = arcade.load_texture("images/health.png")
         sidebar = arcade.load_texture("images/sidebar.jpg")
         paper_banner = arcade.load_texture("images/paper_banner.png")
+        buy_fisherman = arcade.load_texture("art/base_fisherman.png")
         # This command has to happen before we start drawing
         self.clear()
 
@@ -209,17 +230,10 @@ class GameView(arcade.View):
 
         # draw sidebar
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1, sidebar)
-        arcade.draw_rectangle_filled(825, 350, 75, 75, (0, 0, 0, 128))
-        arcade.draw_rectangle_filled(925, 350, 75, 75, (0, 0, 0, 128))
-        arcade.draw_rectangle_filled(825, 250, 75, 75, (0, 0, 0, 128))
-        arcade.draw_rectangle_filled(925, 250, 75, 75, (0, 0, 0, 128))
-        arcade.draw_rectangle_filled(825, 150, 75, 75, (0, 0, 0, 128))
-        arcade.draw_rectangle_filled(925, 150, 75, 75, (0, 0, 0, 128))
-        arcade.draw_rectangle_filled(825, 50, 75, 75, (0, 0, 0, 128))
-        arcade.draw_rectangle_filled(925, 50, 75, 75, (0, 0, 0, 128))
+        for box_x, box_y in self.box_list:
+            arcade.draw_rectangle_filled(box_x, box_y, BUY_BOX_SIZE, BUY_BOX_SIZE, (0, 0, 0, 128))
 
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 1.17, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 9, paper_banner)
-
         arcade.draw_text(f"Fishermen",
                          start_x= SCREEN_WIDTH // 1.53,
                          start_y= SCREEN_HEIGHT // 1.2,
@@ -257,6 +271,11 @@ class GameView(arcade.View):
         self.balloons.update()
 
         self.frame_count += 1
+
+        # Get the current mouse position
+        mouse_x, mouse_y = self.mouse_x, self.mouse_y
+
+
 
         for tower in self.towers:
             # First, calculate the angle to the player. We could do this
