@@ -257,6 +257,8 @@ class GameView(arcade.View):
         self.balloons.update()
 
         self.frame_count += 1
+        if User.health == 0:
+            pass
 
         for tower in self.towers:
             # First, calculate the angle to the player. We could do this
@@ -298,12 +300,14 @@ class GameView(arcade.View):
 
                 self.harpoons.append(bullet)
 
-        # Get rid of the bullet when it flies off-screen
+        # Get rid of the bullet when it flies off-screen or when it hits a balloon
         for bullet in self.harpoons:
             if bullet.top < 0:
                 bullet.remove_from_sprite_lists()
-            elif bullet.top == Balloon.top:
-                User.money +=50
+            elif arcade.check_for_collision(bullet, self.balloons[0]):
+                bullet.remove_from_sprite_lists()
+                User.money += 50
+
 
         self.harpoons.update()
         
