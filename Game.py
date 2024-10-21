@@ -58,27 +58,28 @@ class Sidebar:
                          align="right",
                          width=300,
                          font_name="Comic Sans MS")
-    #
-    #     # Draw the buttons
-    #     for button in self.buttons:
-    #         button.draw()
+
+        # Draw the buttons
+        for button in self.buttons:
+            button.draw()
 
 class Button:
-    def __init__(self, x, y, width, height, tower, cost):
+    def __init__(self, x, y, width, height, tower, cost, image):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.tower_type = tower
         self.cost = cost
+        self.image = image
 
-    def draw(self, image):
+    def draw(self):
         # Draw the button
         arcade.draw_texture_rectangle(self.x,
                                       self.y,
                                       self.width,
                                       self.height // 9,
-                                      image)
+                                      self.image)
 
 #
 #     def is_clicked(self, x, y):
@@ -209,23 +210,27 @@ class GameView(arcade.View):
                          width=300,
                          font_name="Comic Sans MS")
 
-        # draw sidebar
-
         # Sidebar
         self.sidebar = Sidebar(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
-        self.sidebar.draw(sidebar, paper_banner)
+
 
         # left buttons
-        for i in range(3):
-            Button(850, 350, 75, 500, "fisherman", 100)
+        button_x = 825
+        button_y = 350
+        for i in range(4):
+            button = Button(button_x, button_y, 75, 500, "fisherman", 100, buy_fisherman)
+            self.sidebar.add_button(button)
+            button_y -= 100
 
         # right buttons
-        for i in range(3):
-            Button(850, 350, 75, 500, "fisherman", 100)
+        button_x = 925
+        button_y = 350
+        for i in range(4):
+            button = Button(button_x, button_y, 75, 500, "fisherman", 100, buy_fisherman)
+            self.sidebar.add_button(button)
+            button_y -= 100
 
-
-
-
+        self.sidebar.draw(sidebar, paper_banner)
 
         #draw the map
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2.45, 825,500,self.texture)
