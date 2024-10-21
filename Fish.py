@@ -16,8 +16,6 @@ class FISH(arcade.Sprite):
     
     def update(self,User):
         #path follow update
-
-        #
         start_x = self.center_x
         start_y = self.center_y
 
