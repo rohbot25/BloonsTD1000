@@ -1,6 +1,6 @@
 import arcade
 import math
-from tower import TOWER, FISHERMAN
+from tower import TOWER, FISHERMAN, WHALER, BOAT, FLYFISHER, NEANDERTHAL, WIZARD, SUPERFISHER, NETFISHER
 from Fish import FISH
 from User import USER
 # Screen title and size
@@ -212,24 +212,30 @@ class GameView(arcade.View):
 
         # Sidebar
         self.sidebar = Sidebar(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
-
-
         # left buttons
         button_x = 825
         button_y = 350
-        for i in range(4):
-            button = Button(button_x, button_y, 75, 500, FISHERMAN(), 100, buy_fisherman)
-            self.sidebar.add_button(button)
-            button_y -= 100
-
+        button = Button(button_x, button_y, 75, 500, FISHERMAN(), 100, buy_fisherman)
+        self.sidebar.add_button(button)
+        button = Button(button_x, button_y-100, 75, 500, WHALER(), 100, buy_fisherman)
+        self.sidebar.add_button(button)
+        button = Button(button_x, button_y-200, 75, 500, BOAT(), 100, buy_fisherman)
+        self.sidebar.add_button(button)
+        button = Button(button_x, button_y-300, 75, 500, FLYFISHER(), 100, buy_fisherman)
+        self.sidebar.add_button(button)
         # right buttons
         button_x = 925
         button_y = 350
-        for i in range(4):
-            button = Button(button_x, button_y, 75, 500, FISHERMAN(), 100, buy_fisherman)
-            self.sidebar.add_button(button)
-            button_y -= 100
+        button = Button(button_x, button_y, 75, 500, NEANDERTHAL(), 100, buy_fisherman)
+        self.sidebar.add_button(button)
+        button = Button(button_x, button_y-100, 75, 500, WIZARD(), 100, buy_fisherman)
+        self.sidebar.add_button(button)
+        button = Button(button_x, button_y-200, 75, 500, SUPERFISHER(), 100, buy_fisherman)
+        self.sidebar.add_button(button)
+        button = Button(button_x, button_y-300, 75, 500, SUPERFISHER(), 100, buy_fisherman)
+        self.sidebar.add_button(button)
 
+        # Draw it all
         self.sidebar.draw(sidebar, paper_banner)
 
         #draw the map
