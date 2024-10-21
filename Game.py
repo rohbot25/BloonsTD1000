@@ -1,6 +1,6 @@
 import arcade
 import math
-from tower import TOWER
+from tower import TOWER, FISHERMAN
 from Fish import FISH
 from User import USER
 # Screen title and size
@@ -218,7 +218,7 @@ class GameView(arcade.View):
         button_x = 825
         button_y = 350
         for i in range(4):
-            button = Button(button_x, button_y, 75, 500, "fisherman", 100, buy_fisherman)
+            button = Button(button_x, button_y, 75, 500, FISHERMAN(), 100, buy_fisherman)
             self.sidebar.add_button(button)
             button_y -= 100
 
@@ -226,7 +226,7 @@ class GameView(arcade.View):
         button_x = 925
         button_y = 350
         for i in range(4):
-            button = Button(button_x, button_y, 75, 500, "fisherman", 100, buy_fisherman)
+            button = Button(button_x, button_y, 75, 500, FISHERMAN(), 100, buy_fisherman)
             self.sidebar.add_button(button)
             button_y -= 100
 

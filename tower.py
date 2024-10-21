@@ -15,7 +15,7 @@ class TOWER(arcade.Sprite):
 class FISHERMAN(TOWER):
 
     def __init__(self):
-        super().__init__("/Images/sungod.png","Fisherman",0.5,25,50)
+        super().__init__("images/sungod.png","Fisherman",0.5,25,50)
         #max amount of upgrade
         self.max = 3
     
