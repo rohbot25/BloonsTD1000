@@ -3,14 +3,14 @@ import math
 
 class FISH(arcade.Sprite):
 
-    def __init__(self, image, scale, path):
+    def __init__(self, image, scale, path,speed):
         #something about the image for the sprite
         super().__init__(image, scale)
         #path
         self.path = path
         self.cur_position = 0
         #speed TODO change based on balloon type? 
-        self.speed = 5.0
+        self.speed = speed
     
     def update(self,User):
         #path follow update
@@ -56,3 +56,18 @@ class FISH(arcade.Sprite):
                 self.cur_position = 0
                 User.health -=10
                 User.round += 1
+
+class REDFISH(FISH):
+    def __init__(path):
+        super().__init__("art/base_level_fish.png",1.0,path,1.0)
+class BLUEFISH(FISH):
+    def __init__(path):
+        super().__init__("art/base_level_fish.png",1.0,path,1.0)
+
+class GREENFISH(FISH):
+    def __init__(path):
+        super().__init__("art/base_level_fish.png",1.0,path,1.0)
+
+class SHARK(FISH):
+    def __init__(path):
+        super().__init__("art/base_level_fish.png",1.0,path,1.0)

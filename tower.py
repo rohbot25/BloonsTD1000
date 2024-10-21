@@ -27,7 +27,7 @@ class FISHERMAN(TOWER):
 class WHALER(TOWER):
     
     def __init__(self):
-        super().__init__("/Images/sungod.png","Fisherman",0.5,25,50)
+        super().__init__("images/sungod.png","Fisherman",0.5,25,50)
         #max amount of upgrade
         self.max = 3
     
@@ -38,7 +38,7 @@ class WHALER(TOWER):
 class BOAT(TOWER):
 
     def __init__(self):
-        super().__init__("/Images/sungod.png","Fisherman",0.5,25,50)
+        super().__init__("images/sungod.png","Fisherman",0.5,25,50)
         #max amount of upgrade
         self.max = 3
     
@@ -49,7 +49,7 @@ class BOAT(TOWER):
 class FLYFISHER(TOWER):
 
     def __init__(self):
-        super().__init__("/Images/sungod.png","Fisherman",0.5,25,50)
+        super().__init__("images/sungod.png","Fisherman",0.5,25,50)
         #max amount of upgrade
         self.max = 3
     
@@ -60,7 +60,7 @@ class FLYFISHER(TOWER):
 class NEANDERTHAL(TOWER):
 
     def __init__(self):
-        super().__init__("/Images/sungod.png","Fisherman",0.5,25,50)
+        super().__init__("images/sungod.png","Fisherman",0.5,25,50)
         #max amount of upgrade
         self.max = 3
     
@@ -71,7 +71,7 @@ class NEANDERTHAL(TOWER):
 class WIZARD(TOWER):
      
     def __init__(self):
-        super().__init__("/Images/sungod.png","Fisherman",0.5,25,50)
+        super().__init__("images/sungod.png","Fisherman",0.5,25,50)
         #max amount of upgrade
         self.max = 3
     
@@ -82,7 +82,7 @@ class WIZARD(TOWER):
 class SUPERFISHER(TOWER):
      
     def __init__(self):
-        super().__init__("/Images/sungod.png","Fisherman",0.5,25,50)
+        super().__init__("images/sungod.png","Fisherman",0.5,25,50)
         #max amount of upgrade
         self.max = 3
     
@@ -93,7 +93,7 @@ class SUPERFISHER(TOWER):
 class NETFISHER(TOWER):
       
     def __init__(self):
-        super().__init__("/Images/sungod.png","Fisherman",0.5,25,50)
+        super().__init__("images/sungod.png","Fisherman",0.5,25,50)
         #max amount of upgrade
         self.max = 3
     
