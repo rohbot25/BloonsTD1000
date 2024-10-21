@@ -24,13 +24,79 @@ class FISHERMAN(TOWER):
             self.rate += 10
 
         
-class HARPOON(TOWER):
+class WHALER(TOWER):
     
     def __init__(self):
-        super().__init__("Harpoon",0.5,25,50)
+        super().__init__("/Images/sungod.png","Fisherman",0.5,25,50)
         #max amount of upgrade
         self.max = 3
     
     def upgrade(self):
         if(self.level < self.max):
-            self.atk += 10 
+            self.rate += 10
+
+class BOAT(TOWER):
+
+    def __init__(self):
+        super().__init__("/Images/sungod.png","Fisherman",0.5,25,50)
+        #max amount of upgrade
+        self.max = 3
+    
+    def upgrade(self):
+        if(self.level < self.max):
+            self.rate += 10
+
+class FLYFISHER(TOWER):
+
+    def __init__(self):
+        super().__init__("/Images/sungod.png","Fisherman",0.5,25,50)
+        #max amount of upgrade
+        self.max = 3
+    
+    def upgrade(self):
+        if(self.level < self.max):
+            self.rate += 10
+
+class NEANDERTHAL(TOWER):
+
+    def __init__(self):
+        super().__init__("/Images/sungod.png","Fisherman",0.5,25,50)
+        #max amount of upgrade
+        self.max = 3
+    
+    def upgrade(self):
+        if(self.level < self.max):
+            self.rate += 10
+
+class WIZARD(TOWER):
+     
+    def __init__(self):
+        super().__init__("/Images/sungod.png","Fisherman",0.5,25,50)
+        #max amount of upgrade
+        self.max = 3
+    
+    def upgrade(self):
+        if(self.level < self.max):
+            self.rate += 10
+
+class SUPERFISHER(TOWER):
+     
+    def __init__(self):
+        super().__init__("/Images/sungod.png","Fisherman",0.5,25,50)
+        #max amount of upgrade
+        self.max = 3
+    
+    def upgrade(self):
+        if(self.level < self.max):
+            self.rate += 10
+
+class NETFISHER(TOWER):
+      
+    def __init__(self):
+        super().__init__("/Images/sungod.png","Fisherman",0.5,25,50)
+        #max amount of upgrade
+        self.max = 3
+    
+    def upgrade(self):
+        if(self.level < self.max):
+            self.rate += 10
