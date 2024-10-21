@@ -88,7 +88,78 @@ class Tower(arcade.Sprite):
     def update(self,balloon):
        pass
 
+class Sidebar:
+    def __init__(self, x, y, width, height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        # Creating the location for all the boxes
+        self.box_list = [
+            [825, 350],
+            [925, 350],
+            [825, 250],
+            [925, 250],
+            [825, 150],
+            [925, 150],
+            [825, 50],
+            [925, 50]
+        ]
+        self.buttons = []
 
+    def add_button(self, button):
+        self.buttons.append(button)
+
+    def draw(self, sidebar, paper_banner):
+        # Draw the sidebar background
+        arcade.draw_texture_rectangle(self.x,
+                                      self.y,
+                                      self.width,
+                                      self.height,
+                                      sidebar)
+        for box_x, box_y in self.box_list:
+            arcade.draw_rectangle_filled(box_x, box_y, BUY_BOX_SIZE, BUY_BOX_SIZE, (0, 0, 0, 128))
+        arcade.draw_texture_rectangle(SCREEN_WIDTH // 1.145,
+                                      SCREEN_HEIGHT // 1.17,
+                                      self.width,
+                                      self.height // 9,
+                                      paper_banner)
+        arcade.draw_text(f"Fishermen",
+                         start_x=SCREEN_WIDTH // 1.53,
+                         start_y=SCREEN_HEIGHT // 1.2,
+                         color=arcade.color.BLACK,
+                         font_size=24,
+                         align="right",
+                         width=300,
+                         font_name="Comic Sans MS")
+    #
+    #     # Draw the buttons
+    #     for button in self.buttons:
+    #         button.draw()
+
+class Button:
+    def __init__(self, x, y, width, height, tower, cost):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.tower_type = tower
+        self.cost = cost
+
+    def draw(self, image):
+        # Draw the button
+        arcade.draw_texture_rectangle(self.x,
+                                      self.y,
+                                      self.width,
+                                      self.height // 9,
+                                      image)
+
+#
+#     def is_clicked(self, x, y):
+#         return (
+#             self.x <= x <= self.x + self.width and
+#             self.y <= y <= self.y + self.height
+#         )
 
 class GameView(arcade.View):
     """ Main application class. """
@@ -110,21 +181,7 @@ class GameView(arcade.View):
         self.mouse_x = 0
         self.mouse_y = 0
 
-        # Creating the location for all the boxes
-        self.box_list = [
-            [825, 350],
-            [925, 350],
-            [825, 250],
-            [925, 250],
-            [825, 150],
-            [925, 150],
-            [825, 50],
-            [925, 50]
-        ]
-
         self.frame_count = 0
-
-
 
     def setup(self):
         """ Set up the game here. Call this function to restart the game. """
@@ -133,10 +190,6 @@ class GameView(arcade.View):
         self.balloons = arcade.SpriteList()
         self.towers = arcade.SpriteList()
         self.harpoons = arcade.SpriteList()
-
-
-        #test for top bar
-
 
         # Add a tower
         tower = arcade.Sprite("images/sungod.png", 0.5)
@@ -229,19 +282,22 @@ class GameView(arcade.View):
                          font_name="Comic Sans MS")
 
         # draw sidebar
-        arcade.draw_texture_rectangle(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1, sidebar)
-        for box_x, box_y in self.box_list:
-            arcade.draw_rectangle_filled(box_x, box_y, BUY_BOX_SIZE, BUY_BOX_SIZE, (0, 0, 0, 128))
 
-        arcade.draw_texture_rectangle(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 1.17, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 9, paper_banner)
-        arcade.draw_text(f"Fishermen",
-                         start_x= SCREEN_WIDTH // 1.53,
-                         start_y= SCREEN_HEIGHT // 1.2,
-                         color=arcade.color.BLACK,
-                         font_size=24,
-                         align="right",
-                         width=300,
-                         font_name="Comic Sans MS")
+        # Sidebar
+        self.sidebar = Sidebar(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
+        self.sidebar.draw(sidebar, paper_banner)
+
+        # left buttons
+        for i in range(3):
+            Button(850, 350, 75, 500, "fisherman", 100)
+
+        # right buttons
+        for i in range(3):
+            Button(850, 350, 75, 500, "fisherman", 100)
+
+
+
+
 
         #draw the map
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2.45, 825,500,self.texture)
