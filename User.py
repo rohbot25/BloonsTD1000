@@ -1,12 +1,9 @@
 import arcade
 
 
-class User:
-    round = 1
-    money = 650
-    health = 150
+class USER:
 
-    def __init__(self, round, money, health):
-        self.round = round
-        self.money = money
-        self.health = health
+    def __init__(self):
+        self.round = 0
+        self.money = 0
+        self.health = 100
