@@ -3,10 +3,12 @@ import math
 
 class FISH(arcade.Sprite):
 
-    def __init__(self, image, scale, path,speed):
+    def __init__(self, image, scale, path,speed,hp,points):
         #something about the image for the sprite
         super().__init__(image, scale)
         #path
+        self.hp = hp
+        self.points = points
         self.path = path
         self.cur_position = 0
         #speed TODO change based on balloon type? 
