@@ -20,6 +20,11 @@ class Sidebar:
         self.y = y
         self.width = width
         self.height = height
+
+        self.tower = "tower"
+        self.towerImage = "images"
+        self.upgradeName = "upgrade"
+        self.upgradeLevel = 0
         # Creating the location for all the boxes
         self.box_list = [
             [825, 350],
@@ -62,6 +67,27 @@ class Sidebar:
         # Draw the buttons
         for button in self.buttons:
             button.draw()
+    def drawUpgrade(self,sidebar,paper_banner):
+        arcade.draw_texture_rectangle(self.x,
+                                      self.y,
+                                      self.width,
+                                      self.height,
+                                      sidebar)
+        arcade.draw_texture_rectangle(SCREEN_WIDTH // 1.145,
+                                      SCREEN_HEIGHT // 1.17,
+                                      self.width,
+                                      self.height // 9,
+                                      paper_banner)
+        arcade.draw_text(f"Fishermen",
+                         start_x=SCREEN_WIDTH // 1.53,
+                         start_y=SCREEN_HEIGHT // 1.2,
+                         color=arcade.color.BLACK,
+                         font_size=24,
+                         align="right",
+                         width=300,
+                         font_name="Comic Sans MS")
+        for button in self.buttons:
+            button.draw()
 
 class Button:
     def __init__(self, x, y, width, height, tower, cost, image):
@@ -94,6 +120,7 @@ class GameView(arcade.View):
     def __init__(self):
         super().__init__()
         
+        self.showUpgrade = False
         #map
         self.texture = None
 
@@ -111,6 +138,7 @@ class GameView(arcade.View):
         self.frame_count = 0
 
         self.user = USER()
+        self.upgradeMenu = Sidebar(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
 
     def setup(self):
         """ Set up the game here. Call this function to restart the game. """
@@ -143,7 +171,7 @@ class GameView(arcade.View):
             [300,0]
         ]
 
-        balloon = FISH("images/balloon.png",0.25,position_list)
+        balloon = FISH("images/balloon.png",0.25,position_list,1,1,1)
 
         balloon.center_x = position_list[0][0]
         balloon.center_y = position_list[0][1]
@@ -152,7 +180,18 @@ class GameView(arcade.View):
 
     def on_mouse_press(self, x, y, button, key_modifiers):
         """ Called when the user presses a mouse button. """
-        pass
+        self.showUpgrade = False
+        for tower in self.towers:
+            if tower.collides_with_point((x,y)):
+                self.tower = tower.name
+                self.upgradeName = "upgrade"
+                self.upgradeLevel = tower.level
+                self.showUpgrade = True
+                button_x = 825
+                button_y = 350
+                button = Button(button_x, button_y, 75, 500, FISHERMAN(), 100, arcade.load_texture("images/health.png"))
+                self.upgradeMenu.add_button(button)
+
 
     def on_mouse_release(self, x: float, y: float, button: int,
                          modifiers: int):
@@ -236,7 +275,10 @@ class GameView(arcade.View):
         self.sidebar.add_button(button)
 
         # Draw it all
-        self.sidebar.draw(sidebar, paper_banner)
+        if not self.showUpgrade:
+            self.sidebar.draw(sidebar, paper_banner)
+        else:
+            self.upgradeMenu.drawUpgrade(paper_banner, paper_banner)
 
         #draw the map
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2.45, 825,500,self.texture)
