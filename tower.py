@@ -1,37 +1,102 @@
-class Tower:
-    #Unique ID
-    ID = 0
-    #Attack Radius
-    radius = 2.0
-    
-    #Damage per attack
-    atk = 50
+import arcade
 
-    #Rate of attack
-    rate = 1;
-
-    #Name of tower
-    name = "Fisherman"
-
-    #Upgrade number, could change to a tuple if we want to add upgrade paths
-    #Should not be altered upon initializing
-    upg = 0
+class TOWER(arcade.Sprite):
     
-    
-    def __init__(self, ID, name, radius, atk, rate):
-        self.ID = ID
+    def __init__(self,image, name, radius, atk, rate):
+        super().__init__(image,1.0)
         self.name = name
         self.radius = radius
         self.atk = atk
         self.rate = rate
-
-    def upgrade(upg, radius, atk, rate):
-        upg += 1
-        radius += .5
-        atk += 25
-        rate += .5
+        self.level = 0
         
 
-    
+#TODO put in the correct base info per tower
+class FISHERMAN(TOWER):
 
+    def __init__(self):
+        super().__init__("images/sungod.png","Fisherman",0.5,25,50)
+        #max amount of upgrade
+        self.max = 3
     
+    def upgrade(self):
+        if(self.level < self.max):
+            self.rate += 10
+
+        
+class WHALER(TOWER):
+    
+    def __init__(self):
+        super().__init__("images/sungod.png","Fisherman",0.5,25,50)
+        #max amount of upgrade
+        self.max = 3
+    
+    def upgrade(self):
+        if(self.level < self.max):
+            self.rate += 10
+
+class BOAT(TOWER):
+
+    def __init__(self):
+        super().__init__("images/sungod.png","Fisherman",0.5,25,50)
+        #max amount of upgrade
+        self.max = 3
+    
+    def upgrade(self):
+        if(self.level < self.max):
+            self.rate += 10
+
+class FLYFISHER(TOWER):
+
+    def __init__(self):
+        super().__init__("images/sungod.png","Fisherman",0.5,25,50)
+        #max amount of upgrade
+        self.max = 3
+    
+    def upgrade(self):
+        if(self.level < self.max):
+            self.rate += 10
+
+class NEANDERTHAL(TOWER):
+
+    def __init__(self):
+        super().__init__("images/sungod.png","Fisherman",0.5,25,50)
+        #max amount of upgrade
+        self.max = 3
+    
+    def upgrade(self):
+        if(self.level < self.max):
+            self.rate += 10
+
+class WIZARD(TOWER):
+     
+    def __init__(self):
+        super().__init__("images/sungod.png","Fisherman",0.5,25,50)
+        #max amount of upgrade
+        self.max = 3
+    
+    def upgrade(self):
+        if(self.level < self.max):
+            self.rate += 10
+
+class SUPERFISHER(TOWER):
+     
+    def __init__(self):
+        super().__init__("images/sungod.png","Fisherman",0.5,25,50)
+        #max amount of upgrade
+        self.max = 3
+    
+    def upgrade(self):
+        if(self.level < self.max):
+            self.rate += 10
+
+class NETFISHER(TOWER):
+      
+    def __init__(self):
+        super().__init__("images/sungod.png","Fisherman",0.5,25,50)
+        #max amount of upgrade
+        self.max = 3
+    
+    def upgrade(self):
+        if(self.level < self.max):
+            self.rate += 10
