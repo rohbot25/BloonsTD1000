@@ -14,6 +14,7 @@ BULLET_SPEED = 50.0
 
 BUY_BOX_SIZE = 75
 
+
 class Sidebar:
     def __init__(self, x, y, width, height):
         self.x = x
@@ -63,6 +64,7 @@ class Sidebar:
         for button in self.buttons:
             button.draw()
 
+
 class Button:
     def __init__(self, x, y, width, height, tower, cost, image):
         self.x = x
@@ -87,6 +89,7 @@ class Button:
 #             self.x <= x <= self.x + self.width and
 #             self.y <= y <= self.y + self.height
 #         )
+
 
 class GameView(arcade.View):
     """ Main application class. """
@@ -121,7 +124,7 @@ class GameView(arcade.View):
         self.harpoons = arcade.SpriteList()
 
         # Add a tower
-        tower = TOWER("images/sungod.png", "tower", 2,3,4)
+        tower = TOWER("images/sungod.png", "tower", 250,3,4)
         tower.center_x = 600
         tower.center_y = 200
         tower.angle = 180
@@ -143,12 +146,16 @@ class GameView(arcade.View):
             [300,0]
         ]
 
-        balloon = FISH("images/balloon.png",0.25,position_list)
-
+        balloon = FISH("images/balloon.png",0.25,position_list, 2, 10, 10)
+        fish = FISH("images/balloon.png",0.25,position_list, 2, 10, 10)
         balloon.center_x = position_list[0][0]
         balloon.center_y = position_list[0][1]
-
+        fish.center_x = position_list[0][1]
+        fish.center_y = position_list[0][1]
         self.fishes.append(balloon)
+        self.fishes.append(fish)
+
+
 
     def on_mouse_press(self, x, y, button, key_modifiers):
         """ Called when the user presses a mouse button. """
@@ -171,7 +178,7 @@ class GameView(arcade.View):
         self.clear()
         
         # create all texture
-        bar = arcade.load_texture("images/coins.png")
+        bar = arcade.load_texture("images/bar2.png")
         coin = arcade.load_texture("images/coins.png")
         heart = arcade.load_texture("images/health.png")
         sidebar = arcade.load_texture("images/sidebar.jpg")
@@ -182,7 +189,7 @@ class GameView(arcade.View):
 
         # draw the top bar
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 1.05, 1400, 44, bar)
-        arcade.draw_texture_rectangle(SCREEN_WIDTH // 5, SCREEN_HEIGHT // 1.05, 40, 40, coin)
+        arcade.draw_texture_rectangle(SCREEN_WIDTH // 5.5, SCREEN_HEIGHT // 1.05, 40, 40, coin)
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 30, SCREEN_HEIGHT // 1.05, 40, 40, heart)
 
         arcade.draw_text(f": {self.user.health}",
@@ -261,7 +268,7 @@ class GameView(arcade.View):
         for y in range(0, SCREEN_HEIGHT, grid_size):
             arcade.draw_line(0, y, SCREEN_WIDTH, y, line_color, 2)
     
-    #update the position of the sprites
+    # update the position of the sprites
     def on_update(self,delta_time):
         for fish in self.fishes:
             fish.update(self.user)
@@ -273,59 +280,70 @@ class GameView(arcade.View):
         # Get the current mouse position
         mouse_x, mouse_y = self.mouse_x, self.mouse_y
 
+        # makes it so the game doesnt crash when there are no balloons, will change in future
+        if len(self.fishes) >0:
+            for tower in self.towers:
 
+                # First, calculate the angle to the player. We could do this
+                # only when the bullet fires, but in this case we will rotate
+                # the enemy to face the player each frame, so we'll do this
+                # each frame.
 
-        for tower in self.towers:
-            # First, calculate the angle to the player. We could do this
-            # only when the bullet fires, but in this case we will rotate
-            # the enemy to face the player each frame, so we'll do this
-            # each frame.
+                # Position the start at the enemy's current location
+                start_x = tower.center_x
+                start_y = tower.center_y
 
-            # Position the start at the enemy's current location
-            start_x = tower.center_x
-            start_y = tower.center_y
+                # Get the destination location for the bullet
+                dest_x = self.fishes[0].center_x
+                dest_y = self.fishes[0].center_y
 
-            # Get the destination location for the bullet
-            dest_x = self.fishes[0].center_x
-            dest_y = self.fishes[0].center_y
+                # Do math to calculate how to get the bullet to the destination.
+                # Calculation the angle in radians between the start points
+                # and end points. This is the angle the bullet will travel.
+                x_diff = dest_x - start_x
+                y_diff = dest_y - start_y
+                angle = math.atan2(y_diff, x_diff)
 
-            # Do math to calculate how to get the bullet to the destination.
-            # Calculation the angle in radians between the start points
-            # and end points. This is the angle the bullet will travel.
-            x_diff = dest_x - start_x
-            y_diff = dest_y - start_y
-            angle = math.atan2(y_diff, x_diff)
+                if tower.center_x - self.fishes[0].center_x < tower.radius:
+                    # Set the enemy to face the player
+                    tower.angle = math.degrees(angle) - 90
 
-            # Set the enemy to face the player.
-            tower.angle = math.degrees(angle) - 90
+                    # Shoot every 60 frames change of shooting each frame
+                    if self.frame_count % 30 == 0:
+                        bullet = arcade.Sprite("images/sun.png",.1)
+                        bullet.center_x = start_x
+                        bullet.center_y = start_y
 
-            # Shoot every 60 frames change of shooting each frame
-            if self.frame_count % 30 == 0:
-                bullet = arcade.Sprite("images/sun.png",.1)
-                bullet.center_x = start_x
-                bullet.center_y = start_y
+                        # Angle the bullet sprite
+                        bullet.angle = math.degrees(angle)
 
-                # Angle the bullet sprite
-                bullet.angle = math.degrees(angle)
+                        # Taking into account the angle, calculate our change_x
+                        # and change_y. Velocity is how fast the bullet travels.
+                        bullet.change_x = math.cos(angle) * BULLET_SPEED
+                        bullet.change_y = math.sin(angle) * BULLET_SPEED
 
-                # Taking into account the angle, calculate our change_x
-                # and change_y. Velocity is how fast the bullet travels.
-                bullet.change_x = math.cos(angle) * BULLET_SPEED
-                bullet.change_y = math.sin(angle) * BULLET_SPEED
+                        self.harpoons.append(bullet)
 
-                self.harpoons.append(bullet)
+            # Get rid of the bullet when it flies off-screen or when it hits a balloon
+            for bullet in self.harpoons:
+                if bullet.top < 0:
+                    bullet.remove_from_sprite_lists()
+                else:
+                    for fish in self.fishes:
+                        if arcade.check_for_collision(bullet, fish):
+                            bullet.remove_from_sprite_lists()
+                            self.user.money += 50
 
-        # Get rid of the bullet when it flies off-screen or when it hits a balloon
-        for bullet in self.harpoons:
-            if bullet.top < 0:
-                bullet.remove_from_sprite_lists()
-            elif arcade.check_for_collision(bullet, self.fishes[0]):
-                bullet.remove_from_sprite_lists()
-                self.user.money += 50
+                            # Decrease the health of the fish/balloon when hit
+                            fish.hp -= 1
+
+                            # If the fish's health reaches zero, remove it from the list
+                            if fish.hp <= 0:
+                                self.fishes.remove(fish)
 
 
         self.harpoons.update()
-        
+
 
 class StartView(arcade.View):
     # View for the start screen
