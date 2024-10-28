@@ -9,6 +9,7 @@ class TOWER(arcade.Sprite):
         self.atk = atk
         self.rate = rate
         self.level = 0
+        self.cost = 0
         
 
 #TODO put in the correct base info per tower
@@ -18,6 +19,7 @@ class FISHERMAN(TOWER):
         super().__init__("images/sungod.png","Fisherman",0.5,25,50)
         #max amount of upgrade
         self.max = 3
+        self.cost = 50
     
     def upgrade(self):
         if(self.level < self.max):
@@ -30,6 +32,7 @@ class WHALER(TOWER):
         super().__init__("images/sungod.png","Fisherman",0.5,25,50)
         #max amount of upgrade
         self.max = 3
+        self.cost = 100
     
     def upgrade(self):
         if(self.level < self.max):
@@ -41,6 +44,7 @@ class BOAT(TOWER):
         super().__init__("images/sungod.png","Fisherman",0.5,25,50)
         #max amount of upgrade
         self.max = 3
+        self.cost = 150
     
     def upgrade(self):
         if(self.level < self.max):
@@ -52,6 +56,7 @@ class FLYFISHER(TOWER):
         super().__init__("images/sungod.png","Fisherman",0.5,25,50)
         #max amount of upgrade
         self.max = 3
+        self.cost = 200
     
     def upgrade(self):
         if(self.level < self.max):
@@ -63,6 +68,7 @@ class NEANDERTHAL(TOWER):
         super().__init__("images/sungod.png","Fisherman",0.5,25,50)
         #max amount of upgrade
         self.max = 3
+        self.cost = 250
     
     def upgrade(self):
         if(self.level < self.max):
@@ -74,6 +80,7 @@ class WIZARD(TOWER):
         super().__init__("images/sungod.png","Fisherman",0.5,25,50)
         #max amount of upgrade
         self.max = 3
+        self.cost = 300
     
     def upgrade(self):
         if(self.level < self.max):
@@ -85,6 +92,7 @@ class SUPERFISHER(TOWER):
         super().__init__("images/sungod.png","Fisherman",0.5,25,50)
         #max amount of upgrade
         self.max = 3
+        self.cost = 350
     
     def upgrade(self):
         if(self.level < self.max):
@@ -96,6 +104,7 @@ class NETFISHER(TOWER):
         super().__init__("images/sungod.png","Fisherman",0.5,25,50)
         #max amount of upgrade
         self.max = 3
+        self.cost = 400
     
     def upgrade(self):
         if(self.level < self.max):

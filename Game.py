@@ -1,5 +1,8 @@
 import arcade
 import math
+
+#from tensorflow.python.ops.metrics_impl import true_positives
+
 from tower import TOWER, FISHERMAN, WHALER, BOAT, FLYFISHER, NEANDERTHAL, WIZARD, SUPERFISHER, NETFISHER
 from Fish import FISH
 from User import USER
@@ -64,29 +67,36 @@ class Sidebar:
             button.draw()
 
 class Button:
-    def __init__(self, x, y, width, height, tower, cost, image):
+    def __init__(self, x, y, width, height, tower_type, cost, image):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.tower_type = tower
+        self.tower_type = tower_type
         self.cost = cost
         self.image = image
+        self.is_hovered = False
 
     def draw(self):
         # Draw the button
         arcade.draw_texture_rectangle(self.x,
                                       self.y,
                                       self.width,
-                                      self.height // 9,
+                                      self.height,
                                       self.image)
 
-#
-#     def is_clicked(self, x, y):
-#         return (
-#             self.x <= x <= self.x + self.width and
-#             self.y <= y <= self.y + self.height
-#         )
+        if self.is_hovered:
+            arcade.draw_rectangle_outline(self.x, self.y, 75, 75, arcade.color.BLACK, 3)
+
+    def check_hover(self, mouse_x, mouse_y):
+        # print(f"width: {self.width} // self.height: {self.height}")
+        self.is_hovered = (
+                self.x - self.width / 2 < mouse_x < self.x + self.width / 2 and
+                self.y - self.height / 2 < mouse_y < self.y + self.height / 2
+        )
+
+    def on_mouse_press(self, x, y, button, key_modifiers):
+        pass
 
 class GameView(arcade.View):
     """ Main application class. """
@@ -107,6 +117,11 @@ class GameView(arcade.View):
         # Initialize mouse position
         self.mouse_x = 0
         self.mouse_y = 0
+
+        # Track the currently selected tower
+        self.selected_tower_type = None
+        # Track whether dragging is active
+        self.is_dragging = False
 
         self.frame_count = 0
 
@@ -143,7 +158,7 @@ class GameView(arcade.View):
             [300,0]
         ]
 
-        balloon = FISH("images/balloon.png",0.25,position_list)
+        balloon = FISH("images/balloon.png",0.25,position_list, 10, 100, 100)
 
         balloon.center_x = position_list[0][0]
         balloon.center_y = position_list[0][1]
@@ -151,18 +166,49 @@ class GameView(arcade.View):
         self.fishes.append(balloon)
 
     def on_mouse_press(self, x, y, button, key_modifiers):
-        """ Called when the user presses a mouse button. """
-        pass
+        # Check if a tower is being dragged
+        if self.is_dragging:
+            return  # Ignore clicks while dragging
+
+        # Check if any button in the sidebar is clicked
+        for button in self.sidebar.buttons:
+            if button.is_hovered and self.user.money >= button.cost:
+                # Start dragging the selected tower type
+                self.selected_tower_type = button.tower_type
+                self.current_tower = self.selected_tower_type()  # Instantiate the tower
+                self.current_tower.center_x = x
+                self.current_tower.center_y = y
+                self.is_dragging = True
+                print(f"{button.tower_type.__name__} selected!")
+                break
 
     def on_mouse_release(self, x: float, y: float, button: int,
                          modifiers: int):
-        """ Called when the user presses a mouse button. """
-        pass
+        if self.is_dragging:
+            # Finalize tower placement
+            if self.user.money >= self.current_tower.cost:
+                self.towers.append(self.current_tower)  # Add the tower to the list
+                self.user.money -= self.current_tower.cost  # Deduct cost
+                print(f"Placed {self.current_tower.__class__.__name__} at ({x}, {y})")
+
+            # Stop dragging and reset
+            self.is_dragging = False
+            self.current_tower = None
 
     def on_mouse_motion(self, x: float, y: float, dx: float, dy: float):
         """ User moves mouse """
         self.mouse_x = x
         self.mouse_y = y
+        #print(f"mouse x: {self.mouse_x} // mouse y: {self.mouse_y}")
+
+        #checks if buttons are hovered
+        for button in self.sidebar.buttons:
+            button.check_hover(x, y)
+
+        # Update the position of the tower being placed if dragging
+        if self.is_dragging and self.current_tower is not None:
+            self.current_tower.center_x = x
+            self.current_tower.center_y = y
 
     def on_draw(self):
         """
@@ -212,38 +258,46 @@ class GameView(arcade.View):
 
         # Sidebar
         self.sidebar = Sidebar(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
-        # left buttons
-        button_x = 825
-        button_y = 350
-        button = Button(button_x, button_y, 75, 500, FISHERMAN(), 100, buy_fisherman)
-        self.sidebar.add_button(button)
-        button = Button(button_x, button_y-100, 75, 500, WHALER(), 100, buy_fisherman)
-        self.sidebar.add_button(button)
-        button = Button(button_x, button_y-200, 75, 500, BOAT(), 100, buy_fisherman)
-        self.sidebar.add_button(button)
-        button = Button(button_x, button_y-300, 75, 500, FLYFISHER(), 100, buy_fisherman)
-        self.sidebar.add_button(button)
-        # right buttons
-        button_x = 925
-        button_y = 350
-        button = Button(button_x, button_y, 75, 500, NEANDERTHAL(), 100, buy_fisherman)
-        self.sidebar.add_button(button)
-        button = Button(button_x, button_y-100, 75, 500, WIZARD(), 100, buy_fisherman)
-        self.sidebar.add_button(button)
-        button = Button(button_x, button_y-200, 75, 500, SUPERFISHER(), 100, buy_fisherman)
-        self.sidebar.add_button(button)
-        button = Button(button_x, button_y-300, 75, 500, SUPERFISHER(), 100, buy_fisherman)
-        self.sidebar.add_button(button)
 
-        # Draw it all
+        # Create buttons
+        button_positions = [
+            (825, 350), (825, 250), (825, 150), (825, 50),
+            (925, 350), (925, 250), (925, 150), (925, 50)
+        ]
+        tower_types = [FISHERMAN, WHALER, BOAT, FLYFISHER, NEANDERTHAL, WIZARD, SUPERFISHER, SUPERFISHER]
+
+        for (button_x, button_y), tower_type in zip(button_positions, tower_types):
+            button = Button(button_x, button_y, 75, 75, tower_type(), 100, buy_fisherman)
+            button.tower_type = tower_type  # Assign the class, not an instance
+            self.sidebar.add_button(button)
+
+        # Update hover states and draw the sidebar
+        for button in self.sidebar.buttons:
+            button.check_hover(self.mouse_x, self.mouse_y)
+
         self.sidebar.draw(sidebar, paper_banner)
+
 
         #draw the map
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2.45, 825,500,self.texture)
 
+        # for button in self.sidebar.buttons:
+        #     if button.cost > self.user.money:
+        #         #draw transparetn red over button
+        #         pass
+        # else:
+        #     # Draw the currently placed tower if dragging
+        #     if self.is_dragging and self.current_tower is not None:
+        #         # Draw the current tower following the mouse
+        #         self.current_tower.draw()
+
         self.fishes.draw()
         self.towers.draw()
         self.harpoons.draw()
+
+        # Display the currently placed tower if dragging
+        if self.is_dragging and self.current_tower is not None:
+            self.current_tower.draw()
 
         # Draw grid overlay
         #self.draw_grid()
