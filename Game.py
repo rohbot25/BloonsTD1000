@@ -231,55 +231,33 @@ class GameView(arcade.View):
                          width=300,
                          font_name="Comic Sans MS")
 
-        # Sidebar
-        self.sidebar = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
-        # left buttons
-        button_x = 825
-        button_y = 350
-        button = Button(button_x, button_y, 75, 500, FISHERMAN(), 100, buy_fisherman)
-        self.sidebar.add_button(button)
-        button = Button(button_x, button_y-100, 75, 500, WHALER(), 100, buy_fisherman)
-        self.sidebar.add_button(button)
-        button = Button(button_x, button_y-200, 75, 500, BOAT(), 100, buy_fisherman)
-        self.sidebar.add_button(button)
-        button = Button(button_x, button_y-300, 75, 500, FLYFISHER(), 100, buy_fisherman)
-        self.sidebar.add_button(button)
-        # right buttons
-        button_x = 925
-        button_y = 350
-        button = Button(button_x, button_y, 75, 500, NEANDERTHAL(), 100, buy_fisherman)
-        self.sidebar.add_button(button)
-        button = Button(button_x, button_y-100, 75, 500, WIZARD(), 100, buy_fisherman)
-        self.sidebar.add_button(button)
-        button = Button(button_x, button_y-200, 75, 500, SUPERFISHER(), 100, buy_fisherman)
-        self.sidebar.add_button(button)
-        button = Button(button_x, button_y-300, 75, 500, SUPERFISHER(), 100, buy_fisherman)
-        self.sidebar.add_button(button)
-
         # Draw it all
         if not self.showUpgrade:
-            self.sidebar.draw(sidebar, paper_banner)
-        else:
-            self.upgradeMenu.drawUpgrade(paper_banner, paper_banner)
-        self.sidebar = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
-
-        # Create buttons
-        button_positions = [
+            # Sidebar
+            self.sidebar = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
+            # left buttons
+            button_positions = [
             (825, 350), (825, 250), (825, 150), (825, 50),
             (925, 350), (925, 250), (925, 150), (925, 50)
-        ]
-        tower_types = [FISHERMAN, WHALER, BOAT, FLYFISHER, NEANDERTHAL, WIZARD, SUPERFISHER, SUPERFISHER]
+            ]
+            tower_types = [FISHERMAN, WHALER, BOAT, FLYFISHER, NEANDERTHAL, WIZARD, SUPERFISHER, SUPERFISHER]
 
-        for (button_x, button_y), tower_type in zip(button_positions, tower_types):
-            button = Button(button_x, button_y, 75, 75, tower_type(), 100, buy_fisherman)
-            button.tower_type = tower_type  # Assign the class, not an instance
-            self.sidebar.add_button(button)
+            for (button_x, button_y), tower_type in zip(button_positions, tower_types):
+                button = Button(button_x, button_y, 75, 75, tower_type(), 100, buy_fisherman)
+                button.tower_type = tower_type  # Assign the class, not an instance
+                self.sidebar.add_button(button)
 
-        # Update hover states and draw the sidebar
-        for button in self.sidebar.buttons:
-            button.check_hover(self.mouse_x, self.mouse_y)
+            # Update hover states and draw the sidebar
+            for button in self.sidebar.buttons:
+                button.check_hover(self.mouse_x, self.mouse_y)
 
-        self.sidebar.draw(sidebar, paper_banner)
+                self.sidebar.draw(sidebar, paper_banner)
+        else:
+            self.sidebar = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
+            self.upgradeMenu.drawUpgrade(paper_banner, paper_banner)
+           
+        # Create buttons
+        
 
 
         #draw the map
