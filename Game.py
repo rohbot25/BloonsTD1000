@@ -1,6 +1,8 @@
 import arcade
 import arcade.gui
 import math
+import time
+import random
 
 #from tensorflow.python.ops.metrics_impl import true_positives
 
@@ -83,13 +85,24 @@ class GameView(arcade.View):
         self.user = USER()
         self.upgradeMenu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
 
+
+        #pasued state for stopping between rounds
+        self.paused = False
+
+        
     def setup(self):
         """ Set up the game here. Call this function to restart the game. """
 
         self.texture = arcade.load_texture("images/map.png")
         self.fishes = arcade.SpriteList()
+
+        #queue for fishes to be spawned from
+        self.fish_queue = arcade.SpriteList()
         self.towers = arcade.SpriteList()
         self.harpoons = arcade.SpriteList()
+        self.user.round = 1
+        self.spawn_cycle_count = 0 
+
 
         # Add a tower
         tower = TOWER("images/sungod.png", "tower", 250,3,4)
@@ -121,9 +134,10 @@ class GameView(arcade.View):
         balloon.center_y = position_list[0][1]
 
         self.fishes.append(balloon)
+        self.last_spawn_time = time.time()
 
     def on_mouse_press(self, x, y, button, key_modifiers):
-        """ Called when the user presses a mouse button. """
+    #""" Called when the user presses a mouse button. """
         #if upgrade menu is open and your are clicking on the menu, skip
         if (self.showUpgrade and x >= 746):
             pass
@@ -157,6 +171,10 @@ class GameView(arcade.View):
                 self.is_dragging = True
                 print(f"{button.tower_type.__name__} selected!")
                 break
+            
+        #if paused, unpause on mouse click
+        if self.paused and button == arcade.MOUSE_BUTTON_LEFT:
+            self.paused = False  # Resume the game on left click
 
 
     def on_mouse_release(self, x: float, y: float, button: int,
@@ -302,6 +320,33 @@ class GameView(arcade.View):
     
     #update the position of the sprites
     def on_update(self,delta_time):
+
+#if paused, eturn, wait to be unpaused
+        if self.paused:
+            return
+        
+#update cycle counter, each call to update is 1 cycle
+        self.spawn_cycle_count += 1
+
+#position list for creating new balloons
+        position_list = [
+            [0,220],
+            [325,220],
+            [325,330],
+            [200,330],
+            [200,35],
+            [85,35],
+            [85,130],
+            [425,130],
+            [425,250],
+            [525,250],
+            [525,75],
+            [300,75],
+            [300,0]
+        ]
+
+        
+
         for fish in self.fishes:
             fish.update(self.user)
 
@@ -372,31 +417,101 @@ class GameView(arcade.View):
                             # If the fish's health reaches zero, remove it from the list
                             if fish.hp <= 0:
                                 self.fishes.remove(fish)
+        else:
+            # pause at round end
+            self.paused = True
+            
+            #increment round
+            self.user.round += 1
 
+            #generate wave based on round number
+            for i in range(self.user.round**2):
+                Balloon = FISH("images/balloon.png",0.25,position_list, 2, 10, 100)
+                Balloon.center_x = position_list[0][0]
+                Balloon.center_y = position_list[0][1]
+                #add fish to queue list
+                self.fish_queue.append(Balloon)
+                
+        #seperate spawning of balloons by 5 update cycles
+        if (self.spawn_cycle_count >= 5 and (len(self.fish_queue) > 0)):
+
+            #reset update cycle counter
+            self.spawn_cycle_count = 0
+
+            #spawn fish from end of queue list
+            self.fishes.append(self.fish_queue[(len(self.fish_queue)-1)])
+
+            #remove fish from end of queue list
+            self.fish_queue.pop()
 
         self.harpoons.update()
         
+        
 
 class StartView(arcade.View):
-    # View for the start screen
+    def __init__(self):
+        super().__init__()
+        self.manager = arcade.gui.UIManager()
+        self.manager.enable()
+
+        # Create a vertical BoxGroup to align buttons
+        self.v_box = arcade.gui.UIBoxLayout()
+
+        # Create the start button
+        start_button = arcade.gui.UIFlatButton(text="Start Game", width=200)
+        start_button.on_click = self.on_click_start
+        self.v_box.add(start_button.with_space_around(bottom=20))
+
+        # Create the help button
+        help_button = arcade.gui.UIFlatButton(text="Help", width=200)
+        help_button.on_click = self.on_click_help
+        self.v_box.add(help_button)
+
+        # Create a widget to hold the v_box widget, that will center the buttons
+        self.manager.add(
+            arcade.gui.UIAnchorWidget(
+                anchor_x="center_x",
+                anchor_y="center_y",
+                child=self.v_box)
+        )
 
     def on_show(self):
-        # Set background color when view is shown
         arcade.set_background_color(arcade.color.AMAZON)
 
     def on_draw(self):
-        # Draw the start screen
         self.clear()
-        arcade.draw_text("Fish Tower Defense", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+        arcade.draw_text("Fish Tower Defense", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100,
                          arcade.color.WHITE, font_size=50, anchor_x="center")
-        arcade.draw_text("Click to start", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 75,
-                         arcade.color.WHITE, font_size=20, anchor_x="center")
+        self.manager.draw()
 
-    def on_mouse_press(self, _x, _y, _button, _modifiers):
-        # Start the game when the mouse is pressed
+    def on_click_start(self, event):
         game_view = GameView()
         game_view.setup()
         self.window.show_view(game_view)
+
+    def on_click_help(self, event):
+        help_view = HelpView()
+        self.window.show_view(help_view)
+
+    def on_hide_view(self):
+        self.manager.disable()
+
+class HelpView(arcade.View):
+    def on_show(self):
+        arcade.set_background_color(arcade.color.AMAZON)
+
+    def on_draw(self):
+        self.clear()
+        arcade.draw_text("Help Screen", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100,
+                         arcade.color.WHITE, font_size=50, anchor_x="center")
+        arcade.draw_text("Instructions on how to play the game.", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+                         arcade.color.WHITE, font_size=20, anchor_x="center")
+        arcade.draw_text("Click to go back", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 75,
+                         arcade.color.WHITE, font_size=20, anchor_x="center")
+
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        start_view = StartView()
+        self.window.show_view(start_view)
 
 
 class Game(arcade.Window):
