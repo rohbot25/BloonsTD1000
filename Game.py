@@ -1,4 +1,5 @@
 import arcade
+import arcade.gui
 import math
 
 #from tensorflow.python.ops.metrics_impl import true_positives
@@ -6,6 +7,7 @@ import math
 from tower import TOWER, FISHERMAN, WHALER, BOAT, FLYFISHER, NEANDERTHAL, WIZARD, SUPERFISHER, NETFISHER
 from Fish import FISH
 from User import USER
+from Sidebar import SIDEBAR
 # Screen title and size
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 500
@@ -17,54 +19,6 @@ BULLET_SPEED = 50.0
 
 BUY_BOX_SIZE = 75
 
-class Sidebar:
-    def __init__(self, x, y, width, height):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        # Creating the location for all the boxes
-        self.box_list = [
-            [825, 350],
-            [925, 350],
-            [825, 250],
-            [925, 250],
-            [825, 150],
-            [925, 150],
-            [825, 50],
-            [925, 50]
-        ]
-        self.buttons = []
-
-    def add_button(self, button):
-        self.buttons.append(button)
-
-    def draw(self, sidebar, paper_banner):
-        # Draw the sidebar background
-        arcade.draw_texture_rectangle(self.x,
-                                      self.y,
-                                      self.width,
-                                      self.height,
-                                      sidebar)
-        for box_x, box_y in self.box_list:
-            arcade.draw_rectangle_filled(box_x, box_y, BUY_BOX_SIZE, BUY_BOX_SIZE, (0, 0, 0, 128))
-        arcade.draw_texture_rectangle(SCREEN_WIDTH // 1.145,
-                                      SCREEN_HEIGHT // 1.17,
-                                      self.width,
-                                      self.height // 9,
-                                      paper_banner)
-        arcade.draw_text(f"Fishermen",
-                         start_x=SCREEN_WIDTH // 1.53,
-                         start_y=SCREEN_HEIGHT // 1.2,
-                         color=arcade.color.BLACK,
-                         font_size=24,
-                         align="right",
-                         width=300,
-                         font_name="Comic Sans MS")
-
-        # Draw the buttons
-        for button in self.buttons:
-            button.draw()
 
 class Button:
     def __init__(self, x, y, width, height, tower_type, cost, image):
@@ -104,6 +58,7 @@ class GameView(arcade.View):
     def __init__(self):
         super().__init__()
         
+        self.showUpgrade = False
         #map
         self.texture = None
 
@@ -126,6 +81,7 @@ class GameView(arcade.View):
         self.frame_count = 0
 
         self.user = USER()
+        self.upgradeMenu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
 
     def setup(self):
         """ Set up the game here. Call this function to restart the game. """
@@ -167,6 +123,23 @@ class GameView(arcade.View):
         self.fishes.append(balloon)
 
     def on_mouse_press(self, x, y, button, key_modifiers):
+        """ Called when the user presses a mouse button. """
+        if (self.showUpgrade and x >= 746):
+            pass
+        else:
+            self.showUpgrade = False
+            for tower in self.towers:
+                if tower.collides_with_point((x,y)):
+                    print("open menu")
+                    self.tower = tower.name
+                    self.upgradeName = "upgrade"
+                    self.upgradeLevel = tower.level
+                    self.showUpgrade = True
+                    button_x = 825
+                    button_y = 350
+                    button = Button(button_x, button_y, 75, 500, FISHERMAN(), 100, arcade.load_texture("images/health.png"))
+                    self.upgradeMenu.add_button(button)
+
         # Check if a tower is being dragged
         if self.is_dragging:
             return  # Ignore clicks while dragging
@@ -182,6 +155,7 @@ class GameView(arcade.View):
                 self.is_dragging = True
                 print(f"{button.tower_type.__name__} selected!")
                 break
+
 
     def on_mouse_release(self, x: float, y: float, button: int,
                          modifiers: int):
@@ -258,6 +232,35 @@ class GameView(arcade.View):
                          font_name="Comic Sans MS")
 
         # Sidebar
+        self.sidebar = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
+        # left buttons
+        button_x = 825
+        button_y = 350
+        button = Button(button_x, button_y, 75, 500, FISHERMAN(), 100, buy_fisherman)
+        self.sidebar.add_button(button)
+        button = Button(button_x, button_y-100, 75, 500, WHALER(), 100, buy_fisherman)
+        self.sidebar.add_button(button)
+        button = Button(button_x, button_y-200, 75, 500, BOAT(), 100, buy_fisherman)
+        self.sidebar.add_button(button)
+        button = Button(button_x, button_y-300, 75, 500, FLYFISHER(), 100, buy_fisherman)
+        self.sidebar.add_button(button)
+        # right buttons
+        button_x = 925
+        button_y = 350
+        button = Button(button_x, button_y, 75, 500, NEANDERTHAL(), 100, buy_fisherman)
+        self.sidebar.add_button(button)
+        button = Button(button_x, button_y-100, 75, 500, WIZARD(), 100, buy_fisherman)
+        self.sidebar.add_button(button)
+        button = Button(button_x, button_y-200, 75, 500, SUPERFISHER(), 100, buy_fisherman)
+        self.sidebar.add_button(button)
+        button = Button(button_x, button_y-300, 75, 500, SUPERFISHER(), 100, buy_fisherman)
+        self.sidebar.add_button(button)
+
+        # Draw it all
+        if not self.showUpgrade:
+            self.sidebar.draw(sidebar, paper_banner)
+        else:
+            self.upgradeMenu.drawUpgrade(paper_banner, paper_banner)
         self.sidebar = Sidebar(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
 
         # Create buttons
