@@ -124,8 +124,10 @@ class GameView(arcade.View):
 
     def on_mouse_press(self, x, y, button, key_modifiers):
         """ Called when the user presses a mouse button. """
+        #if upgrade menu is open and your are clicking on the menu, skip
         if (self.showUpgrade and x >= 746):
             pass
+        #else check if they are clicking on a tower
         else:
             self.showUpgrade = False
             for tower in self.towers:
@@ -231,7 +233,7 @@ class GameView(arcade.View):
                          width=300,
                          font_name="Comic Sans MS")
 
-        # Draw it all
+        # if not show upgrade menu, draw and act with the shop
         if not self.showUpgrade:
             # Sidebar
             self.sidebar = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
@@ -252,6 +254,7 @@ class GameView(arcade.View):
                 button.check_hover(self.mouse_x, self.mouse_y)
 
                 self.sidebar.draw(sidebar, paper_banner)
+        #else draw the upgrade sidebar
         else:
             self.sidebar = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
             self.upgradeMenu.drawUpgrade(paper_banner, paper_banner)
