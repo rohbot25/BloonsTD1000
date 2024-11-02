@@ -85,6 +85,11 @@ class GameView(arcade.View):
         self.user = USER()
         self.upgradeMenu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
 
+
+        #pasued state for stopping between rounds
+        self.paused = False
+
+        
     def setup(self):
         """ Set up the game here. Call this function to restart the game. """
 
@@ -132,7 +137,7 @@ class GameView(arcade.View):
         self.last_spawn_time = time.time()
 
     def on_mouse_press(self, x, y, button, key_modifiers):
-        """ Called when the user presses a mouse button. """
+    #""" Called when the user presses a mouse button. """
         #if upgrade menu is open and your are clicking on the menu, skip
         if (self.showUpgrade and x >= 746):
             pass
@@ -166,6 +171,10 @@ class GameView(arcade.View):
                 self.is_dragging = True
                 print(f"{button.tower_type.__name__} selected!")
                 break
+            
+        #if paused, unpause on mouse click
+        if self.paused and button == arcade.MOUSE_BUTTON_LEFT:
+            self.paused = False  # Resume the game on left click
 
 
     def on_mouse_release(self, x: float, y: float, button: int,
@@ -311,6 +320,10 @@ class GameView(arcade.View):
     
     #update the position of the sprites
     def on_update(self,delta_time):
+
+#if paused, eturn, wait to be unpaused
+        if self.paused:
+            return
         
 #update cycle counter, each call to update is 1 cycle
         self.spawn_cycle_count += 1
@@ -405,6 +418,9 @@ class GameView(arcade.View):
                             if fish.hp <= 0:
                                 self.fishes.remove(fish)
         else:
+            # pause at round end
+            self.paused = True
+            
             #increment round
             self.user.round += 1
 
@@ -433,25 +449,69 @@ class GameView(arcade.View):
         
 
 class StartView(arcade.View):
-    # View for the start screen
+    def __init__(self):
+        super().__init__()
+        self.manager = arcade.gui.UIManager()
+        self.manager.enable()
+
+        # Create a vertical BoxGroup to align buttons
+        self.v_box = arcade.gui.UIBoxLayout()
+
+        # Create the start button
+        start_button = arcade.gui.UIFlatButton(text="Start Game", width=200)
+        start_button.on_click = self.on_click_start
+        self.v_box.add(start_button.with_space_around(bottom=20))
+
+        # Create the help button
+        help_button = arcade.gui.UIFlatButton(text="Help", width=200)
+        help_button.on_click = self.on_click_help
+        self.v_box.add(help_button)
+
+        # Create a widget to hold the v_box widget, that will center the buttons
+        self.manager.add(
+            arcade.gui.UIAnchorWidget(
+                anchor_x="center_x",
+                anchor_y="center_y",
+                child=self.v_box)
+        )
 
     def on_show(self):
-        # Set background color when view is shown
         arcade.set_background_color(arcade.color.AMAZON)
 
     def on_draw(self):
-        # Draw the start screen
         self.clear()
-        arcade.draw_text("Fish Tower Defense", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+        arcade.draw_text("Fish Tower Defense", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100,
                          arcade.color.WHITE, font_size=50, anchor_x="center")
-        arcade.draw_text("Click to start", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 75,
-                         arcade.color.WHITE, font_size=20, anchor_x="center")
+        self.manager.draw()
 
-    def on_mouse_press(self, _x, _y, _button, _modifiers):
-        # Start the game when the mouse is pressed
+    def on_click_start(self, event):
         game_view = GameView()
         game_view.setup()
         self.window.show_view(game_view)
+
+    def on_click_help(self, event):
+        help_view = HelpView()
+        self.window.show_view(help_view)
+
+    def on_hide_view(self):
+        self.manager.disable()
+
+class HelpView(arcade.View):
+    def on_show(self):
+        arcade.set_background_color(arcade.color.AMAZON)
+
+    def on_draw(self):
+        self.clear()
+        arcade.draw_text("Help Screen", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100,
+                         arcade.color.WHITE, font_size=50, anchor_x="center")
+        arcade.draw_text("Instructions on how to play the game.", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+                         arcade.color.WHITE, font_size=20, anchor_x="center")
+        arcade.draw_text("Click to go back", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 75,
+                         arcade.color.WHITE, font_size=20, anchor_x="center")
+
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        start_view = StartView()
+        self.window.show_view(start_view)
 
 
 class Game(arcade.Window):
