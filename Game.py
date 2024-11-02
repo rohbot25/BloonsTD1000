@@ -261,7 +261,7 @@ class GameView(arcade.View):
             self.sidebar.draw(sidebar, paper_banner)
         else:
             self.upgradeMenu.drawUpgrade(paper_banner, paper_banner)
-        self.sidebar = Sidebar(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
+        self.sidebar = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
 
         # Create buttons
         button_positions = [
