@@ -465,7 +465,12 @@ class StartView(arcade.View):
         # Create the help button
         help_button = arcade.gui.UIFlatButton(text="Help", width=200)
         help_button.on_click = self.on_click_help
-        self.v_box.add(help_button)
+        self.v_box.add(help_button.with_space_around(bottom=20))
+
+        # Create the map select button
+        map_select_button = arcade.gui.UIFlatButton(text="Select Map", width=200)
+        map_select_button.on_click = self.on_click_map_select
+        self.v_box.add(map_select_button)
 
         # Create a widget to hold the v_box widget, that will center the buttons
         self.manager.add(
@@ -493,6 +498,10 @@ class StartView(arcade.View):
         help_view = HelpView()
         self.window.show_view(help_view)
 
+    def on_click_map_select(self, event):
+        map_select_view = MapSelectView()
+        self.window.show_view(map_select_view)
+
     def on_hide_view(self):
         self.manager.disable()
 
@@ -513,6 +522,20 @@ class HelpView(arcade.View):
         start_view = StartView()
         self.window.show_view(start_view)
 
+class MapSelectView(arcade.View):
+    def on_show(self):
+        arcade.set_background_color(arcade.color.AMAZON)
+
+    def on_draw(self):
+        self.clear()
+        arcade.draw_text("Select Map", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100,
+                         arcade.color.WHITE, font_size=50, anchor_x="center")
+        arcade.draw_text("Map selection screen. Click to go back.", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+                         arcade.color.WHITE, font_size=20, anchor_x="center")
+
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        start_view = StartView()
+        self.window.show_view(start_view)
 
 class Game(arcade.Window):
     # Main application class
