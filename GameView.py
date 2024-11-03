@@ -114,7 +114,9 @@ class GameView(arcade.View):
     #""" Called when the user presses a mouse button. """
         #if upgrade menu is open and your are clicking on the menu, skip
         if (self.showUpgrade and x >= 746):
+            print(len(self.upgradeMenu.buttons))
             for button in self.upgradeMenu.buttons:
+                print("button")
                 if self.user.money >= button.cost and self.tower.level < self.tower.max:
                     self.user.money -= button.cost
                     self.tower.upgrade()
@@ -274,6 +276,8 @@ class GameView(arcade.View):
                 self.sidebar.draw(sidebar, paper_banner)
         #else draw the upgrade sidebar
         else:
+            self.upgradeMenu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
+            # left buttons
             button = BUTTON(875, 250, 75, 75,self.tower, 100, upgrade)
             self.upgradeMenu.add_button(button)
             self.upgradeMenu.drawUpgrade(paper_banner, paper_banner,self.towerName)
