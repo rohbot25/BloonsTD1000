@@ -17,7 +17,7 @@ class TOWER(arcade.Sprite):
 class FISHERMAN(TOWER):
 
     def __init__(self):
-        super().__init__("art/base_fisherman.png","Fisherman",200,25,50)
+        super().__init__("art/base_fisherman.png","Fisherman",1000,25,50)
         #max amount of upgrade
         self.max = 3
         self.cost = 50
@@ -43,7 +43,7 @@ class WHALER(TOWER):
 class BOAT(TOWER):
 
     def __init__(self):
-        super().__init__("images/sungod.png","Boat",0.5,25,50)
+        super().__init__("images/sungod.png","Boat",1000,25,50)
         #max amount of upgrade
         self.max = 3
         self.cost = 150
@@ -56,7 +56,7 @@ class BOAT(TOWER):
 class FLYFISHER(TOWER):
 
     def __init__(self):
-        super().__init__("images/sungod.png","Flyfisher",0.5,25,50)
+        super().__init__("images/sungod.png","Flyfisher",1000,25,50)
         #max amount of upgrade
         self.max = 3
         self.cost = 200
@@ -68,7 +68,7 @@ class FLYFISHER(TOWER):
 class NEANDERTHAL(TOWER):
 
     def __init__(self):
-        super().__init__("images/sungod.png","Neanderthal",0.5,25,50)
+        super().__init__("images/sungod.png","Neanderthal",1000,25,50)
         #max amount of upgrade
         self.max = 3
         self.cost = 250
@@ -80,7 +80,7 @@ class NEANDERTHAL(TOWER):
 class WIZARD(TOWER):
      
     def __init__(self):
-        super().__init__("images/sungod.png","Wizard",0.5,25,50)
+        super().__init__("images/sungod.png","Wizard",1000,25,50)
         #max amount of upgrade
         self.max = 3
         self.cost = 300
@@ -92,7 +92,7 @@ class WIZARD(TOWER):
 class SUPERFISHER(TOWER):
      
     def __init__(self):
-        super().__init__("images/sungod.png","Superfisher",0.5,25,50)
+        super().__init__("images/sungod.png","Superfisher",1000,25,50)
         #max amount of upgrade
         self.max = 3
         self.cost = 350
@@ -104,7 +104,7 @@ class SUPERFISHER(TOWER):
 class NETFISHER(TOWER):
       
     def __init__(self):
-        super().__init__("images/sungod.png","Netfisher",0.5,25,50)
+        super().__init__("images/sungod.png","Netfisher",1000,25,50)
         #max amount of upgrade
         self.max = 3
         self.cost = 400
