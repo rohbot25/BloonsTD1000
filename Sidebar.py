@@ -57,7 +57,7 @@ class SIDEBAR:
         # Draw the buttons
         for button in self.buttons:
             button.draw()
-    def drawUpgrade(self,sidebar,paper_banner):
+    def drawUpgrade(self,sidebar,paper_banner,type):
         arcade.draw_texture_rectangle(self.x,
                                       self.y,
                                       self.width,
@@ -68,7 +68,7 @@ class SIDEBAR:
                                       self.width,
                                       self.height // 9,
                                       paper_banner)
-        arcade.draw_text(f"Fishermen",
+        arcade.draw_text(type,
                          start_x=self.SCREEN_WIDTH // 1.53,
                          start_y=self.SCREEN_HEIGHT // 1.2,
                          color=arcade.color.BLACK,
