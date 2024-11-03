@@ -32,6 +32,7 @@ class Button:
         self.cost = cost
         self.image = image
         self.is_hovered = False
+        
 
     def draw(self):
         # Draw the button
@@ -56,13 +57,14 @@ class Button:
 
 class GameView(arcade.View):
     """ Main application class. """
-
-    def __init__(self):
+    def __init__(self, selected_map):
         super().__init__()
-        
         self.showUpgrade = False
         #map
         self.texture = None
+
+        #selected map for map selection        
+        self.selected_map = selected_map
 
         #balloons TODO will need to switch this to waves?
         self.fishes = None
@@ -89,11 +91,18 @@ class GameView(arcade.View):
         #pasued state for stopping between rounds
         self.paused = False
 
+        self.setup()
+
         
     def setup(self):
         """ Set up the game here. Call this function to restart the game. """
 
-        self.texture = arcade.load_texture("images/map.png")
+        #set map to selected map
+        self.map = self.selected_map
+
+        #load map
+        print(self.map)
+        self.texture = arcade.load_texture(self.map)
         self.fishes = arcade.SpriteList()
 
         #queue for fishes to be spawned from
@@ -172,9 +181,7 @@ class GameView(arcade.View):
                 print(f"{button.tower_type.__name__} selected!")
                 break
             
-        #if paused, unpause on mouse click
-        if self.paused and button == arcade.MOUSE_BUTTON_LEFT:
-            self.paused = False  # Resume the game on left click
+
 
 
     def on_mouse_release(self, x: float, y: float, button: int,
@@ -189,6 +196,10 @@ class GameView(arcade.View):
             # Stop dragging and reset
             self.is_dragging = False
             self.current_tower = None
+            
+                #if paused, unpause on mouse click
+        if self.paused and button == arcade.MOUSE_BUTTON_LEFT:
+            self.paused = False  # Resume the game on left click
 
     def on_mouse_motion(self, x: float, y: float, dx: float, dy: float):
         """ User moves mouse """
@@ -453,6 +464,7 @@ class StartView(arcade.View):
         super().__init__()
         self.manager = arcade.gui.UIManager()
         self.manager.enable()
+        self.selected_map = "images/map.png"  # Default map
 
         # Create a vertical BoxGroup to align buttons
         self.v_box = arcade.gui.UIBoxLayout()
@@ -465,7 +477,12 @@ class StartView(arcade.View):
         # Create the help button
         help_button = arcade.gui.UIFlatButton(text="Help", width=200)
         help_button.on_click = self.on_click_help
-        self.v_box.add(help_button)
+        self.v_box.add(help_button.with_space_around(bottom=20))
+
+        # Create the map select button
+        map_select_button = arcade.gui.UIFlatButton(text="Select Map", width=200)
+        map_select_button.on_click = self.on_click_map_select
+        self.v_box.add(map_select_button)
 
         # Create a widget to hold the v_box widget, that will center the buttons
         self.manager.add(
@@ -485,7 +502,8 @@ class StartView(arcade.View):
         self.manager.draw()
 
     def on_click_start(self, event):
-        game_view = GameView()
+        #pass selceted map and start
+        game_view = GameView(self.selected_map)
         game_view.setup()
         self.window.show_view(game_view)
 
@@ -493,8 +511,14 @@ class StartView(arcade.View):
         help_view = HelpView()
         self.window.show_view(help_view)
 
+    def on_click_map_select(self, event):
+        map_select_view = MapSelectView(self)
+        self.window.show_view(map_select_view)
+
     def on_hide_view(self):
         self.manager.disable()
+
+        
 
 class HelpView(arcade.View):
     def on_show(self):
@@ -512,7 +536,58 @@ class HelpView(arcade.View):
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         start_view = StartView()
         self.window.show_view(start_view)
+        
+class MapSelectView(arcade.View):
+    def __init__(self, start_view):
+        super().__init__()
+        self.manager = arcade.gui.UIManager()
+        self.manager.enable()
+        self.start_view = StartView()
 
+        # Create a vertical BoxGroup to align buttons
+        self.v_box = arcade.gui.UIBoxLayout()
+
+        # Create the map1 button
+        map1_button = arcade.gui.UIFlatButton(text="Pasture", width=200)
+        map1_button.on_click = self.on_click_map1
+        self.v_box.add(map1_button.with_space_around(bottom=20))
+
+        # Create the map2 button
+        map2_button = arcade.gui.UIFlatButton(text="Forest", width=200)
+        map2_button.on_click = self.on_click_map2
+        self.v_box.add(map2_button.with_space_around(bottom=20))
+
+        # Create a widget to hold the v_box widget, that will center the buttons
+        self.manager.add(
+            arcade.gui.UIAnchorWidget(
+                anchor_x="center_x",
+                anchor_y="center_y",
+                child=self.v_box)
+        )
+
+    def on_show(self):
+        arcade.set_background_color(arcade.color.AMAZON)
+
+    def on_draw(self):
+        self.clear()
+        arcade.draw_text("Select Map", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100,
+                         arcade.color.WHITE, font_size=50, anchor_x="center")
+        arcade.draw_text("Map selection screen. Click to go back.", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+                         arcade.color.WHITE, font_size=20, anchor_x="center")
+        self.manager.draw()
+
+    #map selection passing
+
+    def on_click_map1(self, event):
+        self.start_view.selected_map = "images/map.png"
+        self.window.show_view(self.start_view)
+
+    def on_click_map2(self, event):
+        self.start_view.selected_map = "images/Map2.png"
+        self.window.show_view(self.start_view)
+
+    def on_hide_view(self):
+        self.manager.disable()
 
 class Game(arcade.Window):
     # Main application class
