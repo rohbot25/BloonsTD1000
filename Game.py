@@ -7,7 +7,6 @@ SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 500
 SCREEN_TITLE = "Fish Tower Defense"
 
-
 class StartView(arcade.View):
     def __init__(self):
         super().__init__()
