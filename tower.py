@@ -37,9 +37,8 @@ class WHALER(TOWER):
         self.cost = 100
     
     def upgrade(self):
-        if(self.level < self.max):
-            self.rate += 10
-            self.level +=1
+        self.rate += 10
+        self.level +=1
 
 class BOAT(TOWER):
 
@@ -50,9 +49,9 @@ class BOAT(TOWER):
         self.cost = 150
     
     def upgrade(self):
-        if(self.level < self.max):
-            self.rate += 10
-            self.level +=1
+        
+        self.rate += 10
+        self.level +=1
 
 class FLYFISHER(TOWER):
 
@@ -63,9 +62,8 @@ class FLYFISHER(TOWER):
         self.cost = 200
     
     def upgrade(self):
-        if(self.level < self.max):
-            self.rate += 10
-            self.level +=1
+        self.rate += 10
+        self.level +=1
 
 class NEANDERTHAL(TOWER):
 
@@ -76,9 +74,8 @@ class NEANDERTHAL(TOWER):
         self.cost = 250
     
     def upgrade(self):
-        if(self.level < self.max):
-            self.rate += 10
-            self.level +=1
+        self.rate += 10
+        self.level +=1
 
 class WIZARD(TOWER):
      
@@ -89,9 +86,8 @@ class WIZARD(TOWER):
         self.cost = 300
     
     def upgrade(self):
-        if(self.level < self.max):
-            self.rate += 10
-            self.level +=1
+        self.rate += 10
+        self.level +=1
 
 class SUPERFISHER(TOWER):
      
@@ -102,9 +98,8 @@ class SUPERFISHER(TOWER):
         self.cost = 350
     
     def upgrade(self):
-        if(self.level < self.max):
-            self.rate += 10
-            self.level +=1
+        self.rate += 10
+        self.level +=1
 
 class NETFISHER(TOWER):
       
@@ -115,6 +110,5 @@ class NETFISHER(TOWER):
         self.cost = 400
     
     def upgrade(self):
-        if(self.level < self.max):
-            self.rate += 10
-            self.level +=1
+        self.rate += 10
+        self.level +=1

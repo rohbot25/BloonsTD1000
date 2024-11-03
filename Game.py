@@ -150,10 +150,12 @@ class GameView(arcade.View):
         #if upgrade menu is open and your are clicking on the menu, skip
         if (self.showUpgrade and x >= 746):
             for button in self.upgradeMenu.buttons:
-                if self.user.money >= button.cost:
+                if self.user.money >= button.cost and self.tower.level < self.tower.max:
                     self.user.money -= button.cost
                     self.tower.upgrade()
                     print(f"upgrade made!")
+                else:
+                    print("no money or max upgrade")
                     
         #else check if they are clicking on a tower
         else:
