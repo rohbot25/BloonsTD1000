@@ -164,17 +164,17 @@ class GameView(arcade.View):
         if self.is_dragging and self.current_tower:
             # Finalize tower placement
             # Check if releasing the tower in a restricted area
+            # EVENTUALLY WILL DO DIFFERENTLY
+                # Create a list that holds invisible blocks covering all the locations that are
+                # restricted, then whenever a new tower is added, dynamically add that tower
+                # location to the list
             if not (((self.tb_x_start < x < self.tbsb_x_end and self.tb_y_start < y < self.tb_y_end) or
                     (self.sb_x_start < x < self.tbsb_x_end and self.sb_y_start < y < self.sb_y_end) or
                     (0<x<300 and 250<y<300) or (300<x<350 and 250<y<450) or (175<x<350 and 400<y<450) or
                     (175<x<225 and 25<y<450) or (50<x<225 and 0<y<50) or (25<x<75 and 25<y<175) or
-                    (50<x<450 and 150<y<200)
-
-
-                    ) and
+                    (50<x<450 and 150<y<200) or (425<x<475 and 175<y<350) or (425<x<550 and 300<y<350) or
+                    (525<x<575 and 75<y<325) or (275<x<575 and 50<y<125) or (275<x<325 and 0<y<100)) and
                     (self.user.money >= self.current_tower.cost)
-                # Not on the path
-
                 # Not over another tower
                 ):
                 # Place tower at the released location
@@ -306,6 +306,8 @@ class GameView(arcade.View):
         # Display the currently placed tower if dragging
         if self.is_dragging and self.current_tower is not None:
             self.current_tower.draw()
+
+        #self.draw_grid()
 
 
     def draw_grid(self):
