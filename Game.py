@@ -82,6 +82,16 @@ class GameView(arcade.View):
 
         self.frame_count = 0
 
+        # Points for topbar to restrict
+        tb_bottom_left = (0,450)
+        tb_top_left = (0,500)
+        tb_top_right = (1000,500)
+        tbsb_bottomtop_right = (1000, 450)
+        # Points for sidebar to restrict
+        sb_top_left = (750, 450)
+        sb_bottom_left = (750, 0)
+        sb_bottom_right = (1000, 0)
+
         self.user = USER()
         self.upgradeMenu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
 
@@ -303,7 +313,7 @@ class GameView(arcade.View):
             self.current_tower.draw()
 
         # Draw grid overlay
-        #self.draw_grid()
+        self.draw_grid()
 
     def draw_grid(self):
         # Draw a grid on top of the map for easier pixel locating
