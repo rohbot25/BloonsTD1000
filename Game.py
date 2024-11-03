@@ -115,7 +115,7 @@ class GameView(arcade.View):
 
 
         # Add a tower
-        tower = TOWER("images/sungod.png", "tower", 250,3,4)
+        tower = WHALER()
         tower.center_x = 600
         tower.center_y = 200
         tower.angle = 180
@@ -150,21 +150,24 @@ class GameView(arcade.View):
     #""" Called when the user presses a mouse button. """
         #if upgrade menu is open and your are clicking on the menu, skip
         if (self.showUpgrade and x >= 746):
-            pass
+            for button in self.upgradeMenu.buttons:
+                if self.user.money >= button.cost:
+                    self.user.money -= button.cost
+                    self.tower.upgrade()
+                    print(f"upgrade made!")
+                    
         #else check if they are clicking on a tower
         else:
             self.showUpgrade = False
             for tower in self.towers:
                 if tower.collides_with_point((x,y)):
                     print("open menu")
-                    self.tower = tower.name
-                    self.upgradeName = "upgrade"
+                    self.tower = tower
+                    self.towerName = tower.name
                     self.upgradeLevel = tower.level
                     self.showUpgrade = True
-                    button_x = 825
-                    button_y = 350
-                    button = Button(button_x, button_y, 75, 500, FISHERMAN(), 100, arcade.load_texture("images/health.png"))
-                    self.upgradeMenu.add_button(button)
+                    
+
 
         # Check if a tower is being dragged
         if self.is_dragging:
@@ -228,6 +231,7 @@ class GameView(arcade.View):
         sidebar = arcade.load_texture("images/sidebar.jpg")
         paper_banner = arcade.load_texture("images/paper_banner.png")
         buy_fisherman = arcade.load_texture("art/base_fisherman.png")
+        upgrade = arcade.load_texture("images/upgrade.png")
         # This command has to happen before we start drawing
         self.clear()
 
@@ -284,8 +288,9 @@ class GameView(arcade.View):
                 self.sidebar.draw(sidebar, paper_banner)
         #else draw the upgrade sidebar
         else:
-            self.sidebar = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
-            self.upgradeMenu.drawUpgrade(paper_banner, paper_banner)
+            button = Button(875, 250, 75, 75,self.tower, 100, upgrade)
+            self.upgradeMenu.add_button(button)
+            self.upgradeMenu.drawUpgrade(paper_banner, paper_banner,self.towerName)
            
         # Create buttons
         
@@ -370,7 +375,7 @@ class GameView(arcade.View):
         # makes it so the game doesnt crash when there are no balloons, will change in future
         if len(self.fishes) >0:
             for tower in self.towers:
-
+                
                 # First, calculate the angle to the player. We could do this
                 # only when the bullet fires, but in this case we will rotate
                 # the enemy to face the player each frame, so we'll do this
