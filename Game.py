@@ -82,16 +82,6 @@ class GameView(arcade.View):
 
         self.frame_count = 0
 
-        # Points for topbar to restrict
-        tb_bottom_left = (0,450)
-        tb_top_left = (0,500)
-        tb_top_right = (1000,500)
-        tbsb_bottomtop_right = (1000, 450)
-        # Points for sidebar to restrict
-        sb_top_left = (750, 450)
-        sb_bottom_left = (750, 0)
-        sb_bottom_right = (1000, 0)
-
         self.user = USER()
         self.upgradeMenu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
 
@@ -111,8 +101,7 @@ class GameView(arcade.View):
         self.towers = arcade.SpriteList()
         self.harpoons = arcade.SpriteList()
         self.user.round = 1
-        self.spawn_cycle_count = 0 
-
+        self.spawn_cycle_count = 0
 
         # Add a tower
         tower = TOWER("images/sungod.png", "tower", 250,3,4)
@@ -138,7 +127,17 @@ class GameView(arcade.View):
             [300,0]
         ]
 
-        balloon = FISH("images/balloon.png",0.25,position_list, 2, 10, 100)
+        # Points for topbar to restrict
+        self.tb_y_start = 450
+        self.tb_y_end = 500
+        self.tb_x_start = 0
+        self.tbsb_x_end = 1000
+        # Points for sidebar to restrict
+        self.sb_y_end = 450
+        self.sb_y_start = 0
+        self.sb_x_start = 750
+
+        balloon = FISH("art/base_level_fish.png",2.75,position_list, 5, 10, 100)
 
         balloon.center_x = position_list[0][0]
         balloon.center_y = position_list[0][1]
@@ -170,6 +169,7 @@ class GameView(arcade.View):
         if self.is_dragging:
             return  # Ignore clicks while dragging
 
+
         # Check if any button in the sidebar is clicked
         for button in self.sidebar.buttons:
             if button.is_hovered and self.user.money >= button.cost:
@@ -187,15 +187,25 @@ class GameView(arcade.View):
             self.paused = False  # Resume the game on left click
 
 
-    def on_mouse_release(self, x: float, y: float, button: int,
-                         modifiers: int):
-        if self.is_dragging:
+    def on_mouse_release(self, x: float, y: float, button: int, modifiers: int):
+        if self.is_dragging and self.current_tower:
             # Finalize tower placement
-            if self.user.money >= self.current_tower.cost:
+            # Check if releasing the tower in a restricted area
+            if not (((self.tb_x_start < x < self.tbsb_x_end and
+                    self.tb_y_start < y < self.tb_y_end) or
+                     (self.sb_x_start < x < self.tbsb_x_end and
+                      self.sb_y_start < y < self.sb_y_end))and
+                    self.user.money >= self.current_tower.cost):
+                # Place tower at the released location
+                
+                self.current_tower.center_x = x
+                self.current_tower.center_y = y
+
                 self.towers.append(self.current_tower)  # Add the tower to the list
                 self.user.money -= self.current_tower.cost  # Deduct cost
                 print(f"Placed {self.current_tower.__class__.__name__} at ({x}, {y})")
-
+            else:
+                print("Cannot place tower in restricted area.")
             # Stop dragging and reset
             self.is_dragging = False
             self.current_tower = None
