@@ -15,6 +15,9 @@ from tower import FISHERMAN, FLYFISHER, WHALER, NEANDERTHAL, WIZARD, BOAT, SUPER
 from Fish import FISH, REDFISH, BLUEFISH, GREENFISH, SHARK
 from Button import BUTTON
 
+import arcade
+import arcade.gui
+
 class GameView(arcade.View):
     """ Main application class. """
 
@@ -300,8 +303,6 @@ class GameView(arcade.View):
         if self.is_dragging and self.current_tower is not None:
             self.current_tower.draw()
 
-        # Draw grid overlay
-        self.draw_grid()
 
     def draw_grid(self):
         # Draw a grid on top of the map for easier pixel locating
@@ -379,7 +380,10 @@ class GameView(arcade.View):
                 y_diff = dest_y - start_y
                 angle = math.atan2(y_diff, x_diff)
 
-                if tower.center_x - self.fishes[0].center_x < tower.radius:
+                distance = math.sqrt((tower.center_x - self.fishes[0].center_x) ** 2 +
+                                     (tower.center_y - self.fishes[0].center_y) ** 2)
+
+                if distance <= tower.radius:
                     # Set the enemy to face the player
                     tower.angle = math.degrees(angle) - 90
 

@@ -31,7 +31,7 @@ class FISHERMAN(TOWER):
 class WHALER(TOWER):
     
     def __init__(self):
-        super().__init__("images/sungod.png","Whaler",1000,25,50)
+        super().__init__("images/sungod.png","Whaler",400,25,50)
         #max amount of upgrade
         self.max = 3
         self.cost = 100
@@ -43,7 +43,7 @@ class WHALER(TOWER):
 class BOAT(TOWER):
 
     def __init__(self):
-        super().__init__("images/sungod.png","Boat",0.5,25,50)
+        super().__init__("images/sungod.png","Boat",200,25,50)
         #max amount of upgrade
         self.max = 3
         self.cost = 150
