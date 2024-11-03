@@ -112,7 +112,7 @@ class GameView(arcade.View):
         self.towers.append(tower)
 
         position_list = [
-            [0,220],
+            [0,225],
             [325,220],
             [325,330],
             [200,330],
@@ -195,11 +195,13 @@ class GameView(arcade.View):
         if self.is_dragging and self.current_tower:
             # Finalize tower placement
             # Check if releasing the tower in a restricted area
-            if not (((self.tb_x_start < x < self.tbsb_x_end and
-                    self.tb_y_start < y < self.tb_y_end) or
-                     (self.sb_x_start < x < self.tbsb_x_end and
-                      self.sb_y_start < y < self.sb_y_end))and
-                    self.user.money >= self.current_tower.cost):
+            if not (((self.tb_x_start < x < self.tbsb_x_end and self.tb_y_start < y < self.tb_y_end) or
+                    (self.sb_x_start < x < self.tbsb_x_end and self.sb_y_start < y < self.sb_y_end)) and
+                    (self.user.money >= self.current_tower.cost)
+                # Not on the path
+
+                # Not over another tower
+                ):
                 # Place tower at the released location
                 
                 self.current_tower.center_x = x
