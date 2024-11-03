@@ -184,9 +184,10 @@ class GameView(arcade.View):
                 self.is_dragging = True
                 print(f"{button.tower_type.__name__} selected!")
                 break
-            
+        print("checking for paused") 
         #if paused, unpause on mouse click
-        if self.paused and button == arcade.MOUSE_BUTTON_LEFT:
+        if self.paused:
+            print("yay!")
             self.paused = False  # Resume the game on left click
 
 
@@ -444,6 +445,7 @@ class GameView(arcade.View):
                                 self.fishes.remove(fish)
         else:
             # pause at round end
+            print("PAUSED!")
             self.paused = True
             
             #increment round
