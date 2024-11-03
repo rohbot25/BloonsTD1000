@@ -112,19 +112,19 @@ class GameView(arcade.View):
         self.towers.append(tower)
 
         position_list = [
-            [0,300],
-            [325,300],
-            [325,450],
-            [200,450],
-            [200,25],
-            [50,35],
-            [50,175],
+            [0,275],
+            [335,275],
+            [335,425],
+            [190,425],
+            [190,35],
+            [60,35],
+            [60,175],
             [450,175],
-            [450,325],
-            [550,325],
+            [450,335],
+            [550,335],
             [550,75],
             [300,75],
-            [75,0]
+            [300,0]
         ]
 
 
@@ -157,7 +157,7 @@ class GameView(arcade.View):
                     print(f"upgrade made!")
                 else:
                     print("no money or max upgrade")
-                    
+
         #else check if they are clicking on a tower
         else:
             self.showUpgrade = False
@@ -199,7 +199,13 @@ class GameView(arcade.View):
             # Finalize tower placement
             # Check if releasing the tower in a restricted area
             if not (((self.tb_x_start < x < self.tbsb_x_end and self.tb_y_start < y < self.tb_y_end) or
-                    (self.sb_x_start < x < self.tbsb_x_end and self.sb_y_start < y < self.sb_y_end)) and
+                    (self.sb_x_start < x < self.tbsb_x_end and self.sb_y_start < y < self.sb_y_end) or
+                    (0<x<300 and 250<y<300) or (300<x<350 and 250<y<450) or (175<x<350 and 400<y<450) or
+                    (175<x<225 and 25<y<450) or (50<x<225 and 0<y<50) or (25<x<75 and 25<y<175) or
+                    (50<x<450 and 150<y<200)
+
+
+                    ) and
                     (self.user.money >= self.current_tower.cost)
                 # Not on the path
 
@@ -361,19 +367,19 @@ class GameView(arcade.View):
 
 #position list for creating new balloons
         position_list = [
-            [0,220],
-            [325,220],
-            [325,330],
-            [200,330],
-            [200,35],
-            [85,35],
-            [85,130],
-            [425,130],
-            [425,250],
-            [525,250],
-            [525,75],
-            [300,75],
-            [300,0]
+            [0, 275],
+            [335, 275],
+            [335, 425],
+            [190, 425],
+            [190, 35],
+            [60, 35],
+            [60, 175],
+            [450, 175],
+            [450, 335],
+            [550, 335],
+            [550, 75],
+            [300, 75],
+            [300, 0]
         ]
 
         
