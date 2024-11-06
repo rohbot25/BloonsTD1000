@@ -69,7 +69,7 @@ class SIDEBAR:
                                       self.height // 9,
                                       paper_banner)
         arcade.draw_text(type,
-                         start_x=self.SCREEN_WIDTH // 1.53,
+                         start_x=775,
                          start_y=self.SCREEN_HEIGHT // 1.2,
                          color=arcade.color.BLACK,
                          font_size=24,

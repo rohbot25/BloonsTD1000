@@ -268,10 +268,9 @@ class GameView(arcade.View):
             for button in self.sidebar.buttons:
                 button.check_hover(self.mouse_x, self.mouse_y)
 
-                self.sidebar.draw(sidebar, paper_banner)
+            self.sidebar.draw(sidebar, paper_banner)
         #else draw the upgrade sidebar
         else:
-            self.updateSidebar = False
             self.upgradeMenu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
             # left buttons
             button = BUTTON(875, 250, 75, 75,self.tower, self.upgradeCost, upgrade)
