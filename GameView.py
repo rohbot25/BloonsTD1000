@@ -140,22 +140,22 @@ class GameView(arcade.View):
                     
 
 
-        # Check if a tower is being dragged
-        if self.is_dragging:
-            return  # Ignore clicks while dragging
+            # Check if a tower is being dragged
+            if self.is_dragging:
+                return  # Ignore clicks while dragging
 
 
-        # Check if any button in the sidebar is clicked
-        for button in self.sidebar.buttons:
-            if button.is_hovered and self.user.money >= button.cost:
-                # Start dragging the selected tower type
-                self.selected_tower_type = button.tower_type
-                self.current_tower = self.selected_tower_type()  # Instantiate the tower
-                self.current_tower.center_x = x
-                self.current_tower.center_y = y
-                self.is_dragging = True
-                print(f"{button.tower_type.__name__} selected!")
-                break
+            # Check if any button in the sidebar is clicked
+            for button in self.sidebar.buttons:
+                if button.is_hovered and self.user.money >= button.cost:
+                    # Start dragging the selected tower type
+                    self.selected_tower_type = button.tower_type
+                    self.current_tower = self.selected_tower_type()  # Instantiate the tower
+                    self.current_tower.center_x = x
+                    self.current_tower.center_y = y
+                    self.is_dragging = True
+                    print(f"{button.tower_type.__name__} selected!")
+                    break
         #if paused, unpause on mouse click
         if self.paused:
             self.paused = False  # Resume the game on left click
@@ -255,6 +255,7 @@ class GameView(arcade.View):
                          font_name="Comic Sans MS")
         # if not show upgrade menu, draw and act with the shop
         if not self.showUpgrade:
+            print("shop")
             # Sidebar
             self.sidebar = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
             # left buttons
@@ -276,6 +277,7 @@ class GameView(arcade.View):
             self.sidebar.draw(sidebar, paper_banner)
         #else draw the upgrade sidebar
         else:
+            print("upgrade")
             self.upgradeMenu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
             # left buttons
             button = BUTTON(875, 250, 75, 75,self.tower, self.upgradeCost, upgrade)
