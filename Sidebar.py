@@ -57,7 +57,7 @@ class SIDEBAR:
         # Draw the buttons
         for button in self.buttons:
             button.draw()
-    def drawUpgrade(self,sidebar,paper_banner,type):
+    def drawUpgrade(self,sidebar,paper_banner,type,tower):
         arcade.draw_texture_rectangle(self.x,
                                       self.y,
                                       self.width,
@@ -78,3 +78,17 @@ class SIDEBAR:
                          font_name="Comic Sans MS")
         for button in self.buttons:
             button.draw()
+        arcade.draw_text(" Level: "+str(tower.level)+"/"+str(tower.max),start_x=775,
+                         start_y=300,
+                         color=arcade.color.BLACK,
+                         font_size=24,
+                         align="left",
+                         width=300,
+                         font_name="Comic Sans MS")
+        arcade.draw_text(" Cost: "+str(tower.upgradeCost),start_x=775,
+                         start_y=175,
+                         color=arcade.color.BLACK,
+                         font_size=24,
+                         align="left",
+                         width=300,
+                         font_name="Comic Sans MS")

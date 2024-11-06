@@ -114,13 +114,14 @@ class GameView(arcade.View):
     #""" Called when the user presses a mouse button. """
         #if upgrade menu is open and your are clicking on the menu, skip
         if (self.showUpgrade and x >= 746):
-            print(len(self.upgradeMenu.buttons))
             for button in self.upgradeMenu.buttons:
-                print("button")
                 if self.user.money >= button.cost and self.tower.level < self.tower.max:
                     self.user.money -= button.cost
                     self.tower.upgrade()
+                    self.max = self.tower.max
                     print(f"upgrade made!")
+                    paper_banner = arcade.load_texture("images/paper_banner.png")
+                    self.upgradeMenu.drawUpgrade(paper_banner, paper_banner,self.towerName,self.tower)
                 else:
                     print("no money or max upgrade")
 
@@ -133,6 +134,8 @@ class GameView(arcade.View):
                     self.tower = tower
                     self.towerName = tower.name
                     self.upgradeLevel = tower.level
+                    self.max = tower.max
+                    self.upgradeCost = tower.upgradeCost
                     self.showUpgrade = True
                     
 
@@ -153,10 +156,8 @@ class GameView(arcade.View):
                 self.is_dragging = True
                 print(f"{button.tower_type.__name__} selected!")
                 break
-        print("checking for paused") 
         #if paused, unpause on mouse click
         if self.paused:
-            print("yay!")
             self.paused = False  # Resume the game on left click
 
 
@@ -252,7 +253,6 @@ class GameView(arcade.View):
                          align="right",
                          width=300,
                          font_name="Comic Sans MS")
-
         # if not show upgrade menu, draw and act with the shop
         if not self.showUpgrade:
             # Sidebar
@@ -276,14 +276,12 @@ class GameView(arcade.View):
                 self.sidebar.draw(sidebar, paper_banner)
         #else draw the upgrade sidebar
         else:
+            self.updateSidebar = False
             self.upgradeMenu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
             # left buttons
-            button = BUTTON(875, 250, 75, 75,self.tower, 100, upgrade)
+            button = BUTTON(875, 250, 75, 75,self.tower, self.upgradeCost, upgrade)
             self.upgradeMenu.add_button(button)
-            self.upgradeMenu.drawUpgrade(paper_banner, paper_banner,self.towerName)
-           
-        # Create buttons
-        
+            self.upgradeMenu.drawUpgrade(paper_banner, paper_banner,self.towerName,self.tower)
 
 
         #draw the map
