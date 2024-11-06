@@ -250,7 +250,6 @@ class GameView(arcade.View):
                          font_name="Comic Sans MS")
         # if not show upgrade menu, draw and act with the shop
         if not self.showUpgrade:
-            print("shop")
             # Sidebar
             self.sidebar = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
             # left buttons
@@ -272,7 +271,6 @@ class GameView(arcade.View):
             self.sidebar.draw(sidebar, paper_banner)
         #else draw the upgrade sidebar
         else:
-            print("upgrade")
             self.upgradeMenu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
             # left buttons
             button = BUTTON(875, 250, 75, 75,self.tower, self.upgradeCost, upgrade)
