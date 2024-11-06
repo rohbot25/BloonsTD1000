@@ -73,7 +73,7 @@ class SIDEBAR:
                          start_y=self.SCREEN_HEIGHT // 1.2,
                          color=arcade.color.BLACK,
                          font_size=24,
-                         align="right",
+                         align="left",
                          width=300,
                          font_name="Comic Sans MS")
         for button in self.buttons:
