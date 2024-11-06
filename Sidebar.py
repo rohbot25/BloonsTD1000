@@ -40,6 +40,8 @@ class SIDEBAR:
                                       sidebar)
         for box_x, box_y in self.box_list:
             arcade.draw_rectangle_filled(box_x, box_y, self.BUY_BOX_SIZE, self.BUY_BOX_SIZE, (0, 0, 0, 128))
+            # Add the cost and Name Drawn Here
+
         arcade.draw_texture_rectangle(self.SCREEN_WIDTH // 1.145,
                                       self.SCREEN_HEIGHT // 1.17,
                                       self.width,
