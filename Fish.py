@@ -53,7 +53,7 @@ class FISH(arcade.Sprite):
 
             # Reached the end of the list, start over.
             if self.cur_position >= len(self.path):
-                self.cur_position = 0
+                self.remove_from_sprite_lists()
                 User.health -=10
                 User.round += 1
 

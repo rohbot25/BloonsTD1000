@@ -67,13 +67,6 @@ class GameView(arcade.View):
         self.user.round = 1
         self.spawn_cycle_count = 0
 
-        # Add a tower
-        tower = WHALER()
-        tower.center_x = 600
-        tower.center_y = 200
-        tower.angle = 180
-        tower.scale=.5
-        self.towers.append(tower)
 
         position_list = [
             [0,275],
@@ -159,6 +152,8 @@ class GameView(arcade.View):
         #if paused, unpause on mouse click
         if self.paused:
             self.paused = False  # Resume the game on left click
+            self.user.round +=1
+
 
 
     def on_mouse_release(self, x: float, y: float, button: int, modifiers: int):
@@ -287,15 +282,6 @@ class GameView(arcade.View):
         #draw the map
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2.45, 825,500,self.texture)
 
-        # for button in self.sidebar.buttons:
-        #     if button.cost > self.user.money:
-        #         #draw transparetn red over button
-        #         pass
-        # else:
-        #     # Draw the currently placed tower if dragging
-        #     if self.is_dragging and self.current_tower is not None:
-        #         # Draw the current tower following the mouse
-        #         self.current_tower.draw()
 
         self.fishes.draw()
         self.towers.draw()
@@ -354,8 +340,6 @@ class GameView(arcade.View):
             fish.update(self.user)
 
         self.frame_count += 1
-        if self.user.health == 0:
-            pass
 
         # Get the current mouse position
         mouse_x, mouse_y = self.mouse_x, self.mouse_y
@@ -427,13 +411,11 @@ class GameView(arcade.View):
             # pause at round end
             print("PAUSED!")
             self.paused = True
-            
-            #increment round
-            self.user.round += 1
+
 
             #generate wave based on round number
             for i in range(self.user.round**2):
-                Balloon = FISH("images/balloon.png",0.25,position_list, 2, 10, 100)
+                Balloon = FISH("art/base_level_fish.png",2.75,position_list, 2, 10, 100)
                 Balloon.center_x = position_list[0][0]
                 Balloon.center_y = position_list[0][1]
                 #add fish to queue list
