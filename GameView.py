@@ -1,6 +1,7 @@
 import arcade
 import time
 import math
+import random
 
 # Screen title and size
 SCREEN_WIDTH = 1000
@@ -219,6 +220,44 @@ class GameView(arcade.View):
         # This command has to happen before we start drawing
         self.clear()
 
+        # if not show upgrade menu, draw and act with the shop
+
+        #draw the map
+        arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2.45, 825,500,self.texture)
+
+
+        if not self.showUpgrade:
+            # Sidebar
+            self.sidebar = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
+            # left buttons
+            button_positions = [
+            (825, 350), (825, 250), (825, 150), (825, 50),
+            (925, 350), (925, 250), (925, 150), (925, 50)
+            ]
+            tower_types = [FISHERMAN, WHALER, BOAT, FLYFISHER, NEANDERTHAL, WIZARD, SUPERFISHER, SUPERFISHER]
+
+            for (button_x, button_y), tower_type in zip(button_positions, tower_types):
+                button = BUTTON(button_x, button_y, 75, 75, tower_type(), 100, buy_fisherman)
+                button.tower_type = tower_type  # Assign the class, not an instance
+                self.sidebar.add_button(button)
+
+            # Update hover states and draw the sidebar
+            for button in self.sidebar.buttons:
+                button.check_hover(self.mouse_x, self.mouse_y)
+
+            self.sidebar.draw(sidebar, paper_banner)
+        #else draw the upgrade sidebar
+        else:
+            self.upgradeMenu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
+            # left buttons
+            button = BUTTON(875, 250, 75, 75,self.tower, self.upgradeCost, upgrade)
+            self.upgradeMenu.add_button(button)
+
+            arcade.draw_circle_filled(self.tower.center_x,self.tower.center_y,self.tower.radius,(128,128,128,128))
+
+            self.upgradeMenu.drawUpgrade(paper_banner, paper_banner,self.towerName,self.tower)
+            
+
         # draw the top bar
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 1.05, 1400, 44, bar)
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 5, SCREEN_HEIGHT // 1.05, 40, 40, coin)
@@ -248,40 +287,8 @@ class GameView(arcade.View):
                          align="right",
                          width=300,
                          font_name="Comic Sans MS")
-        # if not show upgrade menu, draw and act with the shop
-        if not self.showUpgrade:
-            # Sidebar
-            self.sidebar = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
-            # left buttons
-            button_positions = [
-            (825, 350), (825, 250), (825, 150), (825, 50),
-            (925, 350), (925, 250), (925, 150), (925, 50)
-            ]
-            tower_types = [FISHERMAN, WHALER, BOAT, FLYFISHER, NEANDERTHAL, WIZARD, SUPERFISHER, SUPERFISHER]
 
-            for (button_x, button_y), tower_type in zip(button_positions, tower_types):
-                button = BUTTON(button_x, button_y, 75, 75, tower_type(), 100, buy_fisherman)
-                button.tower_type = tower_type  # Assign the class, not an instance
-                self.sidebar.add_button(button)
-
-            # Update hover states and draw the sidebar
-            for button in self.sidebar.buttons:
-                button.check_hover(self.mouse_x, self.mouse_y)
-
-            self.sidebar.draw(sidebar, paper_banner)
-        #else draw the upgrade sidebar
-        else:
-            self.upgradeMenu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
-            # left buttons
-            button = BUTTON(875, 250, 75, 75,self.tower, self.upgradeCost, upgrade)
-            self.upgradeMenu.add_button(button)
-            self.upgradeMenu.drawUpgrade(paper_banner, paper_banner,self.towerName,self.tower)
-
-
-        #draw the map
-        arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2.45, 825,500,self.texture)
-
-
+        
         self.fishes.draw()
         self.towers.draw()
         self.harpoons.draw()
@@ -398,7 +405,7 @@ class GameView(arcade.View):
                     for fish in self.fishes:
                         if arcade.check_for_collision(bullet, fish):
                             bullet.remove_from_sprite_lists()
-                            self.user.money += 50
+                            self.user.money += random.randint(3,20)
 
                             # Decrease the health of the fish/balloon when hit
                             fish.hp -= 1
