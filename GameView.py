@@ -26,6 +26,7 @@ class GameView(arcade.View):
         super().__init__()
         
         self.show_upgrade = False
+        self.upgrade_made = False
         #map
         self.texture = None
 
@@ -116,6 +117,7 @@ class GameView(arcade.View):
                     print(f"upgrade made!")
                     paper_banner = arcade.load_texture("images/paper_banner.png")
                     self.upgrade_menu.drawUpgrade(paper_banner, paper_banner,self.tower_name,self.tower)
+                    self.upgrade_made = True
                 else:
                     print("no money or max upgrade")
 
@@ -257,8 +259,9 @@ class GameView(arcade.View):
             self.upgrade_menu.add_button(button)
 
             arcade.draw_circle_filled(self.tower.center_x,self.tower.center_y,self.tower.radius,(128,128,128,128))
-
-            self.upgrade_menu.drawUpgrade(paper_banner, paper_banner,self.tower_name,self.tower)
+            if not self.upgrade_made:
+                self.upgrade_menu.drawUpgrade(paper_banner, paper_banner,self.tower_name,self.tower)
+                self.upgrade_made = False
             
 
         # draw the top bar

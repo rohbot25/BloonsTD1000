@@ -1,7 +1,6 @@
 import arcade
 import arcade.gui
 
-
 # Screen title and size
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 500
