@@ -354,81 +354,83 @@ class GameView(arcade.View):
         mouse_x, mouse_y = self.mouse_x, self.mouse_y
 
         # makes it so the game doesnt crash when there are no balloons, will change in future
+
         if len(self.fishes) >0:
             for tower in self.towers:
-                
-                # First, calculate the angle to the player. We could do this
-                # only when the bullet fires, but in this case we will rotate
-                # the enemy to face the player each frame, so we'll do this
-                # each frame.
+                for fish in self.fishes:
 
-                # Position the start at the enemy's current location
-                start_x = tower.center_x
-                start_y = tower.center_y
+                    # First, calculate the angle to the player. We could do this
+                    # only when the bullet fires, but in this case we will rotate
+                    # the enemy to face the player each frame, so we'll do this
+                    # each frame.
 
-                # Get the destination location for the bullet
-                dest_x = self.fishes[0].center_x
-                dest_y = self.fishes[0].center_y
+                    # Position the start at the enemy's current location
+                    start_x = tower.center_x
+                    start_y = tower.center_y
 
-                # Do math to calculate how to get the bullet to the destination.
-                # Calculation the angle in radians between the start points
-                # and end points. This is the angle the bullet will travel.
-                x_diff = dest_x - start_x
-                y_diff = dest_y - start_y
-                angle = math.atan2(y_diff, x_diff)
+                    # Get the destination location for the bullet
+                    dest_x = fish.center_x
+                    dest_y = fish.center_y
 
-                distance = math.sqrt((tower.center_x - self.fishes[0].center_x) ** 2 +
-                                     (tower.center_y - self.fishes[0].center_y) ** 2)
+                    # Do math to calculate how to get the bullet to the destination.
+                    # Calculation the angle in radians between the start points
+                    # and end points. This is the angle the bullet will travel.
+                    x_diff = dest_x - start_x
+                    y_diff = dest_y - start_y
+                    angle = math.atan2(y_diff, x_diff)
 
-                if distance <= tower.radius:
-                    # Set the enemy to face the player
-                    if tower.name == 'Boat':
-                        tower.angle = math.degrees(angle) - 180
-                    else:
-                        tower.angle = math.degrees(angle) - 90
+                    distance = math.sqrt((tower.center_x - fish.center_x) ** 2 +
+                                         (tower.center_y - fish.center_y) ** 2)
 
-                    # Shoot every 60 frames change of shooting each frame
-                    if self.frame_count % tower.rate == 0:
-                        bullet = arcade.Sprite(tower.bullet,tower.bullet_scale)
-                        bullet.center_x = start_x
-                        bullet.center_y = start_y
-
-                        # Angle the bullet sprite
-                        if(tower.name == "Boat"):
-                            bullet.angle = math.degrees(angle) + 45
-                        elif(tower.name == "Wizard"):
-                            bullet.angle = math.degrees(angle) + 135
+                    if distance <= tower.radius:
+                        # Set the enemy to face the player
+                        if tower.name == 'Boat':
+                            tower.angle = math.degrees(angle) - 180
                         else:
-                            bullet.angle = math.degrees(angle) 
+                            tower.angle = math.degrees(angle) - 180
 
-                        # Taking into account the angle, calculate our change_x
-                        # and change_y. Velocity is how fast the bullet travels.
-                        bullet.change_x = math.cos(angle) * BULLET_SPEED
-                        bullet.change_y = math.sin(angle) * BULLET_SPEED
+                        # Shoot every 60 frames change of shooting each frame
+                        if self.frame_count % tower.rate == 0:
+                            bullet = arcade.Sprite(tower.bullet,tower.bullet_scale)
+                            bullet.center_x = start_x
+                            bullet.center_y = start_y
 
-                        self.harpoons.append(bullet)
+                            # Angle the bullet sprite
+                            if(tower.name == "Boat"):
+                                bullet.angle = math.degrees(angle) + 45
+                            elif(tower.name == "Wizard"):
+                                bullet.angle = math.degrees(angle) + 135
+                            else:
+                                bullet.angle = math.degrees(angle)
 
-            # Get rid of the bullet when it flies off-screen or when it hits a balloon
-            for bullet in self.harpoons:
-                if bullet.top < 0:
-                    bullet.remove_from_sprite_lists()
-                else:
-                    for fish in self.fishes:
-                        if arcade.check_for_collision(bullet, fish):
-                            bullet.remove_from_sprite_lists()
-                            self.user.money += random.randint(3,20)
+                            # Taking into account the angle, calculate our change_x
+                            # and change_y. Velocity is how fast the bullet travels.
+                            bullet.change_x = math.cos(angle) * BULLET_SPEED
+                            bullet.change_y = math.sin(angle) * BULLET_SPEED
 
-                            # Decrease the health of the fish/balloon when hit
-                            fish.hp -= 1
+                            self.harpoons.append(bullet)
 
-                            # If the fish's health reaches zero, remove it from the list
-                            if fish.hp <= 0:
-                                self.fishes.remove(fish)
-                                if fish == SHARK:
-                                    for i in range(3):
-                                        balloon = BLUEFISH(position_list)
-                                        balloon.center_x, balloon.center_y = position_list[0]
-                                        self.fish_queue.append(balloon)
+                # Get rid of the bullet when it flies off-screen or when it hits a balloon
+                for bullet in self.harpoons:
+                    if bullet.top < 0:
+                        bullet.remove_from_sprite_lists()
+                    else:
+
+                            if arcade.check_for_collision(bullet, fish):
+                                bullet.remove_from_sprite_lists()
+                                self.user.money += random.randint(3,20)
+
+                                # Decrease the health of the fish/balloon when hit
+                                fish.hp -= 1
+
+                                # If the fish's health reaches zero, remove it from the list
+                                if fish.hp <= 0:
+                                    self.fishes.remove(fish)
+                                    if fish == SHARK:
+                                        for i in range(3):
+                                            balloon = BLUEFISH(position_list)
+                                            balloon.center_x, balloon.center_y = position_list[0]
+                                            self.fish_queue.append(balloon)
 
 
         else:
