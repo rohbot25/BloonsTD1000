@@ -8,7 +8,7 @@ SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 500
 SCREEN_TITLE = "Fish Tower Defense"
 
-BULLET_SPEED = 5
+BULLET_SPEED = 20
 
 from User import USER
 from Sidebar import SIDEBAR
@@ -388,13 +388,18 @@ class GameView(arcade.View):
                         tower.angle = math.degrees(angle) - 90
 
                     # Shoot every 60 frames change of shooting each frame
-                    if self.frame_count % 30 == 0:
+                    if self.frame_count % tower.rate == 0:
                         bullet = arcade.Sprite(tower.bullet,tower.bullet_scale)
                         bullet.center_x = start_x
                         bullet.center_y = start_y
 
                         # Angle the bullet sprite
-                        bullet.angle = math.degrees(angle)
+                        if(tower.name == "Boat"):
+                            bullet.angle = math.degrees(angle) + 45
+                        elif(tower.name == "Wizard"):
+                            bullet.angle = math.degrees(angle) + 135
+                        else:
+                            bullet.angle = math.degrees(angle) 
 
                         # Taking into account the angle, calculate our change_x
                         # and change_y. Velocity is how fast the bullet travels.
