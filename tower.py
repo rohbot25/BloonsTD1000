@@ -22,7 +22,7 @@ class FISHERMAN(TOWER):
 
     def __init__(self):
         bullet = "images/sun.png"
-        super().__init__("art/base_fisherman.png",3.0,"Fisherman",50,25,30,3,50,100,bullet,1.0)
+        super().__init__("art/base_fisherman.png",3.0,"Fisherman",100,25,30,3,50,100,bullet,1.0)
     
     def upgrade(self):
         self.rate -= 5
@@ -45,10 +45,10 @@ class BOAT(TOWER):
 
     def __init__(self):
         bullet = "images/oar.png"
-        super().__init__("images/boat.png",0.5,"Boat",100,25,40,3,150,300,bullet,0.25)
+        super().__init__("images/boat.png",0.5,"Boat",150,25,40,3,150,300,bullet,0.25)
     
     def upgrade(self):
-        self.radius *= 2
+        self.radius += 50
         self.level +=1
 
 #upgraded fisherman type, more range, better starting buffs, increase dmage and rate, upgrade = 500
@@ -82,13 +82,13 @@ class WIZARD(TOWER):
      
     def __init__(self):
         bullet = "images/fireball.png"
-        super().__init__("images/wizard.png",0.3,"Wizard",100,50,50,3,300,600,bullet,0.25)
+        super().__init__("images/wizard.png",0.3,"Wizard",200,50,50,3,300,600,bullet,0.25)
         
     
     def upgrade(self):
         self.atk *= 1.5
         self.rate -= 5
-        self.radius *= 1.5
+        self.radius += 50
         self.level +=1
 
 #THE GOAT 
