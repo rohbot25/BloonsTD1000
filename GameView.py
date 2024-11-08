@@ -417,6 +417,13 @@ class GameView(arcade.View):
                             # If the fish's health reaches zero, remove it from the list
                             if fish.hp <= 0:
                                 self.fishes.remove(fish)
+                                if fish == SHARK:
+                                    for i in range(3):
+                                        balloon = BLUEFISH(position_list)
+                                        balloon.center_x, balloon.center_y = position_list[0]
+                                        self.fish_queue.append(balloon)
+
+
         else:
             # pause at round end
             print("PAUSED!")
@@ -425,12 +432,121 @@ class GameView(arcade.View):
 
 
             #generate wave based on round number Hard code
-            for i in range((self.user.round+1) ** 2):
-                Balloon = REDFISH(position_list)
-                Balloon.center_x = position_list[0][0]
-                Balloon.center_y = position_list[0][1]
-                #add fish to queue list
-                self.fish_queue.append(Balloon)
+            # Populate fish queue based on the round
+            if self.user.round == 1:
+                for i in range(3):
+                    balloon = BLUEFISH(position_list)
+                    balloon.center_x, balloon.center_y = position_list[0]
+                    self.fish_queue.append(balloon)
+            elif self.user.round == 2:
+                for i in range(6):
+                    balloon = BLUEFISH(position_list)
+                    balloon.center_x, balloon.center_y = position_list[0]
+                    self.fish_queue.append(balloon)
+                for i in range(1):
+                    shark = SHARK(position_list)
+                    shark.center_x, shark.center_y = position_list[0]
+                    self.fish_queue.append(shark)
+            elif self.user.round == 3:
+                for i in range(8):
+                    balloon = BLUEFISH(position_list)
+                    balloon.center_x, balloon.center_y = position_list[0]
+                    self.fish_queue.append(balloon)
+            elif self.user.round == 4:
+                for i in range(12):
+                    balloon = BLUEFISH(position_list)
+                    balloon.center_x, balloon.center_y = position_list[0]
+                    self.fish_queue.append(balloon)
+            elif self.user.round == 5:
+                for i in range(2):
+                    red_fish = REDFISH(position_list)
+                    red_fish.center_x, red_fish.center_y = position_list[0]
+                    self.fish_queue.append(red_fish)
+            elif self.user.round == 6:
+                for i in range(10):
+                    blue_fish = BLUEFISH(position_list)
+                    blue_fish.center_x, blue_fish.center_y = position_list[0]
+                    self.fish_queue.append(blue_fish)
+                for i in range(2):
+                    red_fish = REDFISH(position_list)
+                    red_fish.center_x, red_fish.center_y = position_list[0]
+                    self.fish_queue.append(red_fish)
+            elif self.user.round == 7:
+                for i in range(8):
+                    blue_fish = BLUEFISH(position_list)
+                    blue_fish.center_x, blue_fish.center_y = position_list[0]
+                    self.fish_queue.append(blue_fish)
+                for i in range(3):
+                    red_fish = REDFISH(position_list)
+                    red_fish.center_x, red_fish.center_y = position_list[0]
+                    self.fish_queue.append(red_fish)
+            elif self.user.round == 8:
+                for i in range(8):
+                    blue_fish = BLUEFISH(position_list)
+                    blue_fish.center_x, blue_fish.center_y = position_list[0]
+                    self.fish_queue.append(blue_fish)
+                for i in range(3):
+                    red_fish = REDFISH(position_list)
+                    red_fish.center_x, red_fish.center_y = position_list[0]
+                    self.fish_queue.append(red_fish)
+            elif self.user.round == 9:
+                for i in range(8):
+                    blue_fish = BLUEFISH(position_list)
+                    blue_fish.center_x, blue_fish.center_y = position_list[0]
+                    self.fish_queue.append(blue_fish)
+                for i in range(3):
+                    red_fish = REDFISH(position_list)
+                    red_fish.center_x, red_fish.center_y = position_list[0]
+                    self.fish_queue.append(red_fish)
+            elif self.user.round == 10:
+                for i in range(8):
+                    blue_fish = BLUEFISH(position_list)
+                    blue_fish.center_x, blue_fish.center_y = position_list[0]
+                    self.fish_queue.append(blue_fish)
+                for i in range(3):
+                    red_fish = REDFISH(position_list)
+                    red_fish.center_x, red_fish.center_y = position_list[0]
+                    self.fish_queue.append(red_fish)
+            elif self.user.round == 11:
+                for i in range(8):
+                    blue_fish = BLUEFISH(position_list)
+                    blue_fish.center_x, blue_fish.center_y = position_list[0]
+                    self.fish_queue.append(blue_fish)
+                for i in range(3):
+                    red_fish = REDFISH(position_list)
+                    red_fish.center_x, red_fish.center_y = position_list[0]
+                    self.fish_queue.append(red_fish)
+            elif self.user.round == 12:
+                for i in range(8):
+                    blue_fish = BLUEFISH(position_list)
+                    blue_fish.center_x, blue_fish.center_y = position_list[0]
+                    self.fish_queue.append(blue_fish)
+                for i in range(3):
+                    red_fish = REDFISH(position_list)
+                    red_fish.center_x, red_fish.center_y = position_list[0]
+                    self.fish_queue.append(red_fish)
+            elif self.user.round == 12:
+                for i in range(8):
+                    blue_fish = BLUEFISH(position_list)
+                    blue_fish.center_x, blue_fish.center_y = position_list[0]
+                    self.fish_queue.append(blue_fish)
+                for i in range(3):
+                    red_fish = REDFISH(position_list)
+                    red_fish.center_x, red_fish.center_y = position_list[0]
+                    self.fish_queue.append(red_fish)
+            elif self.user.round == 13:
+                for i in range(8):
+                    blue_fish = BLUEFISH(position_list)
+                    blue_fish.center_x, blue_fish.center_y = position_list[0]
+                    self.fish_queue.append(blue_fish)
+                for i in range(3):
+                    red_fish = REDFISH(position_list)
+                    red_fish.center_x, red_fish.center_y = position_list[0]
+                    self.fish_queue.append(red_fish)
+                for i in range(1):
+                    shark = SHARK(position_list)
+                    shark.center_x, shark.center_y = position_list[0]
+                    self.fish_queue.append(shark)
                 
         #seperate spawning of balloons by 5 update cycles
         if (self.spawn_cycle_count >= 5 and (len(self.fish_queue) > 0)):

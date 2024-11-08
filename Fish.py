@@ -64,10 +64,10 @@ class FISH(arcade.Sprite):
 
 class REDFISH(FISH):
     def __init__(self, path):
-        super().__init__("art/level_2_fish.png",2.75,path,15,10,20)
+        super().__init__("art/level_2_fish.png",2.75,path,5,10,20)
 class BLUEFISH(FISH):
     def __init__(self, path):
-        super().__init__("art/base_level_fish.png",2.75,path,15,5,10)
+        super().__init__("art/base_level_fish.png",2.75,path,3,5,10)
 
 class GREENFISH(FISH):
     def __init__(self, path):
@@ -75,4 +75,4 @@ class GREENFISH(FISH):
 
 class SHARK(FISH):
     def __init__(self, path):
-        super().__init__("art/base_level_fish.png",1.0,path,1.0,20,20)
+        super().__init__("art/green_blimp.png",1.0,path,.75,30,50)
