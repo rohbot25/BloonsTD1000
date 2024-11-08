@@ -421,6 +421,7 @@ class GameView(arcade.View):
             # pause at round end
             print("PAUSED!")
             self.paused = True
+            self.harpoons.clear()
 
 
             #generate wave based on round number Hard code

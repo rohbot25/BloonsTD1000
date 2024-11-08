@@ -2,7 +2,7 @@ import arcade
 
 class TOWER(arcade.Sprite):
     
-    def __init__(self,image,scale, name, radius, atk, rate,cost,max,upgradeCost,bullet,bullet_scale):
+    def __init__(self,image,scale, name, radius, atk, rate,max,cost,upgradeCost,bullet,bullet_scale):
         super().__init__(image,scale,hit_box_algorithm="None")
         self.name = name
         self.radius = radius
