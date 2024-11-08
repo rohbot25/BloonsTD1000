@@ -548,6 +548,19 @@ class GameView(arcade.View):
                     shark = SHARK(position_list)
                     shark.center_x, shark.center_y = position_list[0]
                     self.fish_queue.append(shark)
+            elif self.user.round == 15:
+                for i in range(15):
+                    blue_fish = BLUEFISH(position_list)
+                    blue_fish.center_x, blue_fish.center_y = position_list[0]
+                    self.fish_queue.append(blue_fish)
+                for i in range(8):
+                    red_fish = REDFISH(position_list)
+                    red_fish.center_x, red_fish.center_y = position_list[0]
+                    self.fish_queue.append(red_fish)
+                for i in range(10):
+                    shark = SHARK(position_list)
+                    shark.center_x, shark.center_y = position_list[0]
+                    self.fish_queue.append(shark)
                 
         #seperate spawning of balloons by 5 update cycles
         if (self.spawn_cycle_count >= 5 and (len(self.fish_queue) > 0)):
