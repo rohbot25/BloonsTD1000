@@ -13,7 +13,7 @@ BULLET_SPEED = 20
 from User import USER
 from Sidebar import SIDEBAR
 from tower import FISHERMAN, FLYFISHER, WHALER, NEANDERTHAL, WIZARD, BOAT, SUPERFISHER, NETFISHER
-from Fish import FISH, REDFISH, BLUEFISH, GREENFISH, SHARK
+from Fish import  REDFISH, BLUEFISH, GREENFISH, SHARK
 from Button import BUTTON
 
 import arcade
@@ -25,7 +25,7 @@ class GameView(arcade.View):
     def __init__(self):
         super().__init__()
         
-        self.showUpgrade = False
+        self.show_upgrade = False
         #map
         self.texture = None
 
@@ -48,7 +48,7 @@ class GameView(arcade.View):
         self.frame_count = 0
 
         self.user = USER()
-        self.upgradeMenu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
+        self.upgrade_menu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
 
 
         #pasued state for stopping between rounds
@@ -107,30 +107,30 @@ class GameView(arcade.View):
     def on_mouse_press(self, x, y, button, key_modifiers):
     #""" Called when the user presses a mouse button. """
         #if upgrade menu is open and your are clicking on the menu, skip
-        if (self.showUpgrade and x >= 746):
-            for button in self.upgradeMenu.buttons:
+        if (self.show_upgrade and x >= 746):
+            for button in self.upgrade_menu.buttons:
                 if self.user.money >= button.cost and self.tower.level < self.tower.max:
                     self.user.money -= button.cost
                     self.tower.upgrade()
                     self.max = self.tower.max
                     print(f"upgrade made!")
                     paper_banner = arcade.load_texture("images/paper_banner.png")
-                    self.upgradeMenu.drawUpgrade(paper_banner, paper_banner,self.towerName,self.tower)
+                    self.upgrade_menu.drawUpgrade(paper_banner, paper_banner,self.tower_name,self.tower)
                 else:
                     print("no money or max upgrade")
 
         #else check if they are clicking on a tower
         else:
-            self.showUpgrade = False
+            self.show_upgrade = False
             for tower in self.towers:
                 if tower.collides_with_point((x,y)):
                     print("open menu")
                     self.tower = tower
-                    self.towerName = tower.name
-                    self.upgradeLevel = tower.level
+                    self.tower_name = tower.name
+                    self.upgrade_level = tower.level
                     self.max = tower.max
-                    self.upgradeCost = tower.upgradeCost
-                    self.showUpgrade = True
+                    self.upgrade_cost = tower.upgrade_cost
+                    self.show_upgrade = True
                     
 
 
@@ -229,7 +229,7 @@ class GameView(arcade.View):
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2.45, 825,500,self.texture)
 
 
-        if not self.showUpgrade:
+        if not self.show_upgrade:
             # Sidebar
             self.sidebar = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
             # left buttons
@@ -237,7 +237,7 @@ class GameView(arcade.View):
             (825, 350), (825, 250), (825, 150), (825, 50),
             (925, 350), (925, 250), (925, 150), (925, 50)
             ]
-            tower_types = [FISHERMAN, WHALER, BOAT, FLYFISHER, NEANDERTHAL, WIZARD, SUPERFISHER, SUPERFISHER]
+            tower_types = [FISHERMAN, WHALER, BOAT, FLYFISHER, NEANDERTHAL, WIZARD, SUPERFISHER, NETFISHER]
             tower_images = [buy_fisherman,buy_fisherman,buy_boat,buy_fisherman,buy_fisherman,buy_wizard,buy_fisherman,buy_fisherman]
             for (button_x, button_y), tower_type, tower_image in zip(button_positions, tower_types,tower_images):
                 button = BUTTON(button_x, button_y, 75, 75, tower_type(), 100, tower_image)
@@ -251,14 +251,14 @@ class GameView(arcade.View):
             self.sidebar.draw(sidebar, paper_banner)
         #else draw the upgrade sidebar
         else:
-            self.upgradeMenu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
+            self.upgrade_menu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
             # left buttons
-            button = BUTTON(875, 250, 75, 75,self.tower, self.upgradeCost, upgrade)
-            self.upgradeMenu.add_button(button)
+            button = BUTTON(875, 250, 75, 75,self.tower, self.upgrade_cost, upgrade)
+            self.upgrade_menu.add_button(button)
 
             arcade.draw_circle_filled(self.tower.center_x,self.tower.center_y,self.tower.radius,(128,128,128,128))
 
-            self.upgradeMenu.drawUpgrade(paper_banner, paper_banner,self.towerName,self.tower)
+            self.upgrade_menu.drawUpgrade(paper_banner, paper_banner,self.tower_name,self.tower)
             
 
         # draw the top bar

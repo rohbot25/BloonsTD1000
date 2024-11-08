@@ -87,7 +87,7 @@ class SIDEBAR:
                          align="left",
                          width=300,
                          font_name="Comic Sans MS")
-        arcade.draw_text(" Cost: "+str(tower.upgradeCost),start_x=775,
+        arcade.draw_text(" Cost: "+str(tower.upgrade_cost),start_x=775,
                          start_y=175,
                          color=arcade.color.BLACK,
                          font_size=24,
