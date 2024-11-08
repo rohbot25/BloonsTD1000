@@ -45,7 +45,7 @@ class BOAT(TOWER):
 
     def __init__(self):
         bullet = "images/oar.png"
-        super().__init__("images/ship.png",0.075,"Boat",200,25,10,3,150,300,bullet,0.1)
+        super().__init__("images/boat.png",0.75,"Boat",200,25,10,3,150,300,bullet,0.25)
     
     def upgrade(self):
         self.radius *= 2
@@ -81,8 +81,8 @@ class NEANDERTHAL(TOWER):
 class WIZARD(TOWER):
      
     def __init__(self):
-        bullet = "images/sun.png"
-        super().__init__("images/sungod.png",1.0,"Wizard",200,50,25,3,300,600,bullet,1.0)
+        bullet = "images/fireball.png"
+        super().__init__("images/wizard.png",0.5,"Wizard",200,50,25,3,300,600,bullet,1.0)
         
     
     def upgrade(self):
