@@ -1,5 +1,6 @@
 import arcade
 import math
+from Game import DeathView
 
 class FISH(arcade.Sprite):
 
@@ -14,7 +15,7 @@ class FISH(arcade.Sprite):
         #speed TODO change based on balloon type? 
         self.speed = speed
     
-    def update(self,User):
+    def update(self,User, window):
         #path follow update
         start_x = self.center_x
         start_y = self.center_y
@@ -54,20 +55,24 @@ class FISH(arcade.Sprite):
             # Reached the end of the list, start over.
             if self.cur_position >= len(self.path):
                 self.remove_from_sprite_lists()
-                User.health -=10
-                User.round += 1
+                User.health -= self.hp
+                if User.health <= 0:
+                    death_view = DeathView()
+                    window.show_view(death_view)
+
+
 
 class REDFISH(FISH):
-    def __init__(path):
-        super().__init__("art/base_level_fish.png",1.0,path,1.0,20,20)
+    def __init__(self, path):
+        super().__init__("art/level_2_fish.png",2.75,path,3.5,10,20)
 class BLUEFISH(FISH):
-    def __init__(path):
-        super().__init__("art/base_level_fish.png",1.0,path,1.0,20,20)
+    def __init__(self, path):
+        super().__init__("art/base_level_fish.png",2.75,path,2.0,5,10)
 
 class GREENFISH(FISH):
-    def __init__(path):
-        super().__init__("art/base_level_fish.png",1.0,path,1.0,20,20)
+    def __init__(self, path):
+        super().__init__("art/base_level_fish.png",1.0,path,6.0,5,20)
 
 class SHARK(FISH):
-    def __init__(path):
+    def __init__(self, path):
         super().__init__("art/base_level_fish.png",1.0,path,1.020,20)

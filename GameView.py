@@ -95,7 +95,7 @@ class GameView(arcade.View):
         self.sb_y_start = 0
         self.sb_x_start = 750
 
-        balloon = FISH("art/base_level_fish.png",2.75,position_list, 5, 10, 100)
+        balloon = BLUEFISH(position_list)
 
         balloon.center_x = position_list[0][0]
         balloon.center_y = position_list[0][1]
@@ -221,7 +221,7 @@ class GameView(arcade.View):
 
         # draw the top bar
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 1.05, 1400, 44, bar)
-        arcade.draw_texture_rectangle(SCREEN_WIDTH // 5, SCREEN_HEIGHT // 1.05, 40, 40, coin)
+        arcade.draw_texture_rectangle(SCREEN_WIDTH // 5.7, SCREEN_HEIGHT // 1.05, 40, 40, coin)
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 30, SCREEN_HEIGHT // 1.05, 40, 40, heart)
 
         arcade.draw_text(f": {self.user.health}",
@@ -336,7 +336,7 @@ class GameView(arcade.View):
         
 
         for fish in self.fishes:
-            fish.update(self.user)
+            fish.update(self.user, self.window)
 
         self.frame_count += 1
 
@@ -412,9 +412,9 @@ class GameView(arcade.View):
             self.paused = True
 
 
-            #generate wave based on round number
-            for i in range(self.user.round**2):
-                Balloon = FISH("art/base_level_fish.png",2.75,position_list, 2, 10, 100)
+            #generate wave based on round number Hard code
+            for i in range((self.user.round+1) ** 2):
+                Balloon = REDFISH(position_list)
                 Balloon.center_x = position_list[0][0]
                 Balloon.center_y = position_list[0][1]
                 #add fish to queue list

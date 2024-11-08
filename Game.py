@@ -1,6 +1,6 @@
 import arcade
 import arcade.gui
-from GameView import GameView
+
 
 # Screen title and size
 SCREEN_WIDTH = 1000
@@ -44,11 +44,12 @@ class StartView(arcade.View):
 
     def on_draw(self):
         self.clear()
-        arcade.draw_text("Fish Tower Defense", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100,
+        arcade.draw_text("Fish Tower Defense", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 +125,
                          arcade.color.WHITE, font_size=50, anchor_x="center")
         self.manager.draw()
 
     def on_click_start(self, event):
+        from GameView import GameView
         game_view = GameView()
         game_view.setup()
         self.window.show_view(game_view)
@@ -70,16 +71,33 @@ class HelpView(arcade.View):
 
     def on_draw(self):
         self.clear()
-        arcade.draw_text("Help Screen", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100,
+        arcade.draw_text("Help Screen", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50,
                          arcade.color.WHITE, font_size=50, anchor_x="center")
-        arcade.draw_text("Instructions on how to play the game.", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+        arcade.draw_text("Instructions on how to play the game.", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2-50,
                          arcade.color.WHITE, font_size=20, anchor_x="center")
-        arcade.draw_text("Click to go back", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 75,
+        arcade.draw_text("Click to go back", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 125,
                          arcade.color.WHITE, font_size=20, anchor_x="center")
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         start_view = StartView()
         self.window.show_view(start_view)
+
+
+class DeathView(arcade.View):
+    def on_show(self):
+        arcade.set_background_color(arcade.color.REDWOOD)
+
+    def on_draw(self):
+        self.clear()
+        arcade.draw_text("You Have Failed!", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100,
+                         arcade.color.WHITE, font_size=50, anchor_x="center")
+        arcade.draw_text("Click to return to start", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+                         arcade.color.WHITE, font_size=20, anchor_x="center")
+
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        start_view = StartView()
+        self.window.show_view(start_view)
+
 
 class MapSelectView(arcade.View):
     def on_show(self):
