@@ -425,7 +425,10 @@ class GameView(arcade.View):
 
                                 # If the fish's health reaches zero, remove it from the list
                                 if fish.hp <= 0:
-                                    self.fishes.remove(fish)
+                                    try:
+                                        self.fishes.remove(fish)
+                                    except ValueError:
+                                        pass
                                     if fish == SHARK:
                                         for i in range(3):
                                             balloon = BLUEFISH(position_list)
