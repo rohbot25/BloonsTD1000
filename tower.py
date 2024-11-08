@@ -128,7 +128,7 @@ class NEANDERTHAL(TOWER):
 class WIZARD(TOWER):
      
     def __init__(self):
-        image = "art/wizard.png" 
+        image = "images/wizard.png" 
         scale = 0.3
         name = "Wizard"
         radius = 200
