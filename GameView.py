@@ -1,13 +1,14 @@
 import arcade
 import time
 import math
+import random
 
 # Screen title and size
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 500
 SCREEN_TITLE = "Fish Tower Defense"
 
-BULLET_SPEED = 100
+BULLET_SPEED = 35
 
 from User import USER
 from Sidebar import SIDEBAR
@@ -95,7 +96,7 @@ class GameView(arcade.View):
         self.sb_y_start = 0
         self.sb_x_start = 750
 
-        balloon = BLUEFISH(position_list )
+        balloon = BLUEFISH(position_list)
 
         balloon.center_x = position_list[0][0]
         balloon.center_y = position_list[0][1]
@@ -215,9 +216,48 @@ class GameView(arcade.View):
         sidebar = arcade.load_texture("images/sidebar.jpg")
         paper_banner = arcade.load_texture("images/paper_banner.png")
         buy_fisherman = arcade.load_texture("art/base_fisherman.png")
+        buy_boat = arcade.load_texture("images/ship.png")
         upgrade = arcade.load_texture("images/upgrade.png")
         # This command has to happen before we start drawing
         self.clear()
+
+        # if not show upgrade menu, draw and act with the shop
+
+        #draw the map
+        arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2.45, 825,500,self.texture)
+
+
+        if not self.showUpgrade:
+            # Sidebar
+            self.sidebar = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
+            # left buttons
+            button_positions = [
+            (825, 350), (825, 250), (825, 150), (825, 50),
+            (925, 350), (925, 250), (925, 150), (925, 50)
+            ]
+            tower_types = [FISHERMAN, WHALER, BOAT, FLYFISHER, NEANDERTHAL, WIZARD, SUPERFISHER, SUPERFISHER]
+            tower_images = [buy_fisherman,buy_fisherman,buy_boat,buy_fisherman,buy_fisherman,buy_fisherman,buy_fisherman,buy_fisherman]
+            for (button_x, button_y), tower_type, tower_image in zip(button_positions, tower_types,tower_images):
+                button = BUTTON(button_x, button_y, 75, 75, tower_type(), 100, tower_image)
+                button.tower_type = tower_type  # Assign the class, not an instance
+                self.sidebar.add_button(button)
+
+            # Update hover states and draw the sidebar
+            for button in self.sidebar.buttons:
+                button.check_hover(self.mouse_x, self.mouse_y)
+
+            self.sidebar.draw(sidebar, paper_banner)
+        #else draw the upgrade sidebar
+        else:
+            self.upgradeMenu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
+            # left buttons
+            button = BUTTON(875, 250, 75, 75,self.tower, self.upgradeCost, upgrade)
+            self.upgradeMenu.add_button(button)
+
+            arcade.draw_circle_filled(self.tower.center_x,self.tower.center_y,self.tower.radius,(128,128,128,128))
+
+            self.upgradeMenu.drawUpgrade(paper_banner, paper_banner,self.towerName,self.tower)
+            
 
         # draw the top bar
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 1.05, 1400, 44, bar)
@@ -248,40 +288,8 @@ class GameView(arcade.View):
                          align="right",
                          width=300,
                          font_name="Comic Sans MS")
-        # if not show upgrade menu, draw and act with the shop
-        if not self.showUpgrade:
-            # Sidebar
-            self.sidebar = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
-            # left buttons
-            button_positions = [
-            (825, 350), (825, 250), (825, 150), (825, 50),
-            (925, 350), (925, 250), (925, 150), (925, 50)
-            ]
-            tower_types = [FISHERMAN, WHALER, BOAT, FLYFISHER, NEANDERTHAL, WIZARD, SUPERFISHER, SUPERFISHER]
 
-            for (button_x, button_y), tower_type in zip(button_positions, tower_types):
-                button = BUTTON(button_x, button_y, 75, 75, tower_type(), 100, buy_fisherman)
-                button.tower_type = tower_type  # Assign the class, not an instance
-                self.sidebar.add_button(button)
-
-            # Update hover states and draw the sidebar
-            for button in self.sidebar.buttons:
-                button.check_hover(self.mouse_x, self.mouse_y)
-
-            self.sidebar.draw(sidebar, paper_banner)
-        #else draw the upgrade sidebar
-        else:
-            self.upgradeMenu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
-            # left buttons
-            button = BUTTON(875, 250, 75, 75,self.tower, self.upgradeCost, upgrade)
-            self.upgradeMenu.add_button(button)
-            self.upgradeMenu.drawUpgrade(paper_banner, paper_banner,self.towerName,self.tower)
-
-
-        #draw the map
-        arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2.45, 825,500,self.texture)
-
-
+        
         self.fishes.draw()
         self.towers.draw()
         self.harpoons.draw()
@@ -307,43 +315,16 @@ class GameView(arcade.View):
             arcade.draw_line(0, y, SCREEN_WIDTH, y, line_color, 2)
     
     #update the position of the sprites
-    def on_update(self, delta_time):
-        # If paused, wait to be unpaused
+    def on_update(self,delta_time):
+
+#if paused, eturn, wait to be unpaused
         if self.paused:
             return
-
-        # Update cycle counter, each call to update is 1 cycle
+        
+#update cycle counter, each call to update is 1 cycle
         self.spawn_cycle_count += 1
 
-        for fish in self.fishes:
-            fish.update(self.user, self.window)
-
-        self.frame_count += 1
-
-        # Handle tower shooting and updating harpoons
-        for tower in self.towers:
-            if len(self.fishes) > 0:
-                # Shooting logic, omitted here for brevity
-                pass
-
-        # Spawn new fish if queue has fish and the cycle count is reached
-        if self.spawn_cycle_count >= 3 and len(self.fish_queue) > 0:
-            # Reset update cycle counter
-            self.spawn_cycle_count = 0
-
-            # Spawn fish from the end of the queue list
-            self.fishes.append(self.fish_queue.pop())
-
-        self.harpoons.update()
-
-        # Check if all fish are cleared, pause if so
-        if len(self.fishes) == 0 and len(self.fish_queue) == 0:
-            self.paused = True
-            self.user.round += 1  # Move to the next round
-            self.setup_round()  # Initialize the next round
-
-    def setup_round(self):
-        # Initialize fish queue for the new round
+#position list for creating new balloons
         position_list = [
             [0, 275],
             [335, 275],
@@ -360,67 +341,97 @@ class GameView(arcade.View):
             [300, 0]
         ]
 
-        # Populate fish queue based on the round
-        if self.user.round == 1:
-            for i in range(3):
-                balloon = BLUEFISH(position_list)
-                balloon.center_x, balloon.center_y = position_list[0]
-                self.fish_queue.append(balloon)
+        
 
-        elif self.user.round == 2:
-            for i in range(6):
-                balloon = BLUEFISH(position_list)
-                balloon.center_x, balloon.center_y = position_list[0]
-                self.fish_queue.append(balloon)
+        for fish in self.fishes:
+            fish.update(self.user, self.window)
 
-        elif self.user.round == 3:
-            for i in range(8):
-                balloon = BLUEFISH(position_list)
-                balloon.center_x, balloon.center_y = position_list[0]
-                self.fish_queue.append(balloon)
+        self.frame_count += 1
 
-        elif self.user.round == 4:
-            for i in range(12):
-                balloon = BLUEFISH(position_list)
-                balloon.center_x, balloon.center_y = position_list[0]
-                self.fish_queue.append(balloon)
+        # Get the current mouse position
+        mouse_x, mouse_y = self.mouse_x, self.mouse_y
 
-        elif self.user.round == 5:
-            for i in range(5):
-                red_fish = REDFISH(position_list)
-                red_fish.center_x, red_fish.center_y = position_list[0]
-                self.fish_queue.append(red_fish)
+        # makes it so the game doesnt crash when there are no balloons, will change in future
+        if len(self.fishes) >0:
+            for tower in self.towers:
+                
+                # First, calculate the angle to the player. We could do this
+                # only when the bullet fires, but in this case we will rotate
+                # the enemy to face the player each frame, so we'll do this
+                # each frame.
 
-        elif self.user.round == 6:
-            for i in range(10):
-                blue_fish = BLUEFISH(position_list)
-                blue_fish.center_x, blue_fish.center_y = position_list[0]
-                self.fish_queue.append(blue_fish)
-            for i in range(2):
-                red_fish = REDFISH(position_list)
-                red_fish.center_x, red_fish.center_y = position_list[0]
-                self.fish_queue.append(red_fish)
+                # Position the start at the enemy's current location
+                start_x = tower.center_x
+                start_y = tower.center_y
 
-        elif self.user.round == 7:
-            for i in range(8):
-                blue_fish = BLUEFISH(position_list)
-                blue_fish.center_x, blue_fish.center_y = position_list[0]
-                self.fish_queue.append(blue_fish)
-            for i in range(3):
-                red_fish = REDFISH(position_list)
-                red_fish.center_x, red_fish.center_y = position_list[0]
-                self.fish_queue.append(red_fish)
+                # Get the destination location for the bullet
+                dest_x = self.fishes[0].center_x
+                dest_y = self.fishes[0].center_y
 
-        # Prepare to start the round on next unpause
-        self.paused = True
+                # Do math to calculate how to get the bullet to the destination.
+                # Calculation the angle in radians between the start points
+                # and end points. This is the angle the bullet will travel.
+                x_diff = dest_x - start_x
+                y_diff = dest_y - start_y
+                angle = math.atan2(y_diff, x_diff)
 
-    def on_mouse_press(self, x, y, button, modifiers):
-        # Unpause the game on click
-        if self.paused:
-            self.paused = False
+                distance = math.sqrt((tower.center_x - self.fishes[0].center_x) ** 2 +
+                                     (tower.center_y - self.fishes[0].center_y) ** 2)
+
+                if distance <= tower.radius:
+                    # Set the enemy to face the player
+                    if tower.name == 'Boat':
+                        tower.angle = math.degrees(angle) 
+                    else:
+                        tower.angle = math.degrees(angle) - 90
+
+                    # Shoot every 60 frames change of shooting each frame
+                    if self.frame_count % 30 == 0:
+                        bullet = arcade.Sprite(tower.bullet,tower.bullet_scale)
+                        bullet.center_x = start_x
+                        bullet.center_y = start_y
+
+                        # Angle the bullet sprite
+                        bullet.angle = math.degrees(angle)
+
+                        # Taking into account the angle, calculate our change_x
+                        # and change_y. Velocity is how fast the bullet travels.
+                        bullet.change_x = math.cos(angle) * BULLET_SPEED
+                        bullet.change_y = math.sin(angle) * BULLET_SPEED
+
+                        self.harpoons.append(bullet)
+
+            # Get rid of the bullet when it flies off-screen or when it hits a balloon
+            for bullet in self.harpoons:
+                if bullet.top < 0:
+                    bullet.remove_from_sprite_lists()
+                else:
+                    for fish in self.fishes:
+                        if arcade.check_for_collision(bullet, fish):
+                            bullet.remove_from_sprite_lists()
+                            self.user.money += random.randint(3,20)
+
+                            # Decrease the health of the fish/balloon when hit
+                            fish.hp -= 1
+
+                            # If the fish's health reaches zero, remove it from the list
+                            if fish.hp <= 0:
+                                self.fishes.remove(fish)
+        else:
+            # pause at round end
+            print("PAUSED!")
+            self.paused = True
+            self.harpoons.clear()
 
 
             #generate wave based on round number Hard code
+            for i in range((self.user.round+1) ** 2):
+                Balloon = REDFISH(position_list)
+                Balloon.center_x = position_list[0][0]
+                Balloon.center_y = position_list[0][1]
+                #add fish to queue list
+                self.fish_queue.append(Balloon)
+                
         #seperate spawning of balloons by 5 update cycles
         if (self.spawn_cycle_count >= 5 and (len(self.fish_queue) > 0)):
 
