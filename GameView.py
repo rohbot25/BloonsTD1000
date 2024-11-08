@@ -261,6 +261,7 @@ class GameView(arcade.View):
             arcade.draw_circle_filled(self.tower.center_x,self.tower.center_y,self.tower.radius,(128,128,128,128))
             if not self.upgrade_made:
                 self.upgrade_menu.drawUpgrade(paper_banner, paper_banner,self.tower_name,self.tower)
+            else:
                 self.upgrade_made = False
             
 
