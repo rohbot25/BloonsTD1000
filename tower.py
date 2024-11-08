@@ -22,7 +22,7 @@ class FISHERMAN(TOWER):
 
     def __init__(self):
         bullet = "images/sun.png"
-        super().__init__("art/base_fisherman.png",3.0,"Fisherman",100,25,30,3,50,100,bullet,1.0)
+        super().__init__("art/base_fisherman.png",3.0,"Fisherman",100,25,30,3,50,100,bullet,.2)
     
     def upgrade(self):
         self.rate -= 5

@@ -355,95 +355,85 @@ class GameView(arcade.View):
 
         # makes it so the game doesnt crash when there are no balloons, will change in future
 
-        if len(self.fishes) >0:
+
+        if len(self.fishes) > 0:
             for tower in self.towers:
+                # Track the closest fish and the minimum distance
+                closest_fish = None
+                min_distance = float('inf')
+
+                # Find the closest fish to the current tower
                 for fish in self.fishes:
+                    distance = math.sqrt((tower.center_x - fish.center_x) ** 2 +
+                                         (tower.center_y - fish.center_y) ** 2)
+                    if distance <= tower.radius and distance < min_distance:
+                        min_distance = distance
+                        closest_fish = fish
 
-                    # First, calculate the angle to the player. We could do this
-                    # only when the bullet fires, but in this case we will rotate
-                    # the enemy to face the player each frame, so we'll do this
-                    # each frame.
-
-                    # Position the start at the enemy's current location
+                # If we found a fish within the tower's radius
+                if closest_fish:
+                    # Calculate angle and rotate tower
                     start_x = tower.center_x
                     start_y = tower.center_y
-
-                    # Get the destination location for the bullet
-                    dest_x = fish.center_x
-                    dest_y = fish.center_y
-
-                    # Do math to calculate how to get the bullet to the destination.
-                    # Calculation the angle in radians between the start points
-                    # and end points. This is the angle the bullet will travel.
+                    dest_x = closest_fish.center_x
+                    dest_y = closest_fish.center_y
                     x_diff = dest_x - start_x
                     y_diff = dest_y - start_y
                     angle = math.atan2(y_diff, x_diff)
 
-                    distance = math.sqrt((tower.center_x - fish.center_x) ** 2 +
-                                         (tower.center_y - fish.center_y) ** 2)
+                    # Set the tower to face the closest fish
+                    tower.angle = math.degrees(angle) - 180 if tower.name == 'Boat' else math.degrees(angle) - 180
 
-                    if distance <= tower.radius:
-                        # Set the enemy to face the player
-                        if tower.name == 'Boat':
-                            tower.angle = math.degrees(angle) - 180
+                    # Shoot every `rate` frames
+                    if self.frame_count % tower.rate == 0:
+                        bullet = arcade.Sprite(tower.bullet, tower.bullet_scale)
+                        bullet.center_x = start_x
+                        bullet.center_y = start_y
+
+                        # Adjust bullet angle based on tower type
+                        if tower.name == "Boat":
+                            bullet.angle = math.degrees(angle) + 45
+                        elif tower.name == "Wizard":
+                            bullet.angle = math.degrees(angle) + 135
                         else:
-                            tower.angle = math.degrees(angle) - 180
+                            bullet.angle = math.degrees(angle)
 
-                        # Shoot every 60 frames change of shooting each frame
-                        if self.frame_count % tower.rate == 0:
-                            bullet = arcade.Sprite(tower.bullet,tower.bullet_scale)
-                            bullet.center_x = start_x
-                            bullet.center_y = start_y
+                        # Calculate bullet trajectory
+                        bullet.change_x = math.cos(angle) * BULLET_SPEED
+                        bullet.change_y = math.sin(angle) * BULLET_SPEED
 
-                            # Angle the bullet sprite
-                            if(tower.name == "Boat"):
-                                bullet.angle = math.degrees(angle) + 45
-                            elif(tower.name == "Wizard"):
-                                bullet.angle = math.degrees(angle) + 135
-                            else:
-                                bullet.angle = math.degrees(angle)
+                        self.harpoons.append(bullet)
 
-                            # Taking into account the angle, calculate our change_x
-                            # and change_y. Velocity is how fast the bullet travels.
-                            bullet.change_x = math.cos(angle) * BULLET_SPEED
-                            bullet.change_y = math.sin(angle) * BULLET_SPEED
+            # Remove off-screen bullets or handle collisions
+            for bullet in self.harpoons:
+                if bullet.top < 0:
+                    bullet.remove_from_sprite_lists()
+                else:
+                    for fish in self.fishes:
+                        if arcade.check_for_collision(bullet, fish):
+                            bullet.remove_from_sprite_lists()
+                            self.user.money += random.randint(3, 20)
 
-                            self.harpoons.append(bullet)
-
-                # Get rid of the bullet when it flies off-screen or when it hits a balloon
-                for bullet in self.harpoons:
-                    if bullet.top < 0:
-                        bullet.remove_from_sprite_lists()
-                    else:
-
-                            if arcade.check_for_collision(bullet, fish):
-                                bullet.remove_from_sprite_lists()
-                                self.user.money += random.randint(3,20)
-
-                                # Decrease the health of the fish/balloon when hit
-                                fish.hp -= 1
-
-                                # If the fish's health reaches zero, remove it from the list
-                                if fish.hp <= 0:
-                                    try:
-                                        self.fishes.remove(fish)
-                                    except ValueError:
-                                        pass
-                                    if fish == SHARK:
-                                        for i in range(3):
-                                            balloon = BLUEFISH(position_list)
-                                            balloon.center_x, balloon.center_y = position_list[0]
-                                            self.fish_queue.append(balloon)
-
+                            # Reduce fish health and remove if necessary
+                            fish.hp -= 1
+                            if fish.hp <= 0:
+                                try:
+                                    self.fishes.remove(fish)
+                                except ValueError:
+                                    pass
+                                if fish == SHARK:
+                                    for i in range(3):
+                                        balloon = BLUEFISH(position_list)
+                                        balloon.center_x, balloon.center_y = position_list[0]
+                                        self.fish_queue.append(balloon)
 
         else:
-            # pause at round end
+            # Pause at round end
             print("PAUSED!")
             self.paused = True
             self.harpoons.clear()
 
-
-            #generate wave based on round number Hard code
+    #generate wave based on round number Hard code
             # Populate fish queue based on the round
             if self.user.round == 1:
                 for i in range(3):
@@ -455,10 +445,6 @@ class GameView(arcade.View):
                     balloon = BLUEFISH(position_list)
                     balloon.center_x, balloon.center_y = position_list[0]
                     self.fish_queue.append(balloon)
-                for i in range(1):
-                    shark = SHARK(position_list)
-                    shark.center_x, shark.center_y = position_list[0]
-                    self.fish_queue.append(shark)
             elif self.user.round == 3:
                 for i in range(8):
                     balloon = BLUEFISH(position_list)
@@ -537,7 +523,7 @@ class GameView(arcade.View):
                     red_fish = REDFISH(position_list)
                     red_fish.center_x, red_fish.center_y = position_list[0]
                     self.fish_queue.append(red_fish)
-            elif self.user.round == 12:
+            elif self.user.round == 13:
                 for i in range(8):
                     blue_fish = BLUEFISH(position_list)
                     blue_fish.center_x, blue_fish.center_y = position_list[0]
@@ -546,7 +532,7 @@ class GameView(arcade.View):
                     red_fish = REDFISH(position_list)
                     red_fish.center_x, red_fish.center_y = position_list[0]
                     self.fish_queue.append(red_fish)
-            elif self.user.round == 13:
+            elif self.user.round == 14:
                 for i in range(8):
                     blue_fish = BLUEFISH(position_list)
                     blue_fish.center_x, blue_fish.center_y = position_list[0]
