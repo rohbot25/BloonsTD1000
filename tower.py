@@ -2,14 +2,18 @@ import arcade
 
 class TOWER(arcade.Sprite):
     
-    def __init__(self,image, name, radius, atk, rate):
-        super().__init__(image,3.0)
+    def __init__(self,image,scale, name, radius, atk, rate,cost,max,upgradeCost,bullet,bullet_scale):
+        super().__init__(image,scale,hit_box_algorithm="None")
         self.name = name
         self.radius = radius
         self.atk = atk
         self.rate = rate
         self.level = 0
-        self.cost = 0
+        self.cost = cost
+        self.max = max
+        self.upgradeCost = upgradeCost
+        self.bullet = bullet
+        self.bullet_scale = bullet_scale
 
         
 
@@ -17,11 +21,8 @@ class TOWER(arcade.Sprite):
 class FISHERMAN(TOWER):
 
     def __init__(self):
-        super().__init__("art/base_fisherman.png","Fisherman",200,25,25)
-        #max amount of upgrade
-        self.max = 3
-        self.cost = 50
-        self.upgradeCost = 100
+        bullet = "images/sun.png"
+        super().__init__("art/base_fisherman.png",3.0,"Fisherman",200,25,25,3,50,100,bullet,1.0)
     
     def upgrade(self):
         self.rate *= 2
@@ -31,11 +32,9 @@ class FISHERMAN(TOWER):
 class WHALER(TOWER):
     
     def __init__(self):
-        super().__init__("images/sungod.png","Whaler",300,50,25)
-        #max amount of upgrade
-        self.max = 3
-        self.cost = 100
-        self.upgradeCost = 200
+        bullet = "images/sun.png"
+        super().__init__("images/sungod.png",1.0,"Whaler",300,50,25,3,100,200,bullet,1.0)
+        
     
     def upgrade(self):
         self.atk *= 2
@@ -45,11 +44,8 @@ class WHALER(TOWER):
 class BOAT(TOWER):
 
     def __init__(self):
-        super().__init__("images/sungod.png","Boat",200,25,25)
-        #max amount of upgrade
-        self.max = 3
-        self.cost = 150
-        self.upgradeCost = 300
+        bullet = "images/oar.png"
+        super().__init__("images/ship.png",0.075,"Boat",200,25,10,3,150,300,bullet,0.1)
     
     def upgrade(self):
         self.radius *= 2
@@ -59,11 +55,9 @@ class BOAT(TOWER):
 class FLYFISHER(TOWER):
 
     def __init__(self):
-        super().__init__("images/sungod.png","Flyfisher",300,50,50)
-        #max amount of upgrade
-        self.max = 3
-        self.cost = 200
-        self.upgradeCost = 500
+        bullet = "images/sun.png"
+        super().__init__("images/sungod.png",1.0,"Flyfisher",300,50,50,3,200,500,bullet,1.0)
+        
 
     
     def upgrade(self):
@@ -75,11 +69,9 @@ class FLYFISHER(TOWER):
 class NEANDERTHAL(TOWER):
 
     def __init__(self):
-        super().__init__("images/sungod.png","Neanderthal",400,100,10)
-        #max amount of upgrade
-        self.max = 3
-        self.cost = 250
-        self.upgradeCost = 500
+        bullet = "images/sun.png"
+        super().__init__("images/sungod.png",1.0,"Neanderthal",400,100,10,3,250,500,bullet,1.0)
+        
     
     def upgrade(self):
         self.atk *= 2
@@ -89,11 +81,9 @@ class NEANDERTHAL(TOWER):
 class WIZARD(TOWER):
      
     def __init__(self):
-        super().__init__("images/sungod.png","Wizard",200,50,25)
-        #max amount of upgrade
-        self.max = 3
-        self.cost = 300
-        self.upgradeCost = 600
+        bullet = "images/sun.png"
+        super().__init__("images/sungod.png",1.0,"Wizard",200,50,25,3,300,600,bullet,1.0)
+        
     
     def upgrade(self):
         self.atk *= 1.5
@@ -105,11 +95,8 @@ class WIZARD(TOWER):
 class SUPERFISHER(TOWER):
      
     def __init__(self):
-        super().__init__("images/sungod.png","Superfisher",500,100,50)
-        #max amount of upgrade
-        self.max = 3
-        self.cost = 1000
-        self.upgradeCost = 2500
+        bullet = "images/sun.png"
+        super().__init__("images/sungod.png",1.0,"Superfisher",500,100,50,3,1000,2500,bullet,1.0)
     
     def upgrade(self):
         self.atk *= 2
@@ -121,11 +108,8 @@ class SUPERFISHER(TOWER):
 class NETFISHER(TOWER):
       
     def __init__(self):
-        super().__init__("images/sungod.png","Netfisher",200,25,25)
-        #max amount of upgrade
-        self.max = 10
-        self.cost = 400
-        self.upgradeCost = 100
+        bullet = "images/sun.png"
+        super().__init__("images/sungod.png",1.0,"Netfisher",200,25,25,10,400,100,bullet,1.0)
     
     def upgrade(self):
         self.radius += 50

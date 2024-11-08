@@ -8,7 +8,7 @@ SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 500
 SCREEN_TITLE = "Fish Tower Defense"
 
-BULLET_SPEED = 100
+BULLET_SPEED = 35
 
 from User import USER
 from Sidebar import SIDEBAR
@@ -216,6 +216,7 @@ class GameView(arcade.View):
         sidebar = arcade.load_texture("images/sidebar.jpg")
         paper_banner = arcade.load_texture("images/paper_banner.png")
         buy_fisherman = arcade.load_texture("art/base_fisherman.png")
+        buy_boat = arcade.load_texture("images/ship.png")
         upgrade = arcade.load_texture("images/upgrade.png")
         # This command has to happen before we start drawing
         self.clear()
@@ -235,9 +236,9 @@ class GameView(arcade.View):
             (925, 350), (925, 250), (925, 150), (925, 50)
             ]
             tower_types = [FISHERMAN, WHALER, BOAT, FLYFISHER, NEANDERTHAL, WIZARD, SUPERFISHER, SUPERFISHER]
-
-            for (button_x, button_y), tower_type in zip(button_positions, tower_types):
-                button = BUTTON(button_x, button_y, 75, 75, tower_type(), 100, buy_fisherman)
+            tower_images = [buy_fisherman,buy_fisherman,buy_boat,buy_fisherman,buy_fisherman,buy_fisherman,buy_fisherman,buy_fisherman]
+            for (button_x, button_y), tower_type, tower_image in zip(button_positions, tower_types,tower_images):
+                button = BUTTON(button_x, button_y, 75, 75, tower_type(), 100, tower_image)
                 button.tower_type = tower_type  # Assign the class, not an instance
                 self.sidebar.add_button(button)
 
@@ -379,11 +380,14 @@ class GameView(arcade.View):
 
                 if distance <= tower.radius:
                     # Set the enemy to face the player
-                    tower.angle = math.degrees(angle) - 90
+                    if tower.name == 'Boat':
+                        tower.angle = math.degrees(angle) 
+                    else:
+                        tower.angle = math.degrees(angle) - 90
 
                     # Shoot every 60 frames change of shooting each frame
                     if self.frame_count % 30 == 0:
-                        bullet = arcade.Sprite("images/sun.png",.1)
+                        bullet = arcade.Sprite(tower.bullet,tower.bullet_scale)
                         bullet.center_x = start_x
                         bullet.center_y = start_y
 
