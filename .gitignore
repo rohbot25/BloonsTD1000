@@ -5,3 +5,6 @@ __pycache__/GameView.cpython-39.pyc
 __pycache__/Sidebar.cpython-39.pyc
 __pycache__/User.cpython-39.pyc
 __pycache__/tower.cpython-39.pyc
+__pycache__/
+*.pyc
+
