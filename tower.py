@@ -42,17 +42,17 @@ class FISHERMAN(TOWER):
 class WHALER(TOWER):
     
     def __init__(self):
-        image = "art/base_fisherman.png" 
-        scale = 1.0
-        name = "Whaler"
-        radius = 200
+        image = "art/god.png"
+        scale = 0.2
+        name = "God"
+        radius = 2000
         atk = 50
-        rate = 30
-        cost = 100
+        rate = 4
+        cost = 0
         max = 3
-        upgrade_cost = 200
-        bullet = "images/sun.png"
-        bullet_scale = 1.0
+        upgrade_cost = 0
+        bullet = "art/sun_gold.png"
+        bullet_scale = 0.33
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
         
     

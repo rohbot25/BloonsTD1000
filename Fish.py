@@ -24,9 +24,7 @@ class FISH(arcade.Sprite):
             self.center_x, self.center_y = path[0]
 
     def find_nearest_path_position(self, x, y):
-        """
-        Finds the nearest path position to a given x, y coordinate.
-        """
+        # Finds the nearest path position to a given x, y coordinate
         closest_index = 0
         min_distance = float('inf')
         for i, (px, py) in enumerate(self.path):
@@ -34,7 +32,7 @@ class FISH(arcade.Sprite):
             if dist < min_distance:
                 min_distance = dist
                 closest_index = i
-        return closest_index
+        return closest_index + 1
 
     def update(self, User, window):
         start_x = self.center_x
@@ -77,7 +75,7 @@ class BLUEFISH(FISH):
 
 class GREENFISH(FISH):
     def __init__(self, path, start_x=None, start_y=None):
-        super().__init__("art/base_level_fish.png", 1.0, path, 10, 5, 20, start_x, start_y)
+        super().__init__("art/green_fish.png", 2.75, path, 2, 15, 20, start_x, start_y)
 
 class SHARK(FISH):
     def __init__(self, path, start_x=None, start_y=None):
