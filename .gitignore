@@ -7,4 +7,5 @@ __pycache__/User.cpython-39.pyc
 __pycache__/tower.cpython-39.pyc
 __pycache__/
 *.pyc
+art/.DS_Store
 
