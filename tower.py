@@ -26,7 +26,7 @@ class FISHERMAN(TOWER):
         name = "Fisherman"
         radius = 100
         atk = 2
-        rate = 3
+        rate = 30
         cost = 50
         max = 3
         upgrade_cost = 100
