@@ -107,7 +107,7 @@ class FLYFISHER(TOWER):
 class NEANDERTHAL(TOWER):
 
     def __init__(self):
-        image = "art/base_fisherman.png" 
+        image = "art/neanderthal_fisherman.png"
         scale = 1.0
         name = "Neanderthal"
         radius = 400

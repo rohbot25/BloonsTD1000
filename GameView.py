@@ -222,6 +222,7 @@ class GameView(arcade.View):
         buy_boat = arcade.load_texture("images/boat.png")
         buy_wizard = arcade.load_texture("images/wizard.png")
         buy_god = arcade.load_texture("art/god.png")
+        buy_neanderthal = arcade.load_texture("art/neanderthal_fisherman.png")
         upgrade = arcade.load_texture("images/upgrade.png")
 
         # This command has to happen before we start drawing
@@ -242,7 +243,7 @@ class GameView(arcade.View):
                 (925, 350), (925, 250), (925, 150), (925, 50)
             ]
             tower_types = [FISHERMAN, WHALER, BOAT, FLYFISHER, NEANDERTHAL, WIZARD, SUPERFISHER, NETFISHER]
-            tower_images = [buy_fisherman,buy_god,buy_boat,buy_fisherman,buy_fisherman,buy_wizard,buy_fisherman,buy_fisherman]
+            tower_images = [buy_fisherman,buy_god,buy_boat,buy_fisherman,buy_neanderthal,buy_wizard,buy_fisherman,buy_fisherman]
             for (button_x, button_y), tower_type, tower_image in zip(button_positions, tower_types,tower_images):
                 button = BUTTON(button_x, button_y, 75, 75, tower_type(), 100, tower_image)
                 button.tower_type = tower_type  # Assign the class, not an instance
