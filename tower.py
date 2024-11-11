@@ -47,7 +47,7 @@ class WHALER(TOWER):
         name = "God"
         radius = 2000
         atk = 50
-        rate = 4
+        rate = 50
         cost = 0
         max = 3
         upgrade_cost = 0

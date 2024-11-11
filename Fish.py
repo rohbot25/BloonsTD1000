@@ -79,4 +79,4 @@ class GREENFISH(FISH):
 
 class SHARK(FISH):
     def __init__(self, path, start_x=None, start_y=None):
-        super().__init__("art/blue_blimp_shark.png", 3.5, path, 0.75, 5, 10, start_x, start_y)
+        super().__init__("art/blue_blimp_shark.png", 3.5, path, 0.75, 50, 10, start_x, start_y)

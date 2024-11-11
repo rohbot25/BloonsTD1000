@@ -411,39 +411,42 @@ class GameView(arcade.View):
                         self.harpoons.append(bullet)
 
             # Remove off-screen bullets or handle collisions
-            for bullet in self.harpoons:
-                if bullet.top < 0:
-                    bullet.remove_from_sprite_lists()
-                else:
-                    for fish in self.fishes:
-                        if arcade.check_for_collision(bullet, fish):
-                            bullet.remove_from_sprite_lists()
-                            self.user.money += random.randint(3, 20)
+                for bullet in self.harpoons:
+                    if bullet.top < 0:
+                        bullet.remove_from_sprite_lists()
+                    else:
+                        for fish in self.fishes:
+                            if arcade.check_for_collision(bullet, fish):
+                                if isinstance(tower, WHALER):
+                                    fish.hp -=5
+                                    self.user.money += random.randint(3, 20)
+                                else:
+                                    bullet.remove_from_sprite_lists()
+                                    self.user.money += random.randint(3, 20)
+                                    # Reduce fish health and remove if necessary
+                                    fish.hp -= 1
+                                if fish.hp <= 0:
+                                    shark_x, shark_y = fish.center_x, fish.center_y
+                                    try:
+                                        self.fishes.remove(fish)
+                                    except ValueError:
+                                        pass
 
-                            # Reduce fish health and remove if necessary
-                            fish.hp -= 1
-                            if fish.hp <= 0:
-                                shark_x, shark_y = fish.center_x, fish.center_y
-                                try:
-                                    self.fishes.remove(fish)
-                                except ValueError:
-                                    pass
-
-                                # Check if the removed fish is a shark
+                                    # Check if the removed fish is a shark
 
 
-                                if isinstance(fish, SHARK):
-                                    for i in range(6):
-                                        red = REDFISH(position_list, start_x=shark_x, start_y=shark_y)
-                                        self.fish_queue.append(red)
+                                    if isinstance(fish, SHARK):
+                                        for i in range(6):
+                                            red = REDFISH(position_list, start_x=shark_x, start_y=shark_y)
+                                            self.fish_queue.append(red)
 
-                                    for i in range(3):
-                                        blue = BLUEFISH(position_list, start_x=shark_x, start_y=shark_y)
-                                        self.fish_queue.append(blue)
+                                        for i in range(3):
+                                            blue = BLUEFISH(position_list, start_x=shark_x, start_y=shark_y)
+                                            self.fish_queue.append(blue)
 
-                                    for i in range(3):
-                                        green = GREENFISH(position_list, start_x=shark_x, start_y=shark_y)
-                                        self.fish_queue.append(green)
+                                        for i in range(3):
+                                            green = GREENFISH(position_list, start_x=shark_x, start_y=shark_y)
+                                            self.fish_queue.append(green)
 
         else:
             pos_rand = numpy.random.randint(0, 5)
@@ -455,7 +458,7 @@ class GameView(arcade.View):
             #generate wave based on round number Hard code
             # Populate fish queue based on the round
             if self.user.round == 1:
-                for i in range(3):
+                for i in range(3000):
                     balloon = BLUEFISH(position_list)
                     balloon.center_x, balloon.center_y = position_list[0]
                     self.fish_queue.append(balloon)
