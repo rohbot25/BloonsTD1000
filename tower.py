@@ -25,8 +25,8 @@ class FISHERMAN(TOWER):
         scale = 3.0
         name = "Fisherman"
         radius = 100
-        atk = 25
-        rate = 30
+        atk = 2
+        rate = 3
         cost = 50
         max = 3
         upgrade_cost = 100
@@ -128,12 +128,12 @@ class NEANDERTHAL(TOWER):
 class WIZARD(TOWER):
      
     def __init__(self):
-        image = "images/wizard.png" 
+        image = "images/wizard.png"
         scale = 0.3
         name = "Wizard"
         radius = 200
         atk = 50
-        rate = 50
+        rate = 25
         cost = 300
         max = 3
         upgrade_cost = 600

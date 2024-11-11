@@ -2,57 +2,63 @@ import arcade
 import math
 from Game import DeathView
 
+
 class FISH(arcade.Sprite):
 
-    def __init__(self, image, scale, path,speed,hp,points):
-        #something about the image for the sprite
+    def __init__(self, image, scale, path, speed, hp, points, start_x=None, start_y=None):
         super().__init__(image, scale)
-        #path
         self.hp = hp
         self.points = points
         self.path = path
-        self.cur_position = 0
-        #speed TODO change based on balloon type? 
         self.speed = speed
-    
-    def update(self,User, window):
-        #path follow update
+        self.cur_position = 0  # Default start at path index 0
+
+        # Set starting position if provided
+        if start_x is not None and start_y is not None:
+            self.center_x = start_x
+            self.center_y = start_y
+            # Find closest point on path to this start position
+            self.cur_position = self.find_nearest_path_position(start_x, start_y)
+        else:
+            # Default start at the beginning of the path
+            self.center_x, self.center_y = path[0]
+
+    def find_nearest_path_position(self, x, y):
+        """
+        Finds the nearest path position to a given x, y coordinate.
+        """
+        closest_index = 0
+        min_distance = float('inf')
+        for i, (px, py) in enumerate(self.path):
+            dist = math.sqrt((x - px) ** 2 + (y - py) ** 2)
+            if dist < min_distance:
+                min_distance = dist
+                closest_index = i
+        return closest_index
+
+    def update(self, User, window):
         start_x = self.center_x
         start_y = self.center_y
 
-        #end
+        # Destination point on path
         dest_x = self.path[self.cur_position][0]
         dest_y = self.path[self.cur_position][1]
 
-        # difference
         x_diff = dest_x - start_x
         y_diff = dest_y - start_y
 
-        # alingment
+        # Alignment and speed adjustment
         angle = math.atan2(y_diff, x_diff)
-
-        #actual distance
         distance = math.sqrt((self.center_x - dest_x) ** 2 + (self.center_y - dest_y) ** 2)
-
-        # if close lower speed so doesn't break
         speed = min(self.speed, distance)
 
-        # Calculate vector to travel
-        change_x = math.cos(angle) * speed
-        change_y = math.sin(angle) * speed
+        # Move toward the destination
+        self.center_x += math.cos(angle) * speed
+        self.center_y += math.sin(angle) * speed
 
-        # Update our location
-        self.center_x += change_x
-        self.center_y += change_y
-
-        # How far are we?
-        distance = math.sqrt((self.center_x - dest_x) ** 2 + (self.center_y - dest_y) ** 2)
-
-        # If we are there, head to the next point.
+        # If at destination, move to next path point
         if distance <= self.speed:
             self.cur_position += 1
-
-            # Reached the end of the list, start over.
             if self.cur_position >= len(self.path):
                 self.remove_from_sprite_lists()
                 User.health -= self.hp
@@ -61,18 +67,18 @@ class FISH(arcade.Sprite):
                     window.show_view(death_view)
 
 
-
 class REDFISH(FISH):
-    def __init__(self, path):
-        super().__init__("art/level_2_fish.png",2.75,path,4,10,20)
+    def __init__(self, path, start_x=None, start_y=None):
+        super().__init__("art/level_2_fish.png", 2.75, path, 4, 10, 20, start_x, start_y)
+
 class BLUEFISH(FISH):
-    def __init__(self, path):
-        super().__init__("art/base_level_fish.png",2.75,path,3,5,10)
+    def __init__(self, path, start_x=None, start_y=None):
+        super().__init__("art/base_level_fish.png", 2.75, path, 3, 5, 10, start_x, start_y)
 
 class GREENFISH(FISH):
-    def __init__(self, path):
-        super().__init__("art/base_level_fish.png",1.0,path,10,5,20)
+    def __init__(self, path, start_x=None, start_y=None):
+        super().__init__("art/base_level_fish.png", 1.0, path, 10, 5, 20, start_x, start_y)
 
 class SHARK(FISH):
-    def __init__(self, path):
-        super().__init__("art/blue_blimp_shark.png",3.5,path,.75,30,100)
+    def __init__(self, path, start_x=None, start_y=None):
+        super().__init__("art/blue_blimp_shark.png", 3.5, path, 0.75, 50, 10, start_x, start_y)

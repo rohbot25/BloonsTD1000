@@ -24,7 +24,7 @@ class GameView(arcade.View):
 
     def __init__(self):
         super().__init__()
-        
+
         self.show_upgrade = False
         self.upgrade_made = False
         #map
@@ -55,7 +55,7 @@ class GameView(arcade.View):
         #pasued state for stopping between rounds
         self.paused = False
 
-        
+
     def setup(self):
         """ Set up the game here. Call this function to restart the game. """
 
@@ -106,7 +106,7 @@ class GameView(arcade.View):
         self.last_spawn_time = time.time()
 
     def on_mouse_press(self, x, y, button, key_modifiers):
-    #""" Called when the user presses a mouse button. """
+        #""" Called when the user presses a mouse button. """
         #if upgrade menu is open and your are clicking on the menu, skip
         if (self.show_upgrade and x >= 746):
             for button in self.upgrade_menu.buttons:
@@ -133,7 +133,7 @@ class GameView(arcade.View):
                     self.max = tower.max
                     self.upgrade_cost = tower.upgrade_cost
                     self.show_upgrade = True
-                    
+
 
 
             # Check if a tower is being dragged
@@ -164,20 +164,20 @@ class GameView(arcade.View):
             # Finalize tower placement
             # Check if releasing the tower in a restricted area
             # EVENTUALLY WILL DO DIFFERENTLY
-                # Create a list that holds invisible blocks covering all the locations that are
-                # restricted, then whenever a new tower is added, dynamically add that tower
-                # location to the list
+            # Create a list that holds invisible blocks covering all the locations that are
+            # restricted, then whenever a new tower is added, dynamically add that tower
+            # location to the list
             if not (((self.tb_x_start < x < self.tbsb_x_end and self.tb_y_start < y < self.tb_y_end) or
-                    (self.sb_x_start < x < self.tbsb_x_end and self.sb_y_start < y < self.sb_y_end) or
-                    (0<x<300 and 250<y<300) or (300<x<350 and 250<y<450) or (175<x<350 and 400<y<450) or
-                    (175<x<225 and 25<y<450) or (50<x<225 and 0<y<50) or (25<x<75 and 25<y<175) or
-                    (50<x<450 and 150<y<200) or (425<x<475 and 175<y<350) or (425<x<550 and 300<y<350) or
-                    (525<x<575 and 75<y<325) or (275<x<575 and 50<y<125) or (275<x<325 and 0<y<100)) and
+                     (self.sb_x_start < x < self.tbsb_x_end and self.sb_y_start < y < self.sb_y_end) or
+                     (0<x<300 and 250<y<300) or (300<x<350 and 250<y<450) or (175<x<350 and 400<y<450) or
+                     (175<x<225 and 25<y<450) or (50<x<225 and 0<y<50) or (25<x<75 and 25<y<175) or
+                     (50<x<450 and 150<y<200) or (425<x<475 and 175<y<350) or (425<x<550 and 300<y<350) or
+                     (525<x<575 and 75<y<325) or (275<x<575 and 50<y<125) or (275<x<325 and 0<y<100)) and
                     (self.user.money >= self.current_tower.cost)
-                # Not over another tower
-                ):
+                    # Not over another tower
+            ):
                 # Place tower at the released location
-                
+
                 self.current_tower.center_x = x
                 self.current_tower.center_y = y
 
@@ -210,7 +210,7 @@ class GameView(arcade.View):
         Render the screen.
         """
         self.clear()
-        
+
         # create all texture
         bar = arcade.load_texture("images/bar2.png")
         coin = arcade.load_texture("images/coins.png")
@@ -236,8 +236,8 @@ class GameView(arcade.View):
             self.sidebar = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
             # left buttons
             button_positions = [
-            (825, 350), (825, 250), (825, 150), (825, 50),
-            (925, 350), (925, 250), (925, 150), (925, 50)
+                (825, 350), (825, 250), (825, 150), (825, 50),
+                (925, 350), (925, 250), (925, 150), (925, 50)
             ]
             tower_types = [FISHERMAN, WHALER, BOAT, FLYFISHER, NEANDERTHAL, WIZARD, SUPERFISHER, NETFISHER]
             tower_images = [buy_fisherman,buy_fisherman,buy_boat,buy_fisherman,buy_fisherman,buy_wizard,buy_fisherman,buy_fisherman]
@@ -263,7 +263,7 @@ class GameView(arcade.View):
                 self.upgrade_menu.drawUpgrade(paper_banner, paper_banner,self.tower_name,self.tower)
             else:
                 self.upgrade_made = False
-            
+
 
         # draw the top bar
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 1.05, 1400, 44, bar)
@@ -295,7 +295,7 @@ class GameView(arcade.View):
                          width=300,
                          font_name="Comic Sans MS")
 
-        
+
         self.fishes.draw()
         self.towers.draw()
         self.harpoons.draw()
@@ -319,18 +319,18 @@ class GameView(arcade.View):
         # Draw horizontal lines
         for y in range(0, SCREEN_HEIGHT, grid_size):
             arcade.draw_line(0, y, SCREEN_WIDTH, y, line_color, 2)
-    
+
     #update the position of the sprites
     def on_update(self,delta_time):
 
-#if paused, eturn, wait to be unpaused
+        #if paused, eturn, wait to be unpaused
         if self.paused:
             return
-        
-#update cycle counter, each call to update is 1 cycle
+
+        #update cycle counter, each call to update is 1 cycle
         self.spawn_cycle_count += 1
 
-#position list for creating new balloons
+        #position list for creating new balloons
         position_list = [
             [0, 275],
             [335, 275],
@@ -347,7 +347,7 @@ class GameView(arcade.View):
             [300, 0]
         ]
 
-        
+
 
         for fish in self.fishes:
             fish.update(self.user, self.window)
@@ -421,15 +421,21 @@ class GameView(arcade.View):
                             # Reduce fish health and remove if necessary
                             fish.hp -= 1
                             if fish.hp <= 0:
+                                shark_x, shark_y = fish.center_x, fish.center_y
                                 try:
                                     self.fishes.remove(fish)
                                 except ValueError:
                                     pass
-                                if fish == SHARK:
+
+                                # Check if the removed fish is a shark
+                                if isinstance(fish, SHARK):
+                                    for i in range(6):
+                                        red = REDFISH(position_list, start_x=shark_x, start_y=shark_y)
+                                        self.fishes.append(red)
+
                                     for i in range(3):
-                                        balloon = BLUEFISH(position_list)
-                                        balloon.center_x, balloon.center_y = position_list[0]
-                                        self.fish_queue.append(balloon)
+                                        blue = BLUEFISH(position_list, start_x=shark_x, start_y=shark_y)
+                                        self.fishes.append(blue)
 
         else:
             # Pause at round end
@@ -437,42 +443,65 @@ class GameView(arcade.View):
             self.paused = True
             self.harpoons.clear()
 
-    #generate wave based on round number Hard code
+            #generate wave based on round number Hard code
             # Populate fish queue based on the round
             if self.user.round == 1:
                 for i in range(3):
                     balloon = BLUEFISH(position_list)
                     balloon.center_x, balloon.center_y = position_list[0]
                     self.fish_queue.append(balloon)
+                for i in range(1):
+                    shark = SHARK(position_list)
+                    shark.center_x, shark.center_y = position_list[0]
+                    self.fish_queue.append(shark)
+
             elif self.user.round == 2:
                 for i in range(6):
                     balloon = BLUEFISH(position_list)
                     balloon.center_x, balloon.center_y = position_list[0]
                     self.fish_queue.append(balloon)
+                for i in range(1):
+                    shark = SHARK(position_list)
+                    shark.center_x, shark.center_y = position_list[0]
+                    self.fish_queue.append(shark)
+
             elif self.user.round == 3:
                 for i in range(8):
                     balloon = BLUEFISH(position_list)
                     balloon.center_x, balloon.center_y = position_list[0]
                     self.fish_queue.append(balloon)
+                for i in range(1):
+                    shark = SHARK(position_list)
+                    shark.center_x, shark.center_y = position_list[0]
+                    self.fish_queue.append(shark)
+
             elif self.user.round == 4:
                 for i in range(12):
                     balloon = BLUEFISH(position_list)
                     balloon.center_x, balloon.center_y = position_list[0]
                     self.fish_queue.append(balloon)
+                for i in range(1):
+                    shark = SHARK(position_list)
+                    shark.center_x, shark.center_y = position_list[0]
+                    self.fish_queue.append(shark)
+
             elif self.user.round == 5:
                 for i in range(2):
                     red_fish = REDFISH(position_list)
                     red_fish.center_x, red_fish.center_y = position_list[0]
                     self.fish_queue.append(red_fish)
+
             elif self.user.round == 6:
                 for i in range(10):
                     blue_fish = BLUEFISH(position_list)
                     blue_fish.center_x, blue_fish.center_y = position_list[0]
                     self.fish_queue.append(blue_fish)
+
                 for i in range(2):
                     red_fish = REDFISH(position_list)
                     red_fish.center_x, red_fish.center_y = position_list[0]
                     self.fish_queue.append(red_fish)
+
             elif self.user.round == 7:
                 for i in range(8):
                     blue_fish = BLUEFISH(position_list)
@@ -562,7 +591,7 @@ class GameView(arcade.View):
                     shark = SHARK(position_list)
                     shark.center_x, shark.center_y = position_list[0]
                     self.fish_queue.append(shark)
-                
+
         #seperate spawning of balloons by 5 update cycles
         if (self.spawn_cycle_count >= 5 and (len(self.fish_queue) > 0)):
 
@@ -576,5 +605,5 @@ class GameView(arcade.View):
             self.fish_queue.pop()
 
         self.harpoons.update()
-        
-        
+
+
