@@ -266,7 +266,7 @@ class GameView(arcade.View):
             self.upgrade_menu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
             # left buttons
             upgrade_button = BUTTON(875, 250, 75, 75,self.tower, self.upgrade_cost, upgrade)
-            trash_button = BUTTON(875,50,75,75,self.tower,0,trash)
+            trash_button = BUTTON(875,125,75,75,self.tower,0,trash)
             self.upgrade_menu.add_button(upgrade_button)
             self.upgrade_menu.add_button(trash_button)
 
