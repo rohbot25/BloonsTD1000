@@ -8,4 +8,4 @@ __pycache__/tower.cpython-39.pyc
 __pycache__/
 *.pyc
 art/.DS_Store
-
+.DS_Store
