@@ -106,24 +106,32 @@ class GameView(arcade.View):
         self.fishes.append(balloon)
         self.last_spawn_time = time.time()
 
-    def on_mouse_press(self, x, y, button, key_modifiers):
+    def on_mouse_press(self, x, y,button_fake, key_modifiers):
         #""" Called when the user presses a mouse button. """
         #if upgrade menu is open and your are clicking on the menu, skip
         if (self.show_upgrade and x >= 746):
             for button in self.upgrade_menu.buttons:
-                if self.user.money >= button.cost and self.tower.level < self.tower.max:
-                    self.user.money -= button.cost
-                    self.tower.upgrade()
-                    self.max = self.tower.max
-                    print(f"upgrade made!")
-                    paper_banner = arcade.load_texture("images/paper_banner.png")
-                    self.upgrade_menu.drawUpgrade(paper_banner, paper_banner,self.tower_name,self.tower)
-                    self.upgrade_made = True
-                else:
-                    print("no money or max upgrade")
+                button.check_hover(x,y)
+                if button.is_hovered:
+                    if button.cost != 0:
+                        if self.user.money >= button.cost and self.tower.level < self.tower.max:
+                            self.user.money -= button.cost
+                            self.tower.upgrade()
+                            self.max = self.tower.max
+                            print(f"upgrade made!")
+                            paper_banner = arcade.load_texture("images/paper_banner.png")
+                            self.upgrade_menu.drawUpgrade(paper_banner, paper_banner,self.tower_name,self.tower)
+                            self.upgrade_made = True
+                    else:
+                        print("trashing tower")
+                        self.towers.remove(self.tower)
+                        self.user.money += self.tower.cost // 2
+                        print("sold for: " + str(self.tower.cost //2) )
+                        self.show_upgrade = False
 
         #else check if they are clicking on a tower
         else:
+            print("woah")
             self.show_upgrade = False
             for tower in self.towers:
                 if tower.collides_with_point((x,y)):
@@ -134,8 +142,6 @@ class GameView(arcade.View):
                     self.max = tower.max
                     self.upgrade_cost = tower.upgrade_cost
                     self.show_upgrade = True
-
-
 
             # Check if a tower is being dragged
             if self.is_dragging:
@@ -224,6 +230,7 @@ class GameView(arcade.View):
         buy_god = arcade.load_texture("art/god.png")
         buy_neanderthal = arcade.load_texture("art/neanderthal_fisherman.png")
         upgrade = arcade.load_texture("images/upgrade.png")
+        trash = arcade.load_texture("images/trash.png")
 
         # This command has to happen before we start drawing
         self.clear()
@@ -258,8 +265,10 @@ class GameView(arcade.View):
         else:
             self.upgrade_menu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
             # left buttons
-            button = BUTTON(875, 250, 75, 75,self.tower, self.upgrade_cost, upgrade)
-            self.upgrade_menu.add_button(button)
+            upgrade_button = BUTTON(875, 250, 75, 75,self.tower, self.upgrade_cost, upgrade)
+            trash_button = BUTTON(875,50,75,75,self.tower,0,trash)
+            self.upgrade_menu.add_button(upgrade_button)
+            self.upgrade_menu.add_button(trash_button)
 
             arcade.draw_circle_filled(self.tower.center_x,self.tower.center_y,self.tower.radius,(128,128,128,128))
             if not self.upgrade_made:
