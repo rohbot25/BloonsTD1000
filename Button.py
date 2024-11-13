@@ -15,15 +15,15 @@ class BUTTON:
         # Create the text objects for `tower_name` and `cost`
         self.name_text = arcade.Text(
             self.tower_name,
-            start_x=self.x,
-            start_y=self.y,
+            start_x=self.x - ((len(self.tower_name)*13)/3.3),
+            start_y=self.y+45,
             color=arcade.color.BLACK,
             font_size=10,
-            font_name="Comic Sans MS"
+            font_name="Courier"
         )
         self.cost_text = arcade.Text(
             f"$ {self.cost}",
-            start_x=self.x - 30,
+            start_x=self.x - ((len(str(self.cost))*13)/3),
             start_y=self.y - 50,
             color=arcade.color.BLACK,
             font_size=10,
@@ -38,23 +38,23 @@ class BUTTON:
                                       self.height,
                                       self.image)
         if self.is_hovered:
-            text_sprite = arcade.draw_text(self.tower_name, start_x=self.x, start_y=self.y, color=arcade.color.BLACK,
-                                                         font_size=10, font_name="Comic Sans MS")
             arcade.draw_rectangle_outline(self.x, self.y, 75, 75, arcade.color.BLACK, 3)
             arcade.draw_texture_rectangle(self.x,
                                           self.y+50,
+                                          (len(self.tower_name)*13),
+                                          self.height // 4.5,
+                                          arcade.load_texture("Images/paper_banner.png"))
+            arcade.draw_texture_rectangle(self.x,
+                                          self.y - 45,
                                           self.width,
-                                          self.height // 5,
+                                          self.height // 4.5,
                                           arcade.load_texture("Images/paper_banner.png"))
 
-            # Center the tower name text horizontally by adjusting its start_x based on width
-            text_width = self.name_text.width
-            self.name_text.start_x = self.x - (text_width / 2)
-            self.name_text.start_y = self.y + 45
 
+            # self.name_text.start_x = self.x - ((len(self.tower_name)*13) / 2)
+            # self.name_text.start_y = self.y + 45
             # Draw the tower name
             self.name_text.draw()
-
             # Draw the cost text
             self.cost_text.draw()
 
