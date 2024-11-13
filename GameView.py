@@ -239,6 +239,10 @@ class GameView(arcade.View):
         #draw the map
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2.45, 825,500,self.texture)
 
+        # Draw restricted areas:
+            # Map path
+            # sidebar
+            # Topbar
 
         if not self.show_upgrade:
             # Sidebar
