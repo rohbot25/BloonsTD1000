@@ -52,7 +52,6 @@ class GameView(arcade.View):
         self.user = USER()
         self.upgrade_menu = SIDEBAR(SCREEN_WIDTH // 1.145, SCREEN_HEIGHT // 2.2, SCREEN_WIDTH // 3.95, SCREEN_HEIGHT // 1.1)
 
-
         #pasued state for stopping between rounds
         self.paused = False
 
@@ -67,9 +66,10 @@ class GameView(arcade.View):
         self.fish_queue = arcade.SpriteList()
         self.towers = arcade.SpriteList()
         self.harpoons = arcade.SpriteList()
+        self.restricted = arcade.SpriteList() # List for restircted areas (transparent blocks/towers)
+
         self.user.round = 1
         self.spawn_cycle_count = 0
-
 
         position_list = [
             [0,275],
@@ -86,7 +86,6 @@ class GameView(arcade.View):
             [300,75],
             [300,0]
         ]
-
 
         # Points for topbar to restrict
         self.tb_y_start = 450
