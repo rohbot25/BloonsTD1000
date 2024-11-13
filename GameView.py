@@ -252,8 +252,10 @@ class GameView(arcade.View):
             tower_types = [FISHERMAN, WHALER, BOAT, FLYFISHER, NEANDERTHAL, WIZARD, SUPERFISHER, NETFISHER]
             tower_images = [buy_fisherman,buy_god,buy_boat,buy_fisherman,buy_neanderthal,buy_wizard,buy_fisherman,buy_fisherman]
             for (button_x, button_y), tower_type, tower_image in zip(button_positions, tower_types,tower_images):
+                tower_instance = tower_type()  # Instantiate the class to access attributes
                 button = BUTTON(button_x, button_y, 75, 75, tower_type(), 100, tower_image)
                 button.tower_type = tower_type  # Assign the class, not an instance
+                button.tower_name = tower_instance.name # Access name on an instance
                 self.sidebar.add_button(button)
 
             # Update hover states and draw the sidebar
