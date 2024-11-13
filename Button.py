@@ -41,7 +41,7 @@ class BUTTON:
             )
             arcade.draw_text(
                 f"$ {self.cost}",
-                start_x=self.x - ((len(str(self.cost)) * 13) / 3),
+                start_x=self.x - ((len(str(self.cost)) * 13) / 2.5),
                 start_y=self.y - 50,
                 color=arcade.color.BLACK,
                 font_size=10,
