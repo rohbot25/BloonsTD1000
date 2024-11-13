@@ -46,9 +46,9 @@ class WHALER(TOWER):
         scale = 0.2
         name = "God"
         radius = 2000
-        atk = 50
-        rate = 50
-        cost = 0
+        atk = 5
+        rate = 5
+        cost = 1
         max = 3
         upgrade_cost = 0
         bullet = "art/sun_gold.png"
@@ -68,7 +68,7 @@ class BOAT(TOWER):
         scale = 0.5
         name = "Boat"
         radius = 150
-        atk = 25
+        atk = 1
         rate = 40
         cost = 150
         max = 3
@@ -89,7 +89,7 @@ class FLYFISHER(TOWER):
         scale = 1.0
         name = "Flyfisher"
         radius = 150
-        atk = 50
+        atk = 1
         rate = 40
         cost = 200
         max = 3

@@ -13,7 +13,7 @@ BULLET_SPEED = 20
 from User import USER
 from Sidebar import SIDEBAR
 from tower import FISHERMAN, FLYFISHER, WHALER, NEANDERTHAL, WIZARD, BOAT, SUPERFISHER, NETFISHER
-from Fish import  REDFISH, BLUEFISH, GREENFISH, SHARK
+from Fish import  REDFISH, BLUEFISH, GREENFISH, SHARK, ORCA
 from Button import BUTTON
 
 import arcade
@@ -253,7 +253,7 @@ class GameView(arcade.View):
             tower_images = [buy_fisherman,buy_god,buy_boat,buy_fisherman,buy_neanderthal,buy_wizard,buy_fisherman,buy_fisherman]
             for (button_x, button_y), tower_type, tower_image in zip(button_positions, tower_types,tower_images):
                 tower_instance = tower_type()  # Instantiate the class to access attributes
-                button = BUTTON(button_x, button_y, 75, 75, tower_type(), 100, tower_image)
+                button = BUTTON(button_x, button_y, 75, 75, tower_type(), tower_instance.cost, tower_image)
                 button.tower_type = tower_type  # Assign the class, not an instance
                 button.tower_name = tower_instance.name # Access name on an instance
                 self.sidebar.add_button(button)
@@ -347,21 +347,54 @@ class GameView(arcade.View):
         #position list for creating new balloons
         position_list = [
             [0, 275],
+            [111.67, 275],
+            [223.33, 275],
             [335, 275],
+
+            [335, 325],
+            [335, 375],
             [335, 425],
+
+            [286.67, 425],
+            [238.33, 425],
             [190, 425],
+
+            [190, 295],
+            [190, 165],
             [190, 35],
+
+            [146.67, 35],
+            [103.33, 35],
             [60, 35],
+
+            [60, 81.67],
+            [60, 128.33],
             [60, 175],
+
+            [190, 175],
+            [320, 175],
             [450, 175],
+
+            [450, 228.33],
+            [450, 281.67],
             [450, 335],
+
+            [516.67, 335],
+            [583.33, 335],
             [550, 335],
+
+            [550, 238.33],
+            [550, 141.67],
             [550, 75],
+
+            [450, 75],
+            [375, 75],
             [300, 75],
+
+            [300, 50],
+            [300, 25],
             [300, 0]
         ]
-
-
 
         for fish in self.fishes:
             fish.update(self.user, self.window)
@@ -429,18 +462,13 @@ class GameView(arcade.View):
                     else:
                         for fish in self.fishes:
                             if arcade.check_for_collision(bullet, fish):
-                                if isinstance(tower, WHALER):
-                                    fish.hp -=5
-                                    self.user.money += random.randint(3, 20)
-                                else:
-                                    bullet.remove_from_sprite_lists()
-                                    self.user.money += random.randint(3, 20)
+                                bullet.remove_from_sprite_lists()
                                     # Reduce fish health and remove if necessary
-                                    fish.hp -= 1
+                                fish.hp -= tower.atk
                                 if fish.hp <= 0:
-                                    shark_x, shark_y = fish.center_x, fish.center_y
                                     try:
                                         self.fishes.remove(fish)
+                                        self.user.money += random.randint(6, 40)
                                     except ValueError:
                                         pass
 
@@ -448,17 +476,22 @@ class GameView(arcade.View):
 
 
                                     if isinstance(fish, SHARK):
-                                        for i in range(6):
-                                            red = REDFISH(position_list, start_x=shark_x, start_y=shark_y)
+                                        for _ in range(6):
+                                            red = REDFISH(position_list, start_x=fish.center_x, start_y=fish.center_y)
                                             self.fish_queue.append(red)
 
-                                        for i in range(3):
-                                            blue = BLUEFISH(position_list, start_x=shark_x, start_y=shark_y)
+                                        for _ in range(3):
+                                            blue = BLUEFISH(position_list, start_x=fish.center_x, start_y=fish.center_y)
                                             self.fish_queue.append(blue)
 
-                                        for i in range(3):
-                                            green = GREENFISH(position_list, start_x=shark_x, start_y=shark_y)
+                                        for _ in range(3):
+                                            green = GREENFISH(position_list, start_x=fish.center_x, start_y=fish.center_y)
                                             self.fish_queue.append(green)
+                                    if isinstance(fish, ORCA):
+                                        for _ in range(2):
+                                            shark = SHARK(position_list, start_x=fish.center_x, start_y=fish.center_y)
+                                            self.fish_queue.append(shark)
+                                break
 
         else:
             pos_rand = numpy.random.randint(0, 5)
@@ -470,7 +503,7 @@ class GameView(arcade.View):
             #generate wave based on round number Hard code
             # Populate fish queue based on the round
             if self.user.round == 1:
-                for i in range(3000):
+                for i in range(7):
                     balloon = BLUEFISH(position_list)
                     balloon.center_x, balloon.center_y = position_list[0]
                     self.fish_queue.append(balloon)
@@ -485,9 +518,9 @@ class GameView(arcade.View):
                     balloon.center_x, balloon.center_y = position_list[0]
                     self.fish_queue.append(balloon)
                 for i in range(1):
-                    shark = SHARK(position_list)
-                    shark.center_x, shark.center_y = position_list[0]
-                    self.fish_queue.append(shark)
+                    orca = ORCA(position_list)
+                    orca.center_x, orca.center_y = position_list[0]
+                    self.fish_queue.append(orca)
 
             elif self.user.round == 3:
                 for i in range(8):
@@ -617,7 +650,7 @@ class GameView(arcade.View):
                     self.fish_queue.append(shark)
 
         #seperate spawning of balloons by 5 update cycles
-        if (self.spawn_cycle_count >= 5 and (len(self.fish_queue) > 0)):
+        if (self.spawn_cycle_count >= 10 and (len(self.fish_queue) > 0)):
 
             #reset update cycle counter
             self.spawn_cycle_count = 0
