@@ -67,20 +67,20 @@ class FISH(arcade.Sprite):
 
 class REDFISH(FISH):
     def __init__(self, path, start_x=None, start_y=None):
-        super().__init__("art/level_2_fish.png", 2.75, path, 4, 10, 20, start_x, start_y)
+        super().__init__("Images/level_2_fish.png", 2.75, path, 4, 10, 20, start_x, start_y)
 
 class BLUEFISH(FISH):
     def __init__(self, path, start_x=None, start_y=None):
-        super().__init__("art/base_level_fish.png", 2.75, path, 3, 5, 10, start_x, start_y)
+        super().__init__("Images/base_level_fish.png", 2.75, path, 3, 5, 10, start_x, start_y)
 
 class GREENFISH(FISH):
     def __init__(self, path, start_x=None, start_y=None):
-        super().__init__("art/green_fish.png", 2.75, path, 2, 15, 20, start_x, start_y)
+        super().__init__("Images/green_fish.png", 2.75, path, 2, 15, 20, start_x, start_y)
 
 class SHARK(FISH):
     def __init__(self, path, start_x=None, start_y=None):
-        super().__init__("art/blue_blimp_shark.png", 3.5, path, 1, 50, 10, start_x, start_y)
+        super().__init__("Images/blue_blimp_shark.png", 3.5, path, 1, 50, 10, start_x, start_y)
 
 class ORCA(FISH):
     def __init__(self, path, start_x=None, start_y=None):
-        super().__init__("art/Orca.png", 1, path, 0.7, 100, 100, start_x, start_y)
+        super().__init__("Images/Orca.png", 1, path, 0.7, 100, 100, start_x, start_y)

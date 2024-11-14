@@ -21,7 +21,7 @@ class TOWER(arcade.Sprite):
 class FISHERMAN(TOWER):
 
     def __init__(self):
-        image = "art/base_fisherman.png" 
+        image = "Images/base_fisherman.png"
         scale = .75
         name = "Fisherman"
         radius = 100
@@ -30,7 +30,7 @@ class FISHERMAN(TOWER):
         cost = 50
         max = 3
         upgrade_cost = 100
-        bullet = "art/fishhook.png"
+        bullet = "images/fishhook.png"
         bullet_scale = .75
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
     
@@ -42,7 +42,7 @@ class FISHERMAN(TOWER):
 class WHALER(TOWER):
     
     def __init__(self):
-        image = "art/god.png"
+        image = "Images/god.png"
         scale = 0.2
         name = "God"
         radius = 2000
@@ -51,7 +51,7 @@ class WHALER(TOWER):
         cost = 1
         max = 3
         upgrade_cost = 0
-        bullet = "art/sun_gold.png"
+        bullet = "images/sun_gold.png"
         bullet_scale = 0.33
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
         
@@ -85,7 +85,7 @@ class BOAT(TOWER):
 class FLYFISHER(TOWER):
 
     def __init__(self):
-        image = "art/base_fisherman.png" 
+        image = "Images/base_fisherman.png"
         scale = 1.0
         name = "Flyfisher"
         radius = 150
@@ -107,7 +107,7 @@ class FLYFISHER(TOWER):
 class NEANDERTHAL(TOWER):
 
     def __init__(self):
-        image = "art/neanderthal_fisherman.png"
+        image = "Images/neanderthal_fisherman.png"
         scale = .75
         name = "Neanderthal"
         radius = 230
@@ -116,7 +116,7 @@ class NEANDERTHAL(TOWER):
         cost = 250
         max = 3
         upgrade_cost = 500
-        bullet = "art/neanderthal_bullet.png"
+        bullet = "images/neanderthal_bullet.png"
         bullet_scale = .75
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
     
@@ -151,7 +151,7 @@ class WIZARD(TOWER):
 class SUPERFISHER(TOWER):
      
     def __init__(self):
-        image = "art/base_fisherman.png" 
+        image = "Images/base_fisherman.png"
         scale = 3.0
         name = "Superfisher"
         radius = 100
