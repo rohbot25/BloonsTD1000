@@ -110,7 +110,7 @@ class NEANDERTHAL(TOWER):
         image = "art/neanderthal_fisherman.png"
         scale = .75
         name = "Neanderthal"
-        radius = 400
+        radius = 230
         atk = 5
         rate = 50
         cost = 250
@@ -174,17 +174,17 @@ class SUPERFISHER(TOWER):
 class NETFISHER(TOWER):
       
     def __init__(self):
-        image = "art/base_fisherman.png" 
-        scale = 3.0
-        name = "Netfisher"
-        radius = 200
-        atk = 25
-        rate = 30
-        cost = 400
+        image = "images/archer.png"
+        scale = .15
+        name = "Archer"
+        radius = 2000
+        atk = 10
+        rate = 120
+        cost = 40
         max = 10
         upgrade_cost = 100
-        bullet = "images/sun.png"
-        bullet_scale = .2
+        bullet = "images/arrow.png"
+        bullet_scale = .05
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
     
     def upgrade(self):

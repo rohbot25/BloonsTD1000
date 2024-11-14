@@ -8,7 +8,7 @@ SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 500
 SCREEN_TITLE = "Fish Tower Defense"
 
-BULLET_SPEED = 20
+BULLET_SPEED = 30
 
 from User import USER
 from Sidebar import SIDEBAR
@@ -228,6 +228,7 @@ class GameView(arcade.View):
         buy_wizard = arcade.load_texture("images/wizard.png")
         buy_god = arcade.load_texture("art/god.png")
         buy_neanderthal = arcade.load_texture("art/neanderthal_fisherman.png")
+        buy_archer =arcade.load_texture("images/archer.png")
         upgrade = arcade.load_texture("images/upgrade.png")
         trash = arcade.load_texture("images/trash.png")
 
@@ -253,7 +254,7 @@ class GameView(arcade.View):
                 (925, 350), (925, 250), (925, 150), (925, 50)
             ]
             tower_types = [FISHERMAN, WHALER, BOAT, FLYFISHER, NEANDERTHAL, WIZARD, SUPERFISHER, NETFISHER]
-            tower_images = [buy_fisherman,buy_god,buy_boat,buy_fisherman,buy_neanderthal,buy_wizard,buy_fisherman,buy_fisherman]
+            tower_images = [buy_fisherman,buy_god,buy_boat,buy_fisherman,buy_neanderthal,buy_wizard,buy_fisherman,buy_archer]
             for (button_x, button_y), tower_type, tower_image in zip(button_positions, tower_types,tower_images):
                 tower_instance = tower_type()  # Instantiate the class to access attributes
                 button = BUTTON(button_x, button_y, 75, 75, tower_type(), tower_instance.cost, tower_image)
