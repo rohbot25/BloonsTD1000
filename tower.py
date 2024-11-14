@@ -112,7 +112,7 @@ class NEANDERTHAL(TOWER):
         name = "Neanderthal"
         radius = 400
         atk = 5
-        rate = 90
+        rate = 50
         cost = 250
         max = 3
         upgrade_cost = 500

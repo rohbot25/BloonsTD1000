@@ -339,7 +339,6 @@ class GameView(arcade.View):
 
     #update the position of the sprites
     def on_update(self,delta_time):
-
         #if paused, eturn, wait to be unpaused
         if self.paused:
             return
@@ -500,6 +499,7 @@ class GameView(arcade.View):
                     else:
                         for fish in self.fishes:
                             if arcade.check_for_collision(bullet, fish):
+
                                 bullet.remove_from_sprite_lists()
                                     # Reduce fish health and remove if necessary
                                 fish.hp -= tower.atk
@@ -514,15 +514,15 @@ class GameView(arcade.View):
 
 
                                     if isinstance(fish, SHARK):
-                                        for _ in range(6):
+                                        for _ in range(2):
                                             red = REDFISH(position_list, start_x=fish.center_x, start_y=fish.center_y)
                                             self.fish_queue.append(red)
 
-                                        for _ in range(3):
+                                        for _ in range(2):
                                             blue = BLUEFISH(position_list, start_x=fish.center_x, start_y=fish.center_y)
                                             self.fish_queue.append(blue)
 
-                                        for _ in range(3):
+                                        for _ in range(2):
                                             green = GREENFISH(position_list, start_x=fish.center_x, start_y=fish.center_y)
                                             self.fish_queue.append(green)
                                     if isinstance(fish, ORCA):

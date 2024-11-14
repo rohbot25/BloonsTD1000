@@ -83,4 +83,4 @@ class SHARK(FISH):
 
 class ORCA(FISH):
     def __init__(self, path, start_x=None, start_y=None):
-        super().__init__("art/Orca.png", 1, path, 0.7, 10, 100, start_x, start_y)
+        super().__init__("art/Orca.png", 1, path, 0.7, 100, 100, start_x, start_y)
