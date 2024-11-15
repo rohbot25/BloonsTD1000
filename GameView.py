@@ -8,7 +8,7 @@ SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 500
 SCREEN_TITLE = "Fish Tower Defense"
 
-BULLET_SPEED = 30
+BULLET_SPEED = 35
 
 from User import USER
 from Sidebar import SIDEBAR
@@ -341,6 +341,7 @@ class GameView(arcade.View):
     #update the position of the sprites
     def on_update(self,delta_time):
         #if paused, eturn, wait to be unpaused
+        hits = 0
         if self.paused:
             return
 
@@ -479,6 +480,9 @@ class GameView(arcade.View):
                         bullet.center_x = start_x
                         bullet.center_y = start_y
 
+                        # Store the tower reference in the bullet
+                        bullet.tower_source = tower
+
                         # Adjust bullet angle based on tower type
                         if tower.name == "Boat":
                             bullet.angle = math.degrees(angle) + 45
@@ -493,17 +497,26 @@ class GameView(arcade.View):
 
                         self.harpoons.append(bullet)
 
-            # Remove off-screen bullets or handle collisions
-                for bullet in self.harpoons:
-                    if bullet.top < 0:
-                        bullet.remove_from_sprite_lists()
-                    else:
-                        for fish in self.fishes:
-                            if arcade.check_for_collision(bullet, fish):
+                    # Handle collisions
+                    for bullet in self.harpoons:
 
-                                bullet.remove_from_sprite_lists()
-                                    # Reduce fish health and remove if necessary
-                                fish.hp -= tower.atk
+                        if bullet.top < 0:
+                            bullet.remove_from_sprite_lists()
+                        else:
+                            for fish in self.fishes:
+                                tower_source = bullet.tower_source
+
+                                if arcade.check_for_collision(bullet, fish):
+                                    if tower_source.name == 'God':
+
+                                        hits +=1
+                                        if hits >= 2:
+                                            bullet.remove_from_sprite_lists()
+                                        fish.hp -= tower_source.atk
+                                    else:
+                                        bullet.remove_from_sprite_lists()
+                                        # Reduce fish health and remove
+                                        fish.hp -= tower_source.atk
                                 if fish.hp <= 0:
                                     try:
                                         self.fishes.remove(fish)
@@ -512,25 +525,23 @@ class GameView(arcade.View):
                                         pass
 
                                     # Check if the removed fish is a shark
-
-
                                     if isinstance(fish, SHARK):
-                                        for _ in range(2):
+                                        for _ in range(1):
                                             red = REDFISH(position_list, start_x=fish.center_x, start_y=fish.center_y)
-                                            self.fish_queue.append(red)
+                                            self.fishes.append(red)
 
-                                        for _ in range(2):
+                                        for _ in range(1):
                                             blue = BLUEFISH(position_list, start_x=fish.center_x, start_y=fish.center_y)
-                                            self.fish_queue.append(blue)
+                                            self.fishes.append(blue)
 
-                                        for _ in range(2):
+                                        for _ in range(1):
                                             green = GREENFISH(position_list, start_x=fish.center_x, start_y=fish.center_y)
-                                            self.fish_queue.append(green)
+                                            self.fishes.append(green)
                                     if isinstance(fish, ORCA):
                                         for _ in range(2):
                                             shark = SHARK(position_list, start_x=fish.center_x, start_y=fish.center_y)
                                             self.fish_queue.append(shark)
-                                break
+
 
         else:
             pos_rand = numpy.random.randint(0, 5)
