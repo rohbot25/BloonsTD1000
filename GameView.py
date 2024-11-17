@@ -198,23 +198,30 @@ class GameView(arcade.View):
                      (525<x<575 and 75<y<325) or (275<x<575 and 50<y<125) or (275<x<325 and 0<y<100)) and
                     (self.user.money >= self.current_tower.cost)
             ):
-                for tower in self.towers:
-                    if ((((tower.center_x-5) >= self.x) or (self.x >= (tower.center_x +5))) and
-                       (((tower.center_y - 5) >= self.y) or (self.y >= (tower.center_y + 5)))):
-                        # Place tower at the released location
+                self.current_tower.center_x = x
+                self.current_tower.center_y = y
 
-                        self.current_tower.center_x = x
-                        self.current_tower.center_y = y
-
-                        self.towers.append(self.current_tower)  # Add the tower to the list
-                        self.user.money -= self.current_tower.cost  # Deduct cost
-                        print(f"Placed {self.current_tower.__class__.__name__} at ({x}, {y})")
-                        print(self.towers)
-                else:
-                    print("Cannot place tower in restricted area.")
-                    # Stop dragging and reset
-                self.is_dragging = False
-                self.current_tower = None
+                self.towers.append(self.current_tower)  # Add the tower to the list
+                self.user.money -= self.current_tower.cost  # Deduct cost
+                print(f"Placed {self.current_tower.__class__.__name__} at ({x}, {y})")
+                print(self.towers)
+                # for tower in self.towers:
+                #     if ((((tower.center_x-5) >= self.x) or (self.x >= (tower.center_x +5))) and
+                #        (((tower.center_y - 5) >= self.y) or (self.y >= (tower.center_y + 5)))):
+                #         # Place tower at the released location
+                #
+                #         self.current_tower.center_x = x
+                #         self.current_tower.center_y = y
+                #
+                #         self.towers.append(self.current_tower)  # Add the tower to the list
+                #         self.user.money -= self.current_tower.cost  # Deduct cost
+                #         print(f"Placed {self.current_tower.__class__.__name__} at ({x}, {y})")
+                #         print(self.towers)
+                # else:
+                #     print("Cannot place tower in restricted area.")
+                #     # Stop dragging and reset
+                # self.is_dragging = False
+                # self.current_tower = None
             else:
                 print("Cannot place tower in restricted area.")
             # Stop dragging and reset
