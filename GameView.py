@@ -173,6 +173,23 @@ class GameView(arcade.View):
             # Create a list that holds invisible blocks covering all the locations that are
             # restricted, then whenever a new tower is added, dynamically add that tower
             # location to the list
+            xy_restrictions=[
+                [
+                    [0,300],
+                    [250,300]
+                ],
+                [
+                    [300,350],
+                    [250,450]
+                ],
+                [
+                    [175,350],
+                    [400,450]
+                ],
+                [
+                    [175,225]
+                ]
+            ]
             if not (((self.tb_x_start < x < self.tbsb_x_end and self.tb_y_start < y < self.tb_y_end) or
                      (self.sb_x_start < x < self.tbsb_x_end and self.sb_y_start < y < self.sb_y_end) or
                      (0<x<300 and 250<y<300) or (300<x<350 and 250<y<450) or (175<x<350 and 400<y<450) or
@@ -180,16 +197,24 @@ class GameView(arcade.View):
                      (50<x<450 and 150<y<200) or (425<x<475 and 175<y<350) or (425<x<550 and 300<y<350) or
                      (525<x<575 and 75<y<325) or (275<x<575 and 50<y<125) or (275<x<325 and 0<y<100)) and
                     (self.user.money >= self.current_tower.cost)
-                    # Not over another tower
             ):
-                # Place tower at the released location
+                for tower in self.towers:
+                    if ((((tower.center_x-5) >= self.x) or (self.x >= (tower.center_x +5))) and
+                       (((tower.center_y - 5) >= self.y) or (self.y >= (tower.center_y + 5)))):
+                        # Place tower at the released location
 
-                self.current_tower.center_x = x
-                self.current_tower.center_y = y
+                        self.current_tower.center_x = x
+                        self.current_tower.center_y = y
 
-                self.towers.append(self.current_tower)  # Add the tower to the list
-                self.user.money -= self.current_tower.cost  # Deduct cost
-                print(f"Placed {self.current_tower.__class__.__name__} at ({x}, {y})")
+                        self.towers.append(self.current_tower)  # Add the tower to the list
+                        self.user.money -= self.current_tower.cost  # Deduct cost
+                        print(f"Placed {self.current_tower.__class__.__name__} at ({x}, {y})")
+                        print(self.towers)
+                else:
+                    print("Cannot place tower in restricted area.")
+                    # Stop dragging and reset
+                self.is_dragging = False
+                self.current_tower = None
             else:
                 print("Cannot place tower in restricted area.")
             # Stop dragging and reset
@@ -323,6 +348,14 @@ class GameView(arcade.View):
             self.current_tower.draw()
 
         #self.draw_grid()
+
+        # Draw restricted areas:
+            # Map path
+            # sidebar
+            # Topbar
+        arcade.draw_rectangle_filled(875, 227, 260, 460, (0, 50, 0, 128))
+        arcade.draw_rectangle_filled(500, 476, 1000, 45, (0, 50, 0, 128))
+
 
 
     def draw_grid(self):
