@@ -23,13 +23,16 @@ import numpy
 class GameView(arcade.View):
     """ Main application class. """
 
-    def __init__(self):
+    def __init__(self, selected_map):
         super().__init__()
 
         self.show_upgrade = False
         self.upgrade_made = False
         #map
         self.texture = None
+
+        #selected map for map selection        
+        self.selected_map = selected_map
 
         #balloons TODO will need to switch this to waves?
         self.fishes = None
@@ -59,7 +62,10 @@ class GameView(arcade.View):
     def setup(self):
         """ Set up the game here. Call this function to restart the game. """
 
-        self.texture = arcade.load_texture("images/map.png")
+
+        #set map to selected map
+        self.map = self.selected_map        
+        self.texture = arcade.load_texture(self.map)
         self.fishes = arcade.SpriteList()
 
         #queue for fishes to be spawned from
