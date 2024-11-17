@@ -156,6 +156,7 @@ class MapSelectView(arcade.View):
 
 class Game(arcade.Window):
     # Main application class
+    
 
     def __init__(self):
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)

@@ -15,10 +15,11 @@ from Sidebar import SIDEBAR
 from tower import FISHERMAN, FLYFISHER, WHALER, NEANDERTHAL, WIZARD, BOAT, SUPERFISHER, NETFISHER
 from Fish import  REDFISH, BLUEFISH, GREENFISH, SHARK, ORCA
 from Button import BUTTON
+from Button import PauseUnpause
 
 import arcade
-import arcade.gui
 import numpy
+            
 
 class GameView(arcade.View):
     """ Main application class. """
@@ -33,6 +34,9 @@ class GameView(arcade.View):
 
         #selected map for map selection        
         self.selected_map = selected_map
+
+        #pause button declaration
+        self.pause_button = PauseUnpause(x=700, y=425, width=80, height=80, image=arcade.load_texture("Images/Pause.png"))
 
         #balloons TODO will need to switch this to waves?
         self.fishes = None
@@ -57,6 +61,7 @@ class GameView(arcade.View):
 
         #pasued state for stopping between rounds
         self.paused = False
+        
 
 
     def setup(self):
@@ -114,6 +119,7 @@ class GameView(arcade.View):
     def on_mouse_press(self, x, y,button_fake, key_modifiers):
         #""" Called when the user presses a mouse button. """
         #if upgrade menu is open and your are clicking on the menu, skip
+        
         if (self.show_upgrade and x >= 746):
             for button in self.upgrade_menu.buttons:
                 button.check_hover(x,y)
@@ -164,10 +170,8 @@ class GameView(arcade.View):
                     self.is_dragging = True
                     print(f"{button.tower_type.__name__} selected!")
                     break
-        #if paused, unpause on mouse click
-        if self.paused:
-            self.paused = False  # Resume the game on left click
-            self.user.round +=1
+            self.pause_button.on_mouse_press(x, y, button, key_modifiers)
+
 
 
 
@@ -233,6 +237,10 @@ class GameView(arcade.View):
             # Stop dragging and reset
             self.is_dragging = False
             self.current_tower = None
+            #Check for pause 
+        self.pause_button.on_mouse_release(x, y, button, modifiers)
+        self.paused = self.pause_button.paused
+
 
     def on_mouse_motion(self, x: float, y: float, dx: float, dy: float):
         """ User moves mouse """
@@ -248,6 +256,10 @@ class GameView(arcade.View):
         if self.is_dragging and self.current_tower is not None:
             self.current_tower.center_x = x
             self.current_tower.center_y = y
+
+        #check for pause hover
+        self.pause_button.check_hover(x, y)
+
 
     def on_draw(self):
         """
@@ -368,6 +380,10 @@ class GameView(arcade.View):
             # Topbar
         arcade.draw_rectangle_filled(875, 227, 260, 460, (0, 50, 0, 128))
         arcade.draw_rectangle_filled(500, 476, 1000, 45, (0, 50, 0, 128))
+
+        
+        #Draw Pause Button
+        self.pause_button.draw()
 
 
 
@@ -566,7 +582,7 @@ class GameView(arcade.View):
                                 if fish.hp <= 0:
                                     try:
                                         self.fishes.remove(fish)
-                                        self.user.money += random.randint(6, 40)
+                                        self.user.money += random.randint(6, 30)
                                     except ValueError:
                                         pass
 
@@ -590,10 +606,12 @@ class GameView(arcade.View):
 
 
         else:
+            self.user.round +=1
             pos_rand = numpy.random.randint(0, 5)
             # Pause at round end
             print("PAUSED!")
             self.paused = True
+            self.pause_button.paused = True
             self.harpoons.clear()
 
             #generate wave based on round number Hard code
