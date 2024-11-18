@@ -270,6 +270,7 @@ class GameView(arcade.View):
         paper_banner = arcade.load_texture("images/paper_banner.png")
         buy_fisherman = arcade.load_texture("images/base_fisherman.png")
         buy_boat = arcade.load_texture("images/boat.png")
+        buy_superfisherman = arcade.load_texture("images/superfisherman.png")
         buy_wizard = arcade.load_texture("images/wizard.png")
         buy_god = arcade.load_texture("images/god.png")
         buy_neanderthal = arcade.load_texture("images/neanderthal_fisherman.png")
@@ -294,7 +295,7 @@ class GameView(arcade.View):
                 (925, 350), (925, 250), (925, 150), (925, 50)
             ]
             tower_types = [FISHERMAN, WHALER, BOAT, FLYFISHER, NEANDERTHAL, WIZARD, SUPERFISHER, NETFISHER]
-            tower_images = [buy_fisherman,buy_god,buy_boat,buy_fisherman,buy_neanderthal,buy_wizard,buy_fisherman,buy_archer]
+            tower_images = [buy_fisherman,buy_god,buy_boat,buy_fisherman,buy_neanderthal,buy_wizard,buy_superfisherman,buy_archer]
             for (button_x, button_y), tower_type, tower_image in zip(button_positions, tower_types,tower_images):
                 tower_instance = tower_type()  # Instantiate the class to access attributes
                 button = BUTTON(button_x, button_y, 75, 75, tower_type(), tower_instance.cost, tower_image)

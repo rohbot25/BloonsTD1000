@@ -151,8 +151,8 @@ class WIZARD(TOWER):
 class SUPERFISHER(TOWER):
      
     def __init__(self):
-        image = "Images/base_fisherman.png"
-        scale = 3.0
+        image = "images/superfisherman.png"
+        scale = .17
         name = "Superfisher"
         radius = 100
         atk = 100
@@ -160,7 +160,7 @@ class SUPERFISHER(TOWER):
         cost = 1000
         max = 3
         upgrade_cost = 2500
-        bullet = "images/sun.png"
+        bullet = "images/lasers.png"
         bullet_scale = .2
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
     
