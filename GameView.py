@@ -18,8 +18,9 @@ from Button import BUTTON
 from Button import PauseUnpause
 
 import arcade
+import arcade.gui
 import numpy
-            
+
 
 class GameView(arcade.View):
     """ Main application class. """
@@ -32,7 +33,7 @@ class GameView(arcade.View):
         #map
         self.texture = None
 
-        #selected map for map selection        
+        #selected map for map selection
         self.selected_map = selected_map
 
         #pause button declaration
@@ -61,7 +62,7 @@ class GameView(arcade.View):
 
         #pasued state for stopping between rounds
         self.paused = False
-        
+
 
 
     def setup(self):
@@ -69,7 +70,7 @@ class GameView(arcade.View):
 
 
         #set map to selected map
-        self.map = self.selected_map        
+        self.map = self.selected_map
         self.texture = arcade.load_texture(self.map)
         self.fishes = arcade.SpriteList()
 
@@ -119,7 +120,7 @@ class GameView(arcade.View):
     def on_mouse_press(self, x, y,button_fake, key_modifiers):
         #""" Called when the user presses a mouse button. """
         #if upgrade menu is open and your are clicking on the menu, skip
-        
+
         if (self.show_upgrade and x >= 746):
             for button in self.upgrade_menu.buttons:
                 button.check_hover(x,y)
@@ -215,29 +216,12 @@ class GameView(arcade.View):
                 self.user.money -= self.current_tower.cost  # Deduct cost
                 print(f"Placed {self.current_tower.__class__.__name__} at ({x}, {y})")
                 print(self.towers)
-                # for tower in self.towers:
-                #     if ((((tower.center_x-5) >= self.x) or (self.x >= (tower.center_x +5))) and
-                #        (((tower.center_y - 5) >= self.y) or (self.y >= (tower.center_y + 5)))):
-                #         # Place tower at the released location
-                #
-                #         self.current_tower.center_x = x
-                #         self.current_tower.center_y = y
-                #
-                #         self.towers.append(self.current_tower)  # Add the tower to the list
-                #         self.user.money -= self.current_tower.cost  # Deduct cost
-                #         print(f"Placed {self.current_tower.__class__.__name__} at ({x}, {y})")
-                #         print(self.towers)
-                # else:
-                #     print("Cannot place tower in restricted area.")
-                #     # Stop dragging and reset
-                # self.is_dragging = False
-                # self.current_tower = None
             else:
                 print("Cannot place tower in restricted area.")
             # Stop dragging and reset
             self.is_dragging = False
             self.current_tower = None
-            #Check for pause 
+            #Check for pause
         self.pause_button.on_mouse_release(x, y, button, modifiers)
         self.paused = self.pause_button.paused
 
@@ -378,10 +362,10 @@ class GameView(arcade.View):
             # Map path
             # sidebar
             # Topbar
-        arcade.draw_rectangle_filled(875, 227, 260, 460, (0, 50, 0, 128))
-        arcade.draw_rectangle_filled(500, 476, 1000, 45, (0, 50, 0, 128))
+        # arcade.draw_rectangle_filled(875, 227, 260, 460, (0, 50, 0, 128))
+        # arcade.draw_rectangle_filled(500, 476, 1000, 45, (0, 50, 0, 128))
 
-        
+
         #Draw Pause Button
         self.pause_button.draw()
 
