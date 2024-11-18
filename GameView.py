@@ -384,16 +384,11 @@ class GameView(arcade.View):
             arcade.draw_line(0, y, SCREEN_WIDTH, y, line_color, 2)
 
     #update the position of the sprites
-    def on_update(self,delta_time):
-        #if paused, eturn, wait to be unpaused
+    def on_update(self, delta_time):
+        # If paused, return and wait to be unpaused
         hits = 0
         if self.paused:
             return
-
-        #update cycle counter, each call to update is 1 cycle
-        self.spawn_cycle_count += 1
-
-        #position list for creating new balloons
         position_list = [
             [0, 275],
             [55.835, 275],
@@ -479,89 +474,247 @@ class GameView(arcade.View):
             [300, 12.5],
             [300, 0]
         ]
+        # Update cycle counter
+        self.spawn_cycle_count += 1
 
+        # Update fish positions
         for fish in self.fishes:
             fish.update(self.user, self.window)
 
-        self.frame_count += 1
+        self.frame_count += 1  # Increment frame count
 
-        # Get the current mouse position
-        mouse_x, mouse_y = self.mouse_x, self.mouse_y
+        # Spawn logic: spawn fish from queue if it's time
+        if self.spawn_cycle_count >= 10 and len(self.fish_queue) > 0:
+            self.spawn_cycle_count = 0  # Reset spawn cycle counter
 
-        # makes it so the game doesnt crash when there are no balloons, will change in future
+            # Spawn fish from the end of the queue
+            self.fishes.append(self.fish_queue.pop())
 
+        # Pause when all fish have been spawned for the round
+        if len(self.fish_queue) == 0 and len(self.fishes) == 0:
+            # Pause at round end
+            print("PAUSED!")
+            self.user.round += 1
+            self.paused = True
+            self.pause_button.paused = True
+            self.harpoons.clear()
 
-        if len(self.fishes) > 0:
-            for tower in self.towers:
-                # Track the closest fish and the minimum distance
-                closest_fish = None
-                min_distance = float('inf')
+            # generate wave based on round number Hard code
+            # Populate fish queue based on the round
+            if True == True:
+                if self.user.round == 1:
+                    for i in range(4):
+                        balloon = BLUEFISH(position_list)
+                        balloon.center_x, balloon.center_y = position_list[0]
+                        self.fish_queue.append(balloon)
 
-                # Find the closest fish to the current tower
-                for fish in self.fishes:
-                    distance = math.sqrt((tower.center_x - fish.center_x) ** 2 +
-                                         (tower.center_y - fish.center_y) ** 2)
-                    if distance <= tower.radius and distance < min_distance:
-                        min_distance = distance
-                        closest_fish = fish
+                elif self.user.round == 2:
+                    for i in range(5):
+                        balloon = BLUEFISH(position_list)
+                        balloon.center_x, balloon.center_y = position_list[0]
+                        self.fish_queue.append(balloon)
 
-                # If we found a fish within the tower's radius
-                if closest_fish:
-                    # Calculate angle and rotate tower
-                    start_x = tower.center_x
-                    start_y = tower.center_y
-                    dest_x = closest_fish.center_x
-                    dest_y = closest_fish.center_y
-                    x_diff = dest_x - start_x
-                    y_diff = dest_y - start_y
-                    angle = math.atan2(y_diff, x_diff)
+                elif self.user.round == 3:
+                    for i in range(8):
+                        balloon = BLUEFISH(position_list)
+                        balloon.center_x, balloon.center_y = position_list[0]
+                        self.fish_queue.append(balloon)
 
-                    # Set the tower to face the closest fish
-                    tower.angle = math.degrees(angle) - 180 if tower.name == 'Boat' else math.degrees(angle) - 180
+                elif self.user.round == 4:
+                    for i in range(12):
+                        balloon = BLUEFISH(position_list)
+                        balloon.center_x, balloon.center_y = position_list[0]
+                        self.fish_queue.append(balloon)
 
-                    # Shoot every `rate` frames
-                    if self.frame_count % tower.rate == 0:
-                        bullet = arcade.Sprite(tower.bullet, tower.bullet_scale)
-                        bullet.center_x = start_x
-                        bullet.center_y = start_y
+                elif self.user.round == 5:
+                    for i in range(4):
+                        red_fish = REDFISH(position_list)
+                        red_fish.center_x, red_fish.center_y = position_list[0]
+                        self.fish_queue.append(red_fish)
 
-                        # Store the tower reference in the bullet
-                        bullet.tower_source = tower
+                elif self.user.round == 6:
+                    for i in range(8):
+                        blue_fish = BLUEFISH(position_list)
+                        blue_fish.center_x, blue_fish.center_y = position_list[0]
+                        self.fish_queue.append(blue_fish)
 
-                        # Adjust bullet angle based on tower type
-                        if tower.name == "Boat":
-                            bullet.angle = math.degrees(angle) + 45
-                        elif tower.name == "Wizard":
-                            bullet.angle = math.degrees(angle) + 135
-                        else:
-                            bullet.angle = math.degrees(angle)
+                    for i in range(2):
+                        red_fish = REDFISH(position_list)
+                        red_fish.center_x, red_fish.center_y = position_list[0]
+                        self.fish_queue.append(red_fish)
 
-                        # Calculate bullet trajectory
-                        bullet.change_x = math.cos(angle) * BULLET_SPEED
-                        bullet.change_y = math.sin(angle) * BULLET_SPEED
+                elif self.user.round == 7:
+                    for i in range(9):
+                        blue_fish = BLUEFISH(position_list)
+                        blue_fish.center_x, blue_fish.center_y = position_list[0]
+                        self.fish_queue.append(blue_fish)
+                    for i in range(3):
+                        red_fish = REDFISH(position_list)
+                        red_fish.center_x, red_fish.center_y = position_list[0]
+                        self.fish_queue.append(red_fish)
 
-                        self.harpoons.append(bullet)
+                elif self.user.round == 8:
+                    for i in range(10):
+                        blue_fish = BLUEFISH(position_list)
+                        blue_fish.center_x, blue_fish.center_y = position_list[0]
+                        self.fish_queue.append(blue_fish)
+                    for i in range(4):
+                        red_fish = REDFISH(position_list)
+                        red_fish.center_x, red_fish.center_y = position_list[0]
+                        self.fish_queue.append(red_fish)
 
-                    # Handle collisions
-                    for bullet in self.harpoons:
+                elif self.user.round == 9:
+                    for i in range(5):
+                        blue_fish = BLUEFISH(position_list)
+                        blue_fish.center_x, blue_fish.center_y = position_list[0]
+                        self.fish_queue.append(blue_fish)
+                    for i in range(6):
+                        red_fish = REDFISH(position_list)
+                        red_fish.center_x, red_fish.center_y = position_list[0]
+                        self.fish_queue.append(red_fish)
 
-                        if bullet.top < 0:
-                            bullet.remove_from_sprite_lists()
-                        else:
-                            for fish in self.fishes:
-                                tower_source = bullet.tower_source
+                elif self.user.round == 10:
+                    for i in range(8):
+                        blue_fish = BLUEFISH(position_list)
+                        blue_fish.center_x, blue_fish.center_y = position_list[0]
+                        self.fish_queue.append(blue_fish)
+                    for i in range(6):
+                        red_fish = REDFISH(position_list)
+                        red_fish.center_x, red_fish.center_y = position_list[0]
+                        self.fish_queue.append(red_fish)
 
-                                if arcade.check_for_collision(bullet, fish):
-                                    if tower_source.name == 'God':
+                elif self.user.round == 11:
+                    for i in range(8):
+                        red_fish = REDFISH(position_list)
+                        red_fish.center_x, red_fish.center_y = position_list[0]
+                        self.fish_queue.append(red_fish)
+                    for _ in range(4):
+                        green = GREENFISH(position_list)
+                        green.center_x, green.center_y = position_list[0]
+                        self.fish_queue.append(green)
 
-                                        hits +=1
-                                        if hits >= 2:
-                                            bullet.remove_from_sprite_lists()
-                                        fish.hp -= tower_source.atk
-                                    else:
+                elif self.user.round == 12:
+                    for i in range(8):
+                        red_fish = REDFISH(position_list)
+                        red_fish.center_x, red_fish.center_y = position_list[0]
+                        self.fish_queue.append(red_fish)
+                    for _ in range(5):
+                        green = GREENFISH(position_list)
+                        green.center_x, green.center_y = position_list[0]
+                        self.fish_queue.append(green)
+
+                elif self.user.round == 13:
+                    for i in range(3):
+                        red_fish = REDFISH(position_list)
+                        red_fish.center_x, red_fish.center_y = position_list[0]
+                        self.fish_queue.append(red_fish)
+                    for _ in range(4):
+                        green = GREENFISH(position_list)
+                        green.center_x, green.center_y = position_list[0]
+                        self.fish_queue.append(green)
+
+                elif self.user.round == 14:
+                    for _ in range(5):
+                        green = GREENFISH(position_list)
+                        green.center_x, green.center_y = position_list[0]
+                        self.fish_queue.append(green)
+                    for i in range(5):
+                        red_fish = REDFISH(position_list)
+                        red_fish.center_x, red_fish.center_y = position_list[0]
+                        self.fish_queue.append(red_fish)
+                    for i in range(1):
+                        shark = SHARK(position_list)
+                        shark.center_x, shark.center_y = position_list[0]
+                        self.fish_queue.append(shark)
+
+                elif self.user.round == 15:
+                    for i in range(15):
+                        blue_fish = BLUEFISH(position_list)
+                        blue_fish.center_x, blue_fish.center_y = position_list[0]
+                        self.fish_queue.append(blue_fish)
+                    for i in range(8):
+                        red_fish = REDFISH(position_list)
+                        red_fish.center_x, red_fish.center_y = position_list[0]
+                        self.fish_queue.append(red_fish)
+                    for i in range(10):
+                        shark = SHARK(position_list)
+                        shark.center_x, shark.center_y = position_list[0]
+                        self.fish_queue.append(shark)
+                    for i in range(1):
+                        orca = ORCA(position_list)
+                        orca.center_x, orca.center_y = position_list[0]
+                        self.fish_queue.append(orca)
+
+            # Add all other round definitions here...
+
+        # Tower shooting logic remains the same
+        for tower in self.towers:
+            closest_fish = None
+            min_distance = float('inf')
+
+            # Find the closest fish to the current tower
+            for fish in self.fishes:
+                distance = math.sqrt((tower.center_x - fish.center_x) ** 2 +
+                                     (tower.center_y - fish.center_y) ** 2)
+                if distance <= tower.radius and distance < min_distance:
+                    min_distance = distance
+                    closest_fish = fish
+
+            # If we found a fish within the tower's radius
+            if closest_fish:
+                # Calculate angle and rotate tower
+                start_x = tower.center_x
+                start_y = tower.center_y
+                dest_x = closest_fish.center_x
+                dest_y = closest_fish.center_y
+                x_diff = dest_x - start_x
+                y_diff = dest_y - start_y
+                angle = math.atan2(y_diff, x_diff)
+
+                # Set the tower to face the closest fish
+                tower.angle = math.degrees(angle) - 180 if tower.name == 'Boat' else math.degrees(angle) - 180
+
+                # Shoot every `rate` frames
+                if self.frame_count % tower.rate == 0:
+                    bullet = arcade.Sprite(tower.bullet, tower.bullet_scale)
+                    bullet.center_x = start_x
+                    bullet.center_y = start_y
+
+                    # Store the tower reference in the bullet
+                    bullet.tower_source = tower
+
+                    # Adjust bullet angle based on tower type
+                    if tower.name == "Boat":
+                        bullet.angle = math.degrees(angle) + 45
+                    elif tower.name == "Wizard":
+                        bullet.angle = math.degrees(angle) + 135
+                    else:
+                        bullet.angle = math.degrees(angle)
+
+                    # Calculate bullet trajectory
+                    bullet.change_x = math.cos(angle) * BULLET_SPEED
+                    bullet.change_y = math.sin(angle) * BULLET_SPEED
+
+                    self.harpoons.append(bullet)
+
+                # Handle collisions
+                for bullet in self.harpoons:
+                    if bullet.top < 0:
+                        bullet.remove_from_sprite_lists()
+                    else:
+                        for fish in self.fishes:
+                            tower_source = bullet.tower_source
+
+                            if arcade.check_for_collision(bullet, fish):
+                                if tower_source.name == 'God':
+                                    hits += 1
+                                    if hits >= 2:
                                         bullet.remove_from_sprite_lists()
-                                        # Reduce fish health and remove
-                                        fish.hp -= tower_source.atk
+                                    fish.hp -= tower_source.atk
+                                else:
+                                    bullet.remove_from_sprite_lists()
+                                    fish.hp -= tower_source.atk
+
                                 if fish.hp <= 0:
                                     try:
                                         self.fishes.remove(fish)
@@ -580,180 +733,17 @@ class GameView(arcade.View):
                                             self.fishes.append(blue)
 
                                         for _ in range(1):
-                                            green = GREENFISH(position_list, start_x=fish.center_x, start_y=fish.center_y)
+                                            green = GREENFISH(position_list, start_x=fish.center_x,
+                                                              start_y=fish.center_y)
                                             self.fishes.append(green)
                                     if isinstance(fish, ORCA):
                                         for _ in range(2):
                                             shark = SHARK(position_list, start_x=fish.center_x, start_y=fish.center_y)
                                             self.fish_queue.append(shark)
 
-
-        else:
-            self.user.round +=1
-            pos_rand = numpy.random.randint(0, 5)
-            # Pause at round end
-            print("PAUSED!")
-            self.paused = True
-            self.pause_button.paused = True
-            self.harpoons.clear()
-
-            #generate wave based on round number Hard code
-            # Populate fish queue based on the round
-            if self.user.round == 1:
-                for i in range(4):
-                    balloon = BLUEFISH(position_list)
-                    balloon.center_x, balloon.center_y = position_list[0]
-                    self.fish_queue.append(balloon)
-
-            elif self.user.round == 2:
-                for i in range(5):
-                    balloon = BLUEFISH(position_list)
-                    balloon.center_x, balloon.center_y = position_list[0]
-                    self.fish_queue.append(balloon)
-
-            elif self.user.round == 3:
-                for i in range(8):
-                    balloon = BLUEFISH(position_list)
-                    balloon.center_x, balloon.center_y = position_list[0]
-                    self.fish_queue.append(balloon)
-
-            elif self.user.round == 4:
-                for i in range(12):
-                    balloon = BLUEFISH(position_list)
-                    balloon.center_x, balloon.center_y = position_list[0]
-                    self.fish_queue.append(balloon)
-
-            elif self.user.round == 5:
-                for i in range(4):
-                    red_fish = REDFISH(position_list)
-                    red_fish.center_x, red_fish.center_y = position_list[0]
-                    self.fish_queue.append(red_fish)
-
-            elif self.user.round == 6:
-                for i in range(8):
-                    blue_fish = BLUEFISH(position_list)
-                    blue_fish.center_x, blue_fish.center_y = position_list[0]
-                    self.fish_queue.append(blue_fish)
-
-                for i in range(2):
-                    red_fish = REDFISH(position_list)
-                    red_fish.center_x, red_fish.center_y = position_list[0]
-                    self.fish_queue.append(red_fish)
-
-            elif self.user.round == 7:
-                for i in range(9):
-                    blue_fish = BLUEFISH(position_list)
-                    blue_fish.center_x, blue_fish.center_y = position_list[0]
-                    self.fish_queue.append(blue_fish)
-                for i in range(3):
-                    red_fish = REDFISH(position_list)
-                    red_fish.center_x, red_fish.center_y = position_list[0]
-                    self.fish_queue.append(red_fish)
-
-            elif self.user.round == 8:
-                for i in range(10):
-                    blue_fish = BLUEFISH(position_list)
-                    blue_fish.center_x, blue_fish.center_y = position_list[0]
-                    self.fish_queue.append(blue_fish)
-                for i in range(4):
-                    red_fish = REDFISH(position_list)
-                    red_fish.center_x, red_fish.center_y = position_list[0]
-                    self.fish_queue.append(red_fish)
-
-            elif self.user.round == 9:
-                for i in range(5):
-                    blue_fish = BLUEFISH(position_list)
-                    blue_fish.center_x, blue_fish.center_y = position_list[0]
-                    self.fish_queue.append(blue_fish)
-                for i in range(6):
-                    red_fish = REDFISH(position_list)
-                    red_fish.center_x, red_fish.center_y = position_list[0]
-                    self.fish_queue.append(red_fish)
-
-            elif self.user.round == 10:
-                for i in range(8):
-                    blue_fish = BLUEFISH(position_list)
-                    blue_fish.center_x, blue_fish.center_y = position_list[0]
-                    self.fish_queue.append(blue_fish)
-                for i in range(6):
-                    red_fish = REDFISH(position_list)
-                    red_fish.center_x, red_fish.center_y = position_list[0]
-                    self.fish_queue.append(red_fish)
-
-            elif self.user.round == 11:
-                for i in range(8):
-                    red_fish = REDFISH(position_list)
-                    red_fish.center_x, red_fish.center_y = position_list[0]
-                    self.fish_queue.append(red_fish)
-                for _ in range(4):
-                    green = GREENFISH(position_list)
-                    green.center_x, green.center_y = position_list[0]
-                    self.fish_queue.append(green)
-
-            elif self.user.round == 12:
-                for i in range(8):
-                    red_fish = REDFISH(position_list)
-                    red_fish.center_x, red_fish.center_y = position_list[0]
-                    self.fish_queue.append(red_fish)
-                for _ in range(5):
-                    green = GREENFISH(position_list)
-                    green.center_x, green.center_y = position_list[0]
-                    self.fish_queue.append(green)
-
-            elif self.user.round == 13:
-                for i in range(3):
-                    red_fish = REDFISH(position_list)
-                    red_fish.center_x, red_fish.center_y = position_list[0]
-                    self.fish_queue.append(red_fish)
-                for _ in range(4):
-                    green = GREENFISH(position_list)
-                    green.center_x, green.center_y = position_list[0]
-                    self.fish_queue.append(green)
-
-            elif self.user.round == 14:
-                for _ in range(5):
-                    green = GREENFISH(position_list)
-                    green.center_x, green.center_y = position_list[0]
-                    self.fish_queue.append(green)
-                for i in range(5):
-                    red_fish = REDFISH(position_list)
-                    red_fish.center_x, red_fish.center_y = position_list[0]
-                    self.fish_queue.append(red_fish)
-                for i in range(1):
-                    shark = SHARK(position_list)
-                    shark.center_x, shark.center_y = position_list[0]
-                    self.fish_queue.append(shark)
-
-            elif self.user.round == 15:
-                for i in range(15):
-                    blue_fish = BLUEFISH(position_list)
-                    blue_fish.center_x, blue_fish.center_y = position_list[0]
-                    self.fish_queue.append(blue_fish)
-                for i in range(8):
-                    red_fish = REDFISH(position_list)
-                    red_fish.center_x, red_fish.center_y = position_list[0]
-                    self.fish_queue.append(red_fish)
-                for i in range(10):
-                    shark = SHARK(position_list)
-                    shark.center_x, shark.center_y = position_list[0]
-                    self.fish_queue.append(shark)
-                for i in range(1):
-                    orca = ORCA(position_list)
-                    orca.center_x, orca.center_y = position_list[0]
-                    self.fish_queue.append(orca)
-
-        #seperate spawning of balloons by 5 update cycles
-        if (self.spawn_cycle_count >= 10 and (len(self.fish_queue) > 0)):
-
-            #reset update cycle counter
-            self.spawn_cycle_count = 0
-
-            #spawn fish from end of queue list
-            self.fishes.append(self.fish_queue[(len(self.fish_queue)-1)])
-
-            #remove fish from end of queue list
-            self.fish_queue.pop()
-
+        # Update harpoon positions
         self.harpoons.update()
+
+
 
 
