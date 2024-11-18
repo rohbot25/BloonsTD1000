@@ -59,7 +59,7 @@ class FISH(arcade.Sprite):
             self.cur_position += 1
             if self.cur_position >= len(self.path):
                 self.remove_from_sprite_lists()
-                User.health -= self.hp
+                User.health -= int(self.hp)
                 if User.health <= 0:
                     death_view = DeathView()
                     window.show_view(death_view)
@@ -79,8 +79,8 @@ class GREENFISH(FISH):
 
 class SHARK(FISH):
     def __init__(self, path, start_x=None, start_y=None):
-        super().__init__("Images/blue_blimp_shark.png", 3.5, path, 1, 50, 10, start_x, start_y)
+        super().__init__("Images/blue_blimp_shark.png", 3.5, path, 1, 150, 10, start_x, start_y)
 
 class ORCA(FISH):
     def __init__(self, path, start_x=None, start_y=None):
-        super().__init__("Images/Orca.png", 1, path, 0.7, 100, 100, start_x, start_y)
+        super().__init__("Images/Orca.png", 1, path, 0.7, 300,10 , start_x, start_y)

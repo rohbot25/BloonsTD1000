@@ -48,7 +48,7 @@ class WHALER(TOWER):
         radius = 2000
         atk = 5
         rate = 25
-        cost = 10
+        cost = 1500
         max = 3
         upgrade_cost = 0
         bullet = "images/sun_gold.png"
@@ -133,7 +133,7 @@ class WIZARD(TOWER):
         name = "Wizard"
         radius = 200
         atk = 3
-        rate = 25
+        rate = 50
         cost = 300
         max = 3
         upgrade_cost = 600
@@ -142,9 +142,9 @@ class WIZARD(TOWER):
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
     
     def upgrade(self):
-        self.atk *= 1.5
+        self.atk += 3
         self.rate -= 5
-        self.radius += 50
+        self.radius += 20
         self.level +=1
 
 #THE GOAT 
@@ -154,9 +154,9 @@ class SUPERFISHER(TOWER):
         image = "images/superfisherman.png"
         scale = .17
         name = "Superfisher"
-        radius = 100
-        atk = 100
-        rate = 30
+        radius = 400
+        atk = .2
+        rate = 1
         cost = 1000
         max = 3
         upgrade_cost = 2500

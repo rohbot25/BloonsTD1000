@@ -628,18 +628,14 @@ class GameView(arcade.View):
                         self.fish_queue.append(shark)
 
                 elif self.user.round == 15:
-                    for i in range(15):
-                        blue_fish = BLUEFISH(position_list)
-                        blue_fish.center_x, blue_fish.center_y = position_list[0]
-                        self.fish_queue.append(blue_fish)
                     for i in range(8):
                         red_fish = REDFISH(position_list)
                         red_fish.center_x, red_fish.center_y = position_list[0]
                         self.fish_queue.append(red_fish)
-                    for i in range(10):
-                        shark = SHARK(position_list)
-                        shark.center_x, shark.center_y = position_list[0]
-                        self.fish_queue.append(shark)
+                    for _ in range(8):
+                        green = GREENFISH(position_list)
+                        green.center_x, green.center_y = position_list[0]
+                        self.fish_queue.append(green)
                     for i in range(1):
                         orca = ORCA(position_list)
                         orca.center_x, orca.center_y = position_list[0]
@@ -677,11 +673,12 @@ class GameView(arcade.View):
                 # Shoot every `rate` frames
                 if self.frame_count % tower.rate == 0:
                     bullet = arcade.Sprite(tower.bullet, tower.bullet_scale)
+                    bullet.tower_source = tower
                     bullet.center_x = start_x
-                    bullet.center_y = start_y
+                    bullet.center_y = start_y + 10
 
                     # Store the tower reference in the bullet
-                    bullet.tower_source = tower
+
 
                     # Adjust bullet angle based on tower type
                     if tower.name == "Boat":
