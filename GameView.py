@@ -159,7 +159,6 @@ class GameView(arcade.View):
             if self.is_dragging:
                 return  # Ignore clicks while dragging
 
-
             # Check if any button in the sidebar is clicked
             for button in self.sidebar.buttons:
                 if button.is_hovered and self.user.money >= button.cost:
@@ -174,44 +173,30 @@ class GameView(arcade.View):
             self.pause_button.on_mouse_press(x, y, button, key_modifiers)
 
 
-
-
     def on_mouse_release(self, x: float, y: float, button: int, modifiers: int):
         if self.is_dragging and self.current_tower:
-            # Finalize tower placement
-            # Check if releasing the tower in a restricted area
-            # EVENTUALLY WILL DO DIFFERENTLY
-            # Create a list that holds invisible blocks covering all the locations that are
-            # restricted, then whenever a new tower is added, dynamically add that tower
-            # location to the list
+
             xy_restrictions=[
-                [
-                    [0,300],
-                    [250,300]
-                ],
-                [
-                    [300,350],
-                    [250,450]
-                ],
-                [
-                    [175,350],
-                    [400,450]
-                ],
-                [
-                    [175,225]
-                ]
+                [[0,300],[250,300]],
+                [[300,350],[250,450]],
+                [[175,350],[400,450]],
+                [[175,225],[25,450]],
+                [[50,225],[0,50]],
+                [[25,75],[25,175]],
+                [[50,450],[150,200]],
+                [[425,475],[175,350]],
+                [[425,550],[300,350]],
+                [[525,575],[75,325]],
+                [[275,575],[50,125]],
+                [[275,325],[0,100]]
             ]
-            if not (((self.tb_x_start < x < self.tbsb_x_end and self.tb_y_start < y < self.tb_y_end) or
-                     (self.sb_x_start < x < self.tbsb_x_end and self.sb_y_start < y < self.sb_y_end) or
-                     (0<x<300 and 250<y<300) or (300<x<350 and 250<y<450) or (175<x<350 and 400<y<450) or
-                     (175<x<225 and 25<y<450) or (50<x<225 and 0<y<50) or (25<x<75 and 25<y<175) or
-                     (50<x<450 and 150<y<200) or (425<x<475 and 175<y<350) or (425<x<550 and 300<y<350) or
-                     (525<x<575 and 75<y<325) or (275<x<575 and 50<y<125) or (275<x<325 and 0<y<100)) and
-                    (self.user.money >= self.current_tower.cost)
-            ):
+
+            if not (self.is_in_restricted_sb_tb(x, y)
+                    or not self.has_sufficient_money()
+                    or not self.is_in_restricited_path(x, y, xy_restrictions)):
+
                 self.current_tower.center_x = x
                 self.current_tower.center_y = y
-
                 self.towers.append(self.current_tower)  # Add the tower to the list
                 self.user.money -= self.current_tower.cost  # Deduct cost
                 print(f"Placed {self.current_tower.__class__.__name__} at ({x}, {y})")
@@ -244,6 +229,32 @@ class GameView(arcade.View):
         #check for pause hover
         self.pause_button.check_hover(x, y)
 
+    # Has the money for a tower
+    def has_sufficient_money(self):
+        return self.user.money >= self.current_tower.cost
+
+    # Checks to see if there are other towers there
+    def can_place_tower(self, x, y):
+        return all(
+            abs(tower.center_x - x) >= 10 or abs(tower.center_y - y) >= 10
+            for tower in self.towers
+        )
+
+    # Checks for sidebar or topbar
+    def is_in_restricted_sb_tb(self, x, y):
+        return (
+                (self.tb_x_start < x < self.tbsb_x_end and self.tb_y_start < y < self.tb_y_end) or
+                (self.sb_x_start < x < self.tbsb_x_end and self.sb_y_start < y < self.sb_y_end)
+        )
+
+    # Checks each point
+    def is_in_restricited_path(selfself, x, y, path):
+        for restriction in path:
+            x_range, y_range = restriction
+            if x_range[0] < x < x_range[1] and y_range[0] < y < y_range[1]:
+                return False  # Point is in a restricted area
+        return True  # Point is not in any restricted area
+
 
     def on_draw(self):
         """
@@ -273,11 +284,6 @@ class GameView(arcade.View):
 
         #draw the map
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2.45, 825,500,self.texture)
-
-        # Draw restricted areas:
-            # Map path
-            # sidebar
-            # Topbar
 
         if not self.show_upgrade:
             # Sidebar
@@ -357,14 +363,6 @@ class GameView(arcade.View):
             self.current_tower.draw()
 
         #self.draw_grid()
-
-        # Draw restricted areas:
-            # Map path
-            # sidebar
-            # Topbar
-        # arcade.draw_rectangle_filled(875, 227, 260, 460, (0, 50, 0, 128))
-        # arcade.draw_rectangle_filled(500, 476, 1000, 45, (0, 50, 0, 128))
-
 
         #Draw Pause Button
         self.pause_button.draw()
