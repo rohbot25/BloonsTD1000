@@ -27,7 +27,7 @@ class FISHERMAN(TOWER):
         radius = 150
         atk = 2
         rate = 30
-        cost = 50
+        cost = 125
         max = 3
         upgrade_cost = 100
         bullet = "images/fishhook.png"
@@ -131,14 +131,14 @@ class WIZARD(TOWER):
         image = "images/wizard.png"
         scale = 0.3
         name = "Wizard"
-        radius = 200
-        atk = 3
+        radius = 250
+        atk = 4
         rate = 50
         cost = 300
         max = 3
         upgrade_cost = 600
         bullet = "images/fireball.png"
-        bullet_scale = .25
+        bullet_scale = .6
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
     
     def upgrade(self):

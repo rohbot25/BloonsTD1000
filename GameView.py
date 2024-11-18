@@ -715,7 +715,16 @@ class GameView(arcade.View):
                                 if fish.hp <= 0:
                                     try:
                                         self.fishes.remove(fish)
-                                        self.user.money += random.randint(6, 30)
+                                        if isinstance(fish, BLUEFISH):
+                                            self.user.money += random.randint(5, 15)
+                                        elif isinstance(fish, REDFISH):
+                                            self.user.money += random.randint(5, 25)
+                                        elif isinstance(fish, GREENFISH):
+                                            self.user.money += random.randint(10, 35)
+                                        elif isinstance(fish, SHARK):
+                                            self.user.money += random.randint(15, 40)
+                                        elif isinstance(fish, ORCA):
+                                            self.user.money += random.randint(30, 50)
                                     except ValueError:
                                         pass
 
