@@ -132,8 +132,8 @@ class WIZARD(TOWER):
         scale = 0.3
         name = "Wizard"
         radius = 250
-        atk = 4
-        rate = 50
+        atk = 10
+        rate = 90
         cost = 300
         max = 3
         upgrade_cost = 600
@@ -145,7 +145,9 @@ class WIZARD(TOWER):
         self.atk += 3
         self.rate -= 5
         self.radius += 20
+        self.bullet_scale += .4
         self.level +=1
+
 
 #THE GOAT 
 class SUPERFISHER(TOWER):

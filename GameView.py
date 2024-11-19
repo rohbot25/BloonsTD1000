@@ -13,7 +13,7 @@ BULLET_SPEED = 35
 from User import USER
 from Sidebar import SIDEBAR
 from tower import FISHERMAN, FLYFISHER, WHALER, NEANDERTHAL, WIZARD, BOAT, SUPERFISHER, NETFISHER
-from Fish import  REDFISH, BLUEFISH, GREENFISH, SHARK, ORCA
+from Fish import  REDFISH, BLUEFISH, GREENFISH, SHARK, ORCA, WHALE
 from Button import BUTTON
 from Button import PauseUnpause
 
@@ -278,6 +278,7 @@ class GameView(arcade.View):
         upgrade = arcade.load_texture("images/upgrade.png")
         trash = arcade.load_texture("images/trash.png")
 
+
         # This command has to happen before we start drawing
         self.clear()
 
@@ -502,17 +503,15 @@ class GameView(arcade.View):
             # generate wave based on round number Hard code
             # Populate fish queue based on the round
             if True == True:
-                if self.user.round == 1:
-                    for i in range(4):
-                        balloon = BLUEFISH(position_list)
-                        balloon.center_x, balloon.center_y = position_list[0]
-                        self.fish_queue.append(balloon)
-
-                elif self.user.round == 2:
+                if self.user.round == 2:
                     for i in range(5):
                         balloon = BLUEFISH(position_list)
                         balloon.center_x, balloon.center_y = position_list[0]
                         self.fish_queue.append(balloon)
+                    for i in range(1):
+                        whale = WHALE(position_list)
+                        whale.center_x, whale.center_y = position_list[0]
+                        self.fish_queue.append(whale)
 
                 elif self.user.round == 3:
                     for i in range(8):
@@ -641,6 +640,7 @@ class GameView(arcade.View):
                         orca.center_x, orca.center_y = position_list[0]
                         self.fish_queue.append(orca)
 
+
             # Add all other round definitions here...
 
         # Tower shooting logic remains the same
@@ -674,6 +674,8 @@ class GameView(arcade.View):
                 if self.frame_count % tower.rate == 0:
                     bullet = arcade.Sprite(tower.bullet, tower.bullet_scale)
                     bullet.tower_source = tower
+                    bullet.grace_frames = 3
+                    bullet.age = 0
                     bullet.center_x = start_x
                     bullet.center_y = start_y + 10
 
@@ -696,9 +698,12 @@ class GameView(arcade.View):
 
                 # Handle collisions
                 for bullet in self.harpoons:
+                    bullet.age += 1
                     if bullet.top < 0:
                         bullet.remove_from_sprite_lists()
                     else:
+                        if bullet.age < bullet.grace_frames:
+                            continue
                         for fish in self.fishes:
                             tower_source = bullet.tower_source
 
@@ -743,9 +748,13 @@ class GameView(arcade.View):
                                                               start_y=fish.center_y)
                                             self.fishes.append(green)
                                     if isinstance(fish, ORCA):
-                                        for _ in range(2):
+                                        for _ in range(4):
                                             shark = SHARK(position_list, start_x=fish.center_x, start_y=fish.center_y)
                                             self.fish_queue.append(shark)
+                                    if isinstance(fish, WHALE):
+                                        for _ in range(2):
+                                            orca = ORCA(position_list, start_x=fish.center_x, start_y=fish.center_y)
+                                            self.fish_queue.append(orca)
 
         # Update harpoon positions
         self.harpoons.update()
