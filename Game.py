@@ -117,7 +117,7 @@ class MapSelectView(arcade.View):
         self.v_box.add(map1_button.with_space_around(bottom=20))
 
         # Create the map2 button
-        map2_button = arcade.gui.UIFlatButton(text="Forest", width=200)
+        map2_button = arcade.gui.UIFlatButton(text="River", width=200)
         map2_button.on_click = self.on_click_map2
         self.v_box.add(map2_button.with_space_around(bottom=20))
 
@@ -147,7 +147,7 @@ class MapSelectView(arcade.View):
         self.window.show_view(self.start_view)
 
     def on_click_map2(self, event):
-        self.start_view.selected_map = "images/forest.png"
+        self.start_view.selected_map = "images/newRiverMap.png"
         self.window.show_view(self.start_view)
 
     def on_hide_view(self):
