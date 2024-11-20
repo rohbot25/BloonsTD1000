@@ -69,7 +69,7 @@ class BOAT(TOWER):
         name = "Boat"
         radius = 150
         atk = 1
-        rate = 40
+        rate = 20
         cost = 150
         max = 3
         upgrade_cost = 300
@@ -79,6 +79,7 @@ class BOAT(TOWER):
     
     def upgrade(self):
         self.radius += 50
+        self.rate -=5
         self.level +=1
 
 #upgraded fisherman type, more range, better starting buffs, increase dmage and rate, upgrade = 500

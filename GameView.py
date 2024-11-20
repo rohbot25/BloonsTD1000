@@ -508,10 +508,6 @@ class GameView(arcade.View):
                         balloon = BLUEFISH(position_list)
                         balloon.center_x, balloon.center_y = position_list[0]
                         self.fish_queue.append(balloon)
-                    for i in range(1):
-                        whale = WHALE(position_list)
-                        whale.center_x, whale.center_y = position_list[0]
-                        self.fish_queue.append(whale)
 
                 elif self.user.round == 3:
                     for i in range(8):
@@ -640,31 +636,46 @@ class GameView(arcade.View):
                         orca.center_x, orca.center_y = position_list[0]
                         self.fish_queue.append(orca)
 
+                elif self.user.round == 16:
+                    for i in range(1):
+                        whale = WHALE(position_list)
+                        whale.center_x, whale.center_y = position_list[0]
+                        self.fish_queue.append(whale)
+
 
             # Add all other round definitions here...
 
         # Tower shooting logic remains the same
         for tower in self.towers:
-            closest_fish = None
-            min_distance = float('inf')
+            if not hasattr(tower, 'last_target_update_frame'):
+                tower.last_target_update_frame = 0
 
-            # Find the closest fish to the current tower
-            for fish in self.fishes:
-                distance = math.sqrt((tower.center_x - fish.center_x) ** 2 +
-                                     (tower.center_y - fish.center_y) ** 2)
-                if distance <= tower.radius and distance < min_distance:
-                    min_distance = distance
-                    closest_fish = fish
+            if not hasattr(tower, 'current_target'):
+                tower.current_target = None
 
-            # If we found a fish within the tower's radius
-            if closest_fish:
-                # Calculate angle and rotate tower
-                start_x = tower.center_x
-                start_y = tower.center_y
-                dest_x = closest_fish.center_x
-                dest_y = closest_fish.center_y
-                x_diff = dest_x - start_x
-                y_diff = dest_y - start_y
+            # Update target every 5 frames
+            if self.frame_count - tower.last_target_update_frame >= 15:
+                closest_fish = None
+                min_distance = float('inf')
+
+                # Find the closest fish within range
+                for fish in self.fishes:
+                    distance = math.sqrt((tower.center_x - fish.center_x) ** 2 +
+                                         (tower.center_y - fish.center_y) ** 2)
+                    if distance <= tower.radius and distance < min_distance:
+                        min_distance = distance
+                        closest_fish = fish
+
+                # Update the current target
+                tower.current_target = closest_fish
+                tower.last_target_update_frame = self.frame_count
+
+            # Aim at the current target if it exists
+            if tower.current_target:
+                dest_x = tower.current_target.center_x
+                dest_y = tower.current_target.center_y
+                x_diff = dest_x - tower.center_x
+                y_diff = dest_y - tower.center_y
                 angle = math.atan2(y_diff, x_diff)
 
                 # Set the tower to face the closest fish
@@ -676,8 +687,8 @@ class GameView(arcade.View):
                     bullet.tower_source = tower
                     bullet.grace_frames = 3
                     bullet.age = 0
-                    bullet.center_x = start_x
-                    bullet.center_y = start_y + 10
+                    bullet.center_x = tower.center_x
+                    bullet.center_y = tower.center_y + 10
 
                     # Store the tower reference in the bullet
 
@@ -721,13 +732,13 @@ class GameView(arcade.View):
                                     try:
                                         self.fishes.remove(fish)
                                         if isinstance(fish, BLUEFISH):
-                                            self.user.money += random.randint(5, 15)
+                                            self.user.money += random.randint(10, 15)
                                         elif isinstance(fish, REDFISH):
-                                            self.user.money += random.randint(5, 25)
+                                            self.user.money += random.randint(15, 25)
                                         elif isinstance(fish, GREENFISH):
-                                            self.user.money += random.randint(10, 35)
+                                            self.user.money += random.randint(20, 35)
                                         elif isinstance(fish, SHARK):
-                                            self.user.money += random.randint(15, 40)
+                                            self.user.money += random.randint(25, 40)
                                         elif isinstance(fish, ORCA):
                                             self.user.money += random.randint(30, 50)
                                     except ValueError:

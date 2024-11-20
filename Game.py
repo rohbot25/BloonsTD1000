@@ -75,7 +75,7 @@ class HelpView(arcade.View):
         self.clear()
         arcade.draw_text("Help Screen", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50,
                          arcade.color.WHITE, font_size=50, anchor_x="center")
-        arcade.draw_text("Instructions on how to play the game.", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2-50,
+        arcade.draw_text("The goal is to slay the whale", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2-50,
                          arcade.color.WHITE, font_size=20, anchor_x="center")
         arcade.draw_text("Click to go back", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 125,
                          arcade.color.WHITE, font_size=20, anchor_x="center")
