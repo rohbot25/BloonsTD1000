@@ -12,7 +12,7 @@ BULLET_SPEED = 35
 
 from User import USER
 from Sidebar import SIDEBAR
-from tower import FISHERMAN, FLYFISHER, WHALER, NEANDERTHAL, WIZARD, BOAT, SUPERFISHER, NETFISHER
+from tower import FISHERMAN, FLYFISHER, GOD, NEANDERTHAL, WIZARD, BOAT, SUPERFISHER, ARCHER
 from Fish import  REDFISH, BLUEFISH, GREENFISH, SHARK, ORCA, WHALE
 from Button import BUTTON
 from Button import PauseUnpause
@@ -295,7 +295,7 @@ class GameView(arcade.View):
                 (825, 350), (825, 250), (825, 150), (825, 50),
                 (925, 350), (925, 250), (925, 150), (925, 50)
             ]
-            tower_types = [FISHERMAN, WHALER, BOAT, FLYFISHER, NEANDERTHAL, WIZARD, SUPERFISHER, NETFISHER]
+            tower_types = [FISHERMAN, GOD, BOAT, FLYFISHER, NEANDERTHAL, WIZARD, SUPERFISHER, ARCHER]
             tower_images = [buy_fisherman,buy_god,buy_boat,buy_fisherman,buy_neanderthal,buy_wizard,buy_superfisherman,buy_archer]
             for (button_x, button_y), tower_type, tower_image in zip(button_positions, tower_types,tower_images):
                 tower_instance = tower_type()  # Instantiate the class to access attributes

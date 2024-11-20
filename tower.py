@@ -38,8 +38,8 @@ class FISHERMAN(TOWER):
         self.rate -= 5
         self.level +=1
 
-#Whaler cost = 100, upgrade = 200, increase damage 2x, slower throw  wider range 
-class WHALER(TOWER):
+#God increase damage 2x, slower throw  wider range 
+class GOD(TOWER):
     
     def __init__(self):
         image = "Images/god.png"
@@ -173,7 +173,7 @@ class SUPERFISHER(TOWER):
         self.level +=1
 
 #can upgrade a bunch small overall buffs
-class NETFISHER(TOWER):
+class ARCHER(TOWER):
       
     def __init__(self):
         image = "images/archer.png"
