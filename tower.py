@@ -29,7 +29,7 @@ class FISHERMAN(TOWER):
         rate = 30
         cost = 125
         max = 3
-        upgrade_cost = 100
+        upgrade_cost = 125
         bullet = "images/fishhook.png"
         bullet_scale = 1.5
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
@@ -86,7 +86,7 @@ class BOAT(TOWER):
 class FLYFISHER(TOWER):
 
     def __init__(self):
-        image = "Images/base_fisherman.png"
+        image = "Images/fly_fisherman.png"
         scale = 1.0
         name = "Flyfisher"
         radius = 150
@@ -95,7 +95,7 @@ class FLYFISHER(TOWER):
         cost = 200
         max = 3
         upgrade_cost = 500
-        bullet = "images/sun.png"
+        bullet = "images/fishhook.png"
         bullet_scale = .2
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
     
