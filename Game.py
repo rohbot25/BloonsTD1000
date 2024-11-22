@@ -73,12 +73,22 @@ class HelpView(arcade.View):
 
     def on_draw(self):
         self.clear()
-        arcade.draw_text("Help Screen", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50,
+        arcade.draw_text("Help Screen", SCREEN_WIDTH / 2, SCREEN_HEIGHT - 80,
                          arcade.color.WHITE, font_size=50, anchor_x="center")
-        arcade.draw_text("The goal is to slay the whale", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2-50,
+        arcade.draw_text("In this game the goal is to kill all the fish before they reach the end.", SCREEN_WIDTH / 2, SCREEN_HEIGHT - 150,
                          arcade.color.WHITE, font_size=20, anchor_x="center")
-        arcade.draw_text("Click to go back", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 125,
-                         arcade.color.WHITE, font_size=20, anchor_x="center")
+        arcade.draw_text("Buy Towers by clicking and dragging them, place them around the path to have them kill the fish.", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+                         arcade.color.WHITE, font_size=16, anchor_x="center")
+        arcade.draw_text("Upgrade the towers by clicking on them and selecting upgrade to have them kill the fish more quickly.", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2-30,
+                         arcade.color.BLACK, font_size=16, anchor_x="center")
+        arcade.draw_text("If too many fish make it to the end you will lose.", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2-60,
+                         arcade.color.WHITE, font_size=16, anchor_x="center")
+        arcade.draw_text("Just like real life, nothing is free, spend your money wisely.  Killing fish will earn you more money.", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2-90,
+                         arcade.color.BLACK, font_size=16, anchor_x="center")
+        arcade.draw_text("Slay the whale to win the game.", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2-120,
+                         arcade.color.WHITE, font_size=16, anchor_x="center")
+        arcade.draw_text("Click anywhere to return to main menu.", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 155,
+                         arcade.color.BLACK, font_size=16, anchor_x="center")
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         start_view = StartView()

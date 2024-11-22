@@ -29,7 +29,7 @@ class FISHERMAN(TOWER):
         rate = 30
         cost = 125
         max = 3
-        upgrade_cost = 125
+        upgrade_cost = cost/2
         bullet = "images/fishhook.png"
         bullet_scale = 1.5
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
@@ -50,7 +50,7 @@ class GOD(TOWER):
         rate = 25
         cost = 1500
         max = 3
-        upgrade_cost = 0
+        upgrade_cost = cost/2
         bullet = "images/sun_gold.png"
         bullet_scale = 0.33
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
@@ -72,7 +72,7 @@ class BOAT(TOWER):
         rate = 20
         cost = 150
         max = 3
-        upgrade_cost = 300
+        upgrade_cost = cost/2
         bullet = "images/oar.png"
         bullet_scale = 0.25
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
@@ -94,7 +94,7 @@ class FLYFISHER(TOWER):
         rate = 40
         cost = 200
         max = 3
-        upgrade_cost = 500
+        upgrade_cost = cost/2
         bullet = "images/fishhook.png"
         bullet_scale = .2
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
@@ -116,7 +116,7 @@ class NEANDERTHAL(TOWER):
         rate = 50
         cost = 250
         max = 3
-        upgrade_cost = 500
+        upgrade_cost = cost/2
         bullet = "images/neanderthal_bullet.png"
         bullet_scale = .75
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
@@ -137,7 +137,7 @@ class WIZARD(TOWER):
         rate = 90
         cost = 300
         max = 3
-        upgrade_cost = 600
+        upgrade_cost = cost/2
         bullet = "images/fireball.png"
         bullet_scale = .6
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
@@ -162,7 +162,7 @@ class SUPERFISHER(TOWER):
         rate = 1
         cost = 1000
         max = 3
-        upgrade_cost = 2500
+        upgrade_cost = cost/2
         bullet = "images/lasers.png"
         bullet_scale = .2
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
@@ -185,7 +185,7 @@ class ARCHER(TOWER):
         rate = 120
         cost = 400
         max = 3
-        upgrade_cost = 10
+        upgrade_cost = cost/2
         bullet = "images/arrow.png"
         bullet_scale = .05
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
