@@ -116,6 +116,30 @@ class GameView(arcade.View):
                 [420,60],
                 [750, 60]
             ]
+
+        if (self.selected_map == "images/WoodsMap.png"):
+            position_list = [
+                [325,475],
+                [325,365],
+                [150,365],
+                [150,260],
+                [325,260],
+                [325,365],
+                [150,365],
+                [150,260],
+                [490,260],
+                [490,160],
+                [490,140],
+                [325,140],
+                [325,43],
+                [480, 43],
+                [530,80],
+                [530,140],
+                [500,150],
+                [325,150],
+                [325,0]
+                
+            ]
             
 
         # Points for topbar to restrict
@@ -251,6 +275,53 @@ class GameView(arcade.View):
                 [
                     [385, 415],
                     [400, 30]
+                ]
+            ]
+
+
+
+                        
+            if (self.selected_map == "images/WoodsMap.png"):
+                xy_restrictions = [
+                [
+                    [290, 375],
+                    [210, 500]
+                ],
+                [
+                    [150, 375],
+                    [345, 375]
+                ],
+                [
+                    [100, 175],
+                    [225, 375]
+                ],
+                [
+                    [48, 90],
+                    [220, 400]
+                ],
+                [
+                    [125, 525],
+                    [200, 250]
+                ],
+                [
+                    [375, 550],
+                    [25, 250]
+                ],
+                [
+                    [275, 550],
+                    [125, 155]
+                ],
+                [
+                    [270, 350],
+                    [0, 150]
+                ],
+                [
+                    [270, 550],
+                    [23, 68]
+                ],
+                [
+                    [385, 415],
+                    [500, 560]
                 ]
             ]
 
@@ -619,6 +690,119 @@ class GameView(arcade.View):
                 
                 [755, 60]
             ]
+
+        if (self.selected_map == "images/WoodsMap.png"):
+            position_list = [
+                [325, 475],
+                [325, 457],
+                [325, 438],
+                [325, 420],
+                [325, 402],
+                [325, 383],
+                [325, 365],
+                [296, 365],
+                [267, 365],
+                [238, 365],
+                [208, 365],
+                [179, 365],
+                [150, 365],
+                [150, 348],
+                [150, 330],
+                [150, 312],
+                [150, 295],
+                [150, 278],
+                [150, 260],
+                [179, 260],
+                [208, 260],
+                [238, 260],
+                [267, 260],
+                [296, 260],
+                [325, 260],
+                [325, 278],
+                [325, 295],
+                [325, 312],
+                [325, 330],
+                [325, 348],
+                [325, 365],
+                [296, 365],
+                [267, 365],
+                [238, 365],
+                [208, 365],
+                [179, 365],
+                [150, 365],
+                [150, 348],
+                [150, 330],
+                [150, 312],
+                [150, 295],
+                [150, 278],
+                [150, 260],
+                [207, 260],
+                [263, 260],
+                [320, 260],
+                [377, 260],
+                [433, 260],
+                [490, 260],
+                [490, 243],
+                [490, 227],
+                [490, 210],
+                [490, 193],
+                [490, 177],
+                [490, 160],
+                [490, 157],
+                [490, 153],
+                [490, 150],
+                [490, 147],
+                [490, 143],
+                [490, 140],
+                [462, 140],
+                [435, 140],
+                [408, 140],
+                [380, 140],
+                [352, 140],
+                [325, 140],
+                [325, 124],
+                [325, 108],
+                [325, 92],
+                [325, 75],
+                [325, 59],
+                [325, 43],
+                [351, 43],
+                [377, 43],
+                [402, 43],
+                [428, 43],
+                [454, 43],
+                [480, 43],
+                [488, 49],
+                [497, 55],
+                [505, 62],
+                [513, 68],
+                [522, 74],
+                [530, 80],
+                [530, 90],
+                [530, 100],
+                [530, 110],
+                [530, 120],
+                [530, 130],
+                [530, 140],
+                [525, 142],
+                [520, 143],
+                [515, 145],
+                [510, 147],
+                [505, 148],
+                [500, 150],
+                [471, 150],
+                [442, 150],
+                [412, 150],
+                [383, 150],
+                [354, 150],
+                [325, 150],
+                [325, 125],
+                [325, 100],
+                [325, 75],
+                [325, 50],
+                [325, 25],
+                [325, 0]
+            ]
             
         if self.paused:
             return
@@ -725,6 +909,10 @@ class GameView(arcade.View):
                         red_fish = REDFISH(position_list)
                         red_fish.center_x, red_fish.center_y = position_list[0]
                         self.fish_queue.append(red_fish)
+                    for i in range(1):
+                        shark = SHARK(position_list)
+                        shark.center_x, shark.center_y = position_list[0]
+                        self.fish_queue.append(shark)
 
                 elif self.user.round == 11:
                     for i in range(8):
@@ -735,6 +923,10 @@ class GameView(arcade.View):
                         green = GREENFISH(position_list)
                         green.center_x, green.center_y = position_list[0]
                         self.fish_queue.append(green)
+                    for i in range(3):
+                        shark = SHARK(position_list)
+                        shark.center_x, shark.center_y = position_list[0]
+                        self.fish_queue.append(shark)
 
                 elif self.user.round == 12:
                     for i in range(8):
@@ -779,16 +971,62 @@ class GameView(arcade.View):
                         green = GREENFISH(position_list)
                         green.center_x, green.center_y = position_list[0]
                         self.fish_queue.append(green)
-                    for i in range(1):
+                    for i in range(6):
                         orca = ORCA(position_list)
                         orca.center_x, orca.center_y = position_list[0]
                         self.fish_queue.append(orca)
 
                 elif self.user.round == 16:
+                    for i in range(8):
+                        red_fish = REDFISH(position_list)
+                        red_fish.center_x, red_fish.center_y = position_list[0]
+                        self.fish_queue.append(red_fish)
+                    for _ in range(8):
+                        green = GREENFISH(position_list)
+                        green.center_x, green.center_y = position_list[0]
+                        self.fish_queue.append(green)
+                    for i in range(6):
+                        orca = ORCA(position_list)
+                        orca.center_x, orca.center_y = position_list[0]
+                        self.fish_queue.append(orca)
+                elif self.user.round == 17:
+                    for i in range(8):
+                        red_fish = REDFISH(position_list)
+                        red_fish.center_x, red_fish.center_y = position_list[0]
+                        self.fish_queue.append(red_fish)
+                    for _ in range(12):
+                        green = GREENFISH(position_list)
+                        green.center_x, green.center_y = position_list[0]
+                        self.fish_queue.append(green)
+                    for i in range(15):
+                        orca = ORCA(position_list)
+                        orca.center_x, orca.center_y = position_list[0]
+                        self.fish_queue.append(orca)
+
+                elif self.user.round == 18:
+                    for i in range(30):
+                        shark = SHARK(position_list)
+                        shark.center_x, shark.center_y = position_list[0]
+                        self.fish_queue.append(shark)
+
+                elif self.user.round == 19:
+                    for i in range(15):
+                        shark = SHARK(position_list)
+                        shark.center_x, shark.center_y = position_list[0]
+                        self.fish_queue.append(shark)
+
+                    for i in range(5):
+                        orca = ORCA(position_list)
+                        orca.center_x, orca.center_y = position_list[0]
+                        self.fish_queue.append(orca)
+                        
+
+                elif self.user.round == 20:
                     for i in range(1):
                         whale = WHALE(position_list)
                         whale.center_x, whale.center_y = position_list[0]
                         self.fish_queue.append(whale)
+                        
 
 
             # Add all other round definitions here...
@@ -880,15 +1118,15 @@ class GameView(arcade.View):
                                     try:
                                         self.fishes.remove(fish)
                                         if isinstance(fish, BLUEFISH):
-                                            self.user.money += random.randint(15, 25)
+                                            self.user.money += random.randint(5, 10)
                                         elif isinstance(fish, REDFISH):
-                                            self.user.money += random.randint(20, 30)
+                                            self.user.money += random.randint(9, 18)
                                         elif isinstance(fish, GREENFISH):
-                                            self.user.money += random.randint(30, 40)
+                                            self.user.money += random.randint(10, 20)
                                         elif isinstance(fish, SHARK):
-                                            self.user.money += random.randint(70, 85)
+                                            self.user.money += random.randint(3, 10)
                                         elif isinstance(fish, ORCA):
-                                            self.user.money += random.randint(200, 275)
+                                            self.user.money += random.randint(2, 8)
                                     except ValueError:
                                         pass
 

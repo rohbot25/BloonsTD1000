@@ -131,6 +131,11 @@ class MapSelectView(arcade.View):
         map2_button.on_click = self.on_click_map2
         self.v_box.add(map2_button.with_space_around(bottom=20))
 
+        # Create the map2 button
+        map3_button = arcade.gui.UIFlatButton(text="Forest", width=200)
+        map3_button.on_click = self.on_click_map3
+        self.v_box.add(map3_button.with_space_around(bottom=20))
+
         # Create a widget to hold the v_box widget, that will center the buttons
         self.manager.add(
             arcade.gui.UIAnchorWidget(
@@ -144,10 +149,8 @@ class MapSelectView(arcade.View):
 
     def on_draw(self):
         self.clear()
-        arcade.draw_text("Select Map", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100,
+        arcade.draw_text("Select Map", SCREEN_WIDTH / 2, SCREEN_HEIGHT - 100,
                          arcade.color.WHITE, font_size=50, anchor_x="center")
-        arcade.draw_text("Map selection screen. Click to go back.", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
-                         arcade.color.WHITE, font_size=20, anchor_x="center")
         self.manager.draw()
 
     #map selection passing
@@ -158,6 +161,9 @@ class MapSelectView(arcade.View):
 
     def on_click_map2(self, event):
         self.start_view.selected_map = "images/newRiverMap.png"
+        self.window.show_view(self.start_view)
+    def on_click_map3(self, event):
+        self.start_view.selected_map = "images/WoodsMap.png"
         self.window.show_view(self.start_view)
 
     def on_hide_view(self):
