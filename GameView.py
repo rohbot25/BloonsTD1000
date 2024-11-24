@@ -320,7 +320,8 @@ class GameView(arcade.View):
 
             if not (self.is_in_restricted_sb_tb(x, y)
                     or not self.has_sufficient_money()
-                    or not self.is_in_restricited_path(x, y, xy_restrictions)):
+                    or not self.is_in_restricited_path(x, y, xy_restrictions)
+                    or not self.can_place_tower(x, y)):
 
                 self.current_tower.center_x = x
                 self.current_tower.center_y = y
