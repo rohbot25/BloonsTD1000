@@ -27,19 +27,19 @@ class FISHERMAN(TOWER):
         radius = 150
         atk = 2
         rate = 30
-        cost = 50
+        cost = 125
         max = 3
-        upgrade_cost = 100
+        upgrade_cost = cost/2
         bullet = "images/fishhook.png"
-        bullet_scale = 1
+        bullet_scale = 1.5
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
     
     def upgrade(self):
         self.rate -= 5
         self.level +=1
 
-#Whaler cost = 100, upgrade = 200, increase damage 2x, slower throw  wider range 
-class WHALER(TOWER):
+#God increase damage 2x, slower throw  wider range 
+class GOD(TOWER):
     
     def __init__(self):
         image = "Images/god.png"
@@ -47,10 +47,10 @@ class WHALER(TOWER):
         name = "God"
         radius = 2000
         atk = 5
-        rate = 50
-        cost = 1
+        rate = 25
+        cost = 1500
         max = 3
-        upgrade_cost = 0
+        upgrade_cost = cost/2
         bullet = "images/sun_gold.png"
         bullet_scale = 0.33
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
@@ -69,16 +69,17 @@ class BOAT(TOWER):
         name = "Boat"
         radius = 150
         atk = 1
-        rate = 40
+        rate = 20
         cost = 150
         max = 3
-        upgrade_cost = 300
+        upgrade_cost = cost/2
         bullet = "images/oar.png"
         bullet_scale = 0.25
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
     
     def upgrade(self):
         self.radius += 50
+        self.rate -=5
         self.level +=1
 
 #upgraded fisherman type, more range, better starting buffs, increase dmage and rate, upgrade = 500
@@ -93,7 +94,7 @@ class FLYFISHER(TOWER):
         rate = 40
         cost = 200
         max = 3
-        upgrade_cost = 500
+        upgrade_cost = cost/2
         bullet = "images/fishhook.png"
         bullet_scale = .2
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
@@ -115,7 +116,7 @@ class NEANDERTHAL(TOWER):
         rate = 50
         cost = 250
         max = 3
-        upgrade_cost = 500
+        upgrade_cost = cost/2
         bullet = "images/neanderthal_bullet.png"
         bullet_scale = .75
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
@@ -131,36 +132,38 @@ class WIZARD(TOWER):
         image = "images/wizard.png"
         scale = 0.3
         name = "Wizard"
-        radius = 200
-        atk = 3
-        rate = 25
+        radius = 250
+        atk = 10
+        rate = 90
         cost = 300
         max = 3
-        upgrade_cost = 600
+        upgrade_cost = cost/2
         bullet = "images/fireball.png"
-        bullet_scale = .25
+        bullet_scale = .6
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
     
     def upgrade(self):
-        self.atk *= 1.5
+        self.atk += 3
         self.rate -= 5
-        self.radius += 50
+        self.radius += 20
+        self.bullet_scale += .4
         self.level +=1
+
 
 #THE GOAT 
 class SUPERFISHER(TOWER):
      
     def __init__(self):
-        image = "Images/base_fisherman.png"
-        scale = 3.0
+        image = "images/superfisherman.png"
+        scale = .17
         name = "Superfisher"
-        radius = 100
-        atk = 100
-        rate = 30
+        radius = 400
+        atk = .2
+        rate = 1
         cost = 1000
         max = 3
-        upgrade_cost = 2500
-        bullet = "images/sun.png"
+        upgrade_cost = cost/2
+        bullet = "images/lasers.png"
         bullet_scale = .2
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
     
@@ -171,7 +174,7 @@ class SUPERFISHER(TOWER):
         self.level +=1
 
 #can upgrade a bunch small overall buffs
-class NETFISHER(TOWER):
+class ARCHER(TOWER):
       
     def __init__(self):
         image = "images/archer.png"
@@ -180,15 +183,13 @@ class NETFISHER(TOWER):
         radius = 2000
         atk = 10
         rate = 120
-        cost = 40
-        max = 10
-        upgrade_cost = 100
+        cost = 400
+        max = 3
+        upgrade_cost = cost/2
         bullet = "images/arrow.png"
         bullet_scale = .05
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
     
     def upgrade(self):
-        self.radius += 50
-        self.atk += 50
-        self.rate += 50
+        self.rate -=10
         self.level +=1
