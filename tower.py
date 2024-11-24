@@ -2,7 +2,7 @@ import arcade
 
 class TOWER(arcade.Sprite):
     
-    def __init__(self,image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale):
+    def __init__(self,image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale,bullet_speed):
         super().__init__(image,scale,hit_box_algorithm="None")
         self.name = name
         self.radius = radius
@@ -14,6 +14,7 @@ class TOWER(arcade.Sprite):
         self.upgrade_cost = upgrade_cost
         self.bullet = bullet
         self.bullet_scale = bullet_scale
+        self.bullet_speed = bullet_speed
 
         
 
@@ -32,7 +33,8 @@ class FISHERMAN(TOWER):
         upgrade_cost = cost
         bullet = "images/fishhook.png"
         bullet_scale = 1.5
-        super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
+        bullet_speed = 25
+        super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale,bullet_speed)
     
     def upgrade(self):
         self.rate -= 5
@@ -54,7 +56,8 @@ class GOD(TOWER):
         upgrade_cost = cost
         bullet = "images/sun_gold.png"
         bullet_scale = 0.33
-        super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
+        bullet_speed = 20
+        super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale, bullet_speed)
         
     
     def upgrade(self):
@@ -77,7 +80,8 @@ class BOAT(TOWER):
         upgrade_cost = cost
         bullet = "images/oar.png"
         bullet_scale = 0.25
-        super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
+        bullet_speed = 25
+        super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale,bullet_speed)
     
     def upgrade(self):
         self.radius += 50
@@ -90,7 +94,7 @@ class FLYFISHER(TOWER):
 
     def __init__(self):
         image = "Images/fly_fisherman.png"
-        scale = 1.0
+        scale = .9
         name = "Flyfisher"
         radius = 150
         atk = 1
@@ -100,7 +104,8 @@ class FLYFISHER(TOWER):
         upgrade_cost = cost
         bullet = "images/coins.png"
         bullet_scale = .4
-        super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
+        bullet_speed = 35
+        super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale,bullet_speed)
     
     def upgrade(self):
         self.atk *= 1.75
@@ -123,7 +128,8 @@ class NEANDERTHAL(TOWER):
         upgrade_cost = cost
         bullet = "images/neanderthal_bullet.png"
         bullet_scale = .75
-        super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
+        bullet_speed = 35
+        super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale,bullet_speed)
     
     def upgrade(self):
         self.atk *= 2
@@ -135,7 +141,7 @@ class WIZARD(TOWER):
      
     def __init__(self):
         image = "images/wizard.png"
-        scale = 0.3
+        scale = 0.35
         name = "Wizard"
         radius = 250
         atk = 10
@@ -144,14 +150,15 @@ class WIZARD(TOWER):
         max = 3
         upgrade_cost = cost
         bullet = "images/fireball.png"
-        bullet_scale = .6
-        super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
+        bullet_scale = .75
+        bullet_speed = 20
+        super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale, bullet_speed)
     
     def upgrade(self):
         self.atk += 3
         self.rate -= 5
         self.radius += 20
-        self.bullet_scale += .4
+        self.bullet_scale += .3
         self.level +=1
         self.upgrade_cost += self.level * 200
 
@@ -171,7 +178,8 @@ class SUPERFISHER(TOWER):
         upgrade_cost = cost
         bullet = "images/lasers.png"
         bullet_scale = .2
-        super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
+        bullet_speed = 50
+        super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale,bullet_speed)
     
     def upgrade(self):
         self.atk *= 2
@@ -187,14 +195,15 @@ class ARCHER(TOWER):
         scale = .15
         name = "Archer"
         radius = 2000
-        atk = 10
+        atk = 15
         rate = 120
         cost = 400
         max = 3
         upgrade_cost = cost
         bullet = "images/arrow.png"
-        bullet_scale = .05
-        super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
+        bullet_scale = .1
+        bullet_speed = 55
+        super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale,bullet_speed)
     
     def upgrade(self):
         self.rate -=10

@@ -278,10 +278,6 @@ class GameView(arcade.View):
                     [400, 30]
                 ]
             ]
-
-
-
-                        
             if (self.selected_map == "images/WoodsMap.png"):
                 xy_restrictions = [
                 [
@@ -1073,7 +1069,12 @@ class GameView(arcade.View):
                 if self.frame_count % tower.rate == 0:
                     bullet = arcade.Sprite(tower.bullet, tower.bullet_scale)
                     bullet.tower_source = tower
-                    bullet.grace_frames = 3
+                    if tower.name == 'Wizard':
+                        bullet.grace_frames = 7
+                    elif tower.name == 'Superfisher':
+                        bullet.grace_frames = 0
+                    else:
+                        bullet.grace_frames = 3
                     bullet.age = 0
                     bullet.center_x = tower.center_x
                     bullet.center_y = tower.center_y + 10
@@ -1088,8 +1089,8 @@ class GameView(arcade.View):
                         bullet.angle = math.degrees(angle)
 
                     # Calculate bullet trajectory
-                    bullet.change_x = math.cos(angle) * BULLET_SPEED
-                    bullet.change_y = math.sin(angle) * BULLET_SPEED
+                    bullet.change_x = math.cos(angle) * tower.bullet_speed
+                    bullet.change_y = math.sin(angle) * tower.bullet_speed
 
                     self.harpoons.append(bullet)
 
@@ -1107,7 +1108,7 @@ class GameView(arcade.View):
                             if arcade.check_for_collision(bullet, fish):
                                 if tower_source.name == 'God':
                                     hits += 1
-                                    if hits >= 2:
+                                    if hits >= 1.5:
                                         bullet.remove_from_sprite_lists()
                                     fish.hp -= tower_source.atk
                                 else:
