@@ -81,7 +81,7 @@ class HelpView(arcade.View):
                          arcade.color.WHITE, font_size=16, anchor_x="center")
         arcade.draw_text("Upgrade the towers by clicking on them and selecting upgrade to have them kill the fish more quickly.", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2-30,
                          arcade.color.BLACK, font_size=16, anchor_x="center")
-        arcade.draw_text("If too many fish make it to the end you will lose.", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2-60,
+        arcade.draw_text("If too many fish make it to the end you will lose.  To begin the next round after killing all the fish press the pause button.", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2-60,
                          arcade.color.WHITE, font_size=16, anchor_x="center")
         arcade.draw_text("Just like real life, nothing is free, spend your money wisely.  Killing fish will earn you more money.", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2-90,
                          arcade.color.BLACK, font_size=16, anchor_x="center")
