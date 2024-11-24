@@ -44,7 +44,7 @@ class StartView(arcade.View):
 
     def on_draw(self):
         self.clear()
-        arcade.draw_text("Fish Tower Defense", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100,
+        arcade.draw_text("Reef Defense", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 125,
                          arcade.color.WHITE, font_size=50, anchor_x="center")
         self.manager.draw()
 
@@ -163,7 +163,7 @@ class MapSelectView(arcade.View):
         self.start_view.selected_map = "images/newRiverMap.png"
         self.window.show_view(self.start_view)
     def on_click_map3(self, event):
-        self.start_view.selected_map = "images/WoodsMap.png"
+        self.start_view.selected_map = "images/WoodsMap.jpeg"
         self.window.show_view(self.start_view)
 
     def on_hide_view(self):

@@ -94,7 +94,7 @@ class FLYFISHER(TOWER):
         name = "Flyfisher"
         radius = 150
         atk = 1
-        rate = 20
+        rate = 15
         cost = 200
         max = 3
         upgrade_cost = cost
@@ -103,8 +103,8 @@ class FLYFISHER(TOWER):
         super().__init__(image,scale, name, radius, atk, rate,max,cost,upgrade_cost,bullet,bullet_scale)
     
     def upgrade(self):
-        self.atk *= 1.5
-        self.rate -= 5
+        self.atk *= 1.75
+        self.rate -= 2
         self.level +=1
         self.upgrade_cost += self.level * 200
 

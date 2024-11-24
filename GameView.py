@@ -117,7 +117,7 @@ class GameView(arcade.View):
                 [750, 60]
             ]
 
-        if (self.selected_map == "images/WoodsMap.png"):
+        if (self.selected_map == "images/WoodsMap.jpeg"):
             position_list = [
                 [325,475],
                 [325,365],
@@ -691,7 +691,7 @@ class GameView(arcade.View):
                 [755, 60]
             ]
 
-        if (self.selected_map == "images/WoodsMap.png"):
+        if (self.selected_map == "images/WoodsMap.jpeg"):
             position_list = [
                 [325, 475],
                 [325, 457],
@@ -971,24 +971,25 @@ class GameView(arcade.View):
                         green = GREENFISH(position_list)
                         green.center_x, green.center_y = position_list[0]
                         self.fish_queue.append(green)
-                    for i in range(6):
-                        orca = ORCA(position_list)
-                        orca.center_x, orca.center_y = position_list[0]
-                        self.fish_queue.append(orca)
+                    for i in range(4):
+                        shark = SHARK(position_list)
+                        shark.center_x, shark.center_y = position_list[0]
+                        self.fish_queue.append(shark)
 
                 elif self.user.round == 16:
-                    for i in range(8):
-                        red_fish = REDFISH(position_list)
-                        red_fish.center_x, red_fish.center_y = position_list[0]
-                        self.fish_queue.append(red_fish)
+                    for i in range(4):
+                        shark = SHARK(position_list)
+                        shark.center_x, shark.center_y = position_list[0]
+                        self.fish_queue.append(shark)
                     for _ in range(8):
                         green = GREENFISH(position_list)
                         green.center_x, green.center_y = position_list[0]
                         self.fish_queue.append(green)
-                    for i in range(6):
+                    for i in range(4):
                         orca = ORCA(position_list)
                         orca.center_x, orca.center_y = position_list[0]
                         self.fish_queue.append(orca)
+
                 elif self.user.round == 17:
                     for i in range(8):
                         red_fish = REDFISH(position_list)
@@ -998,7 +999,7 @@ class GameView(arcade.View):
                         green = GREENFISH(position_list)
                         green.center_x, green.center_y = position_list[0]
                         self.fish_queue.append(green)
-                    for i in range(15):
+                    for i in range(5):
                         orca = ORCA(position_list)
                         orca.center_x, orca.center_y = position_list[0]
                         self.fish_queue.append(orca)
@@ -1026,7 +1027,8 @@ class GameView(arcade.View):
                         whale = WHALE(position_list)
                         whale.center_x, whale.center_y = position_list[0]
                         self.fish_queue.append(whale)
-                        
+                elif self.user.round == 21:
+                    window.show
 
 
             # Add all other round definitions here...
