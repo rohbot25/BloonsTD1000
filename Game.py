@@ -110,6 +110,21 @@ class DeathView(arcade.View):
         start_view = StartView()
         self.window.show_view(start_view)
 
+class WinView(arcade.View):
+    def on_show(self):
+        arcade.set_background_color(arcade.color.BLUE_SAPPHIRE)
+
+    def on_draw(self):
+        self.clear()
+        arcade.draw_text("You have defeated the Whale!", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100,
+                         arcade.color.WHITE, font_size=50, anchor_x="center")
+        arcade.draw_text("Click to return to start", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+                         arcade.color.WHITE, font_size=20, anchor_x="center")
+
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        start_view = StartView()
+        self.window.show_view(start_view)
+
 
 class MapSelectView(arcade.View):
     def __init__(self, start_view):

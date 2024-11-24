@@ -16,6 +16,7 @@ from tower import FISHERMAN, FLYFISHER, GOD, NEANDERTHAL, WIZARD, BOAT, SUPERFIS
 from Fish import  REDFISH, BLUEFISH, GREENFISH, SHARK, ORCA, WHALE
 from Button import BUTTON
 from Button import PauseUnpause
+from Game import WinView
 
 import arcade
 import arcade.gui
@@ -1027,13 +1028,12 @@ class GameView(arcade.View):
                         whale = WHALE(position_list)
                         whale.center_x, whale.center_y = position_list[0]
                         self.fish_queue.append(whale)
+
                 elif self.user.round == 21:
-                    window.show
+                    death_view = WinView()
+                    self.window.show_view(death_view)
 
-
-            # Add all other round definitions here...
-
-        # Tower shooting logic remains the same
+        # Tower shooting logic
         for tower in self.towers:
             if not hasattr(tower, 'last_target_update_frame'):
                 tower.last_target_update_frame = 0
@@ -1079,8 +1079,6 @@ class GameView(arcade.View):
                     bullet.center_y = tower.center_y + 10
 
                     # Store the tower reference in the bullet
-
-
                     # Adjust bullet angle based on tower type
                     if tower.name == "Boat":
                         bullet.angle = math.degrees(angle) + 45
@@ -1132,7 +1130,7 @@ class GameView(arcade.View):
                                     except ValueError:
                                         pass
 
-                                    # Check if the removed fish is a shark
+                                    # Check if the removed fish is a shark orca or whale
                                     if isinstance(fish, SHARK):
                                         for _ in range(1):
                                             red = REDFISH(position_list, start_x=fish.center_x, start_y=fish.center_y)
