@@ -178,7 +178,7 @@ class MapSelectView(arcade.View):
         self.start_view.selected_map = "images/newRiverMap.png"
         self.window.show_view(self.start_view)
     def on_click_map3(self, event):
-        self.start_view.selected_map = "images/WoodsMap.jpeg"
+        self.start_view.selected_map = "images/WoodsMap.png"
         self.window.show_view(self.start_view)
 
     def on_hide_view(self):
